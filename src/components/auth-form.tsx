@@ -41,9 +41,16 @@ export function AuthForm({
             type={f.type ?? "text"}
             autoComplete={f.autoComplete}
             inputMode={f.inputMode}
+            spellCheck={f.type === "email" ? false : undefined}
+            autoCapitalize={f.type === "email" ? "none" : undefined}
+            aria-describedby={f.hint ? `${f.name}-hint` : undefined}
             required
           />
-          {f.hint ? <p className="text-xs text-muted-foreground">{f.hint}</p> : null}
+          {f.hint ? (
+            <p id={`${f.name}-hint`} className="text-sm text-muted-foreground">
+              {f.hint}
+            </p>
+          ) : null}
         </div>
       ))}
       {state?.error ? (
@@ -56,7 +63,7 @@ export function AuthForm({
           {t(state.info)}
         </p>
       ) : null}
-      <Button type="submit" size="lg" disabled={pending}>
+      <Button type="submit" size="lg" disabled={pending} aria-busy={pending}>
         {submitLabel}
       </Button>
     </form>

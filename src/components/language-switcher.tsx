@@ -9,13 +9,13 @@ import { cn } from "@/lib/utils";
 const LABELS: Record<Locale, string> = { am: "አማ", om: "Oro", en: "EN" };
 const FULL: Record<Locale, string> = { am: "አማርኛ", om: "Afaan Oromoo", en: "English" };
 
-export function LanguageSwitcher({ className }: { className?: string }) {
+export function LanguageSwitcher({ className, inverse = false }: { className?: string; inverse?: boolean }) {
   const current = useLocale();
   const t = useTranslations("common");
   const [pending, startTransition] = useTransition();
 
   return (
-    <div role="group" aria-label={t("language")} className={cn("inline-flex rounded-md border p-0.5", className)}>
+    <div role="group" aria-label={t("language")} className={cn("inline-flex rounded-md border p-0.5", inverse && "border-white/40", className)}>
       {locales.map((locale) => (
         <button
           key={locale}
@@ -26,8 +26,14 @@ export function LanguageSwitcher({ className }: { className?: string }) {
           disabled={pending}
           onClick={() => startTransition(() => setLocale(locale))}
           className={cn(
-            "h-8 min-w-11 rounded px-2 text-sm",
-            current === locale ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent",
+            "h-11 min-w-12 rounded px-2 text-sm",
+            inverse
+              ? current === locale
+                ? "bg-primary-foreground text-primary font-bold"
+                : "text-primary-foreground/85 hover:bg-white/15"
+              : current === locale
+                ? "bg-primary text-primary-foreground font-bold"
+                : "text-muted-foreground hover:bg-accent",
           )}
         >
           {LABELS[locale]}
