@@ -7,7 +7,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
   return (
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col gap-6 px-4 py-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 font-semibold">
+        <div className="flex items-center gap-2 font-bold" translate="no">
           <Logo />
           {t("name")}
         </div>

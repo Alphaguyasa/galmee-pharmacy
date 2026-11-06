@@ -14,24 +14,34 @@ type ShellProps = {
   children: React.ReactNode;
 };
 
-function TenantBadge({ tenantName, logoUrl }: Pick<ShellProps, "tenantName" | "logoUrl">) {
+function TenantBadge({
+  tenantName,
+  logoUrl,
+  inverse = false,
+}: Pick<ShellProps, "tenantName" | "logoUrl"> & { inverse?: boolean }) {
   return (
     <div className="flex min-w-0 items-center gap-2">
       {logoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element -- tenant logos come from Supabase Storage
         <img src={logoUrl} alt="" className="size-8 rounded-lg object-cover" />
       ) : (
-        <Logo />
+        <Logo inverse={inverse} />
       )}
-      <span className="truncate font-semibold">{tenantName}</span>
+      <span className="truncate font-bold">{tenantName}</span>
     </div>
   );
 }
 
 export async function AppShell({ tenantName, logoUrl, userName, roleLabel, children }: ShellProps) {
-  const t = await getTranslations("auth");
+  const [t, tCommon] = await Promise.all([getTranslations("auth"), getTranslations("common")]);
   return (
     <div className="min-h-dvh md:grid md:grid-cols-[15rem_1fr]">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-3 focus:text-foreground"
+      >
+        {tCommon("skipToContent")}
+      </a>
       <aside className="hidden border-r bg-card md:flex md:flex-col md:gap-6 md:p-4">
         <TenantBadge tenantName={tenantName} logoUrl={logoUrl} />
         <AppNav variant="side" />
@@ -51,18 +61,23 @@ export async function AppShell({ tenantName, logoUrl, userName, roleLabel, child
       </aside>
 
       <div className="flex min-w-0 flex-col">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-2 border-b bg-card/95 px-4 backdrop-blur md:hidden">
-          <TenantBadge tenantName={tenantName} logoUrl={logoUrl} />
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-2 bg-primary px-4 text-primary-foreground md:hidden">
+          <TenantBadge tenantName={tenantName} logoUrl={logoUrl} inverse />
           <div className="flex items-center gap-1">
-            <LanguageSwitcher />
+            <LanguageSwitcher inverse />
             <form action={logout}>
-              <Button variant="ghost" size="icon" aria-label={t("logout")}>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t("logout")}
+                className="text-primary-foreground hover:bg-white/15 hover:text-primary-foreground"
+              >
                 <LogOut aria-hidden />
               </Button>
             </form>
           </div>
         </header>
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-4 pb-24 md:p-8">{children}</main>
+        <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-4 pt-4 pb-24 md:p-8">{children}</main>
       </div>
 
       <AppNav variant="bottom" />
