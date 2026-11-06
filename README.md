@@ -9,3 +9,18 @@ Part of **Galmee**, business systems for Ethiopian businesses, by Alpha. Mobile-
 - Payments: Chapa (Telebirr, CBE Birr); SMS: AfroMessage; alerts: Telegram
 
 Built daily by an autonomous Claude Code routine. See `ROADMAP.md` and `DAILY_LOG.md`.
+
+## Development
+
+```bash
+cp .env.example .env.local   # publishable values only
+npm install
+npm run dev      # http://localhost:3000
+npm test         # vitest (Ethiopian calendar, message keys)
+npm run lint
+npm run build
+```
+
+Env vars (Vercel too): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Secrets (Telegram, AfroMessage, Chapa) live only in Supabase Edge Function secrets.
+
+Layout: `src/app/(auth)` login/signup, `src/app/(app)` logged-in screens with the app shell, `src/actions` server actions, `src/lib/supabase` clients, `src/lib/ethiopian-date.ts` calendar, `messages/*.json` translations (`am` default).

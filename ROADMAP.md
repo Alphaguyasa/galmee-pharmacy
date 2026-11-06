@@ -2,15 +2,15 @@
 
 ## M0: Foundation (shared pattern for all Galmee products)
 
-- [ ] Next.js App Router + TS + Tailwind + shadcn/ui scaffold; `npm run build` passes
-- [ ] PWA manifest, icons, offline shell; installs from Android Chrome
-- [ ] Supabase client (`@supabase/ssr`) with `.env.example` values; middleware session refresh
-- [ ] Auth: sign up, log in, log out; after first signup call `create_tenant` (vertical `pharmacy`)
-- [ ] next-intl with `am`, `om`, `en`; language switcher; Ethiopic-friendly font (Noto Sans Ethiopic)
-- [ ] Ethiopian calendar date display helper + tests
-- [ ] App shell: bottom navigation on mobile, sidebar on desktop, tenant name and logo
+- [x] Next.js App Router + TS + Tailwind + shadcn/ui scaffold; `npm run build` passes
+- [x] PWA manifest, icons, offline shell; installs from Android Chrome
+- [x] Supabase client (`@supabase/ssr`) with `.env.example` values; middleware session refresh
+- [x] Auth: sign up, log in, log out; after first signup call `create_tenant` (vertical `pharmacy`)
+- [x] next-intl with `am`, `om`, `en`; language switcher; Ethiopic-friendly font (Noto Sans Ethiopic)
+- [x] Ethiopian calendar date display helper + tests
+- [x] App shell: bottom navigation on mobile, sidebar on desktop, tenant name and logo
 - [ ] Staff management (owner only): invite staff, set role
-- [ ] Generated Supabase TypeScript types committed
+- [x] Generated Supabase TypeScript types committed
 
 ## M1: Core screens
 
