@@ -9,7 +9,9 @@ export default async function SignupPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">{t("signupTitle")}</CardTitle>
+        <CardTitle>
+          <h1 className="text-xl font-bold text-balance">{t("signupTitle")}</h1>
+        </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
         <AuthForm

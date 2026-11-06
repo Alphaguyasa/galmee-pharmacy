@@ -9,7 +9,9 @@ export default async function LoginPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">{t("loginTitle")}</CardTitle>
+        <CardTitle>
+          <h1 className="text-xl font-bold text-balance">{t("loginTitle")}</h1>
+        </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
         <AuthForm
