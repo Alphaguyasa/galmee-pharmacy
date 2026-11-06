@@ -1,38 +1,35 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { signInWithPassword, signOut, signUpWithPassword } from "@/server/dal/auth";
+import { credentialsSchema, formToObject, signupSchema } from "@/server/validation";
 
+/** Message keys are looked up in the form's next-intl namespace. */
 export type FormState = { error?: string; info?: string } | undefined;
 
-function field(formData: FormData, name: string) {
-  return String(formData.get(name) ?? "").trim();
-}
-
 export async function login(_prev: FormState, formData: FormData): Promise<FormState> {
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({
-    email: field(formData, "email"),
-    password: String(formData.get("password") ?? ""),
-  });
-  if (error) return { error: "errorInvalid" };
+  const parsed = credentialsSchema.safeParse(formToObject(formData, ["email", "password"]));
+  if (!parsed.success) return { error: "errorInvalid" };
+
+  const { ok } = await signInWithPassword(parsed.data.email, parsed.data.password);
+  if (!ok) return { error: "errorInvalid" };
   redirect("/");
 }
 
 export async function signup(_prev: FormState, formData: FormData): Promise<FormState> {
-  const password = String(formData.get("password") ?? "");
-  if (password.length < 8) return { error: "errorPassword" };
+  const parsed = signupSchema.safeParse(formToObject(formData, ["email", "password"]));
+  if (!parsed.success) {
+    const passwordIssue = parsed.error.issues.some((i) => i.path[0] === "password");
+    return { error: passwordIssue ? "errorPassword" : "errorEmail" };
+  }
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({ email: field(formData, "email"), password });
-  if (error) return { error: "errorGeneric" };
-  // Email confirmation on: no session yet, the user logs in after confirming.
-  if (!data.session) return { info: "checkEmail" };
+  const result = await signUpWithPassword(parsed.data.email, parsed.data.password);
+  if (!result.ok) return { error: "errorGeneric" };
+  if (result.needsConfirmation) return { info: "checkEmail" };
   redirect("/onboarding");
 }
 
 export async function logout() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+  await signOut();
   redirect("/login");
 }

@@ -17,14 +17,15 @@
     "offline": "You are offline",
     "offlineBody": "Galmee will reconnect automatically. Sales you make offline will sync when the internet is back.",
     "retry": "Try again",
-    "today": "Today"
+    "today": "Today",
+    "skipToContent": "Skip to content"
   },
   "auth": {
     "loginTitle": "Log in",
     "signupTitle": "Create your pharmacy account",
     "email": "Email",
     "password": "Password",
-    "passwordHint": "At least 8 characters",
+    "passwordHint": "At least 10 characters",
     "login": "Log in",
     "signup": "Create account",
     "logout": "Log out",
@@ -33,7 +34,8 @@
     "checkEmail": "Check your email and open the link to confirm your account, then log in.",
     "errorInvalid": "Wrong email or password.",
     "errorGeneric": "Something went wrong. Please try again.",
-    "errorPassword": "Password must be at least 8 characters."
+    "errorPassword": "Password must be at least 10 characters.",
+    "errorEmail": "Enter a valid email address."
   },
   "onboarding": {
     "title": "Set up your pharmacy",
@@ -42,7 +44,9 @@
     "fullName": "Your full name",
     "phone": "Phone number",
     "submit": "Start using Galmee",
-    "error": "Could not create the pharmacy. Please try again."
+    "error": "Could not create the pharmacy. Please try again.",
+    "errorPhone": "Enter an Ethiopian phone number, for example 0911 234 567.",
+    "errorRequired": "Fill in all three fields."
   },
   "home": {
     "welcome": "Welcome, {name}",
