@@ -6,19 +6,14 @@ import { AuthForm } from "@/components/auth-form";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/server";
+import { getUserId, hasProfile } from "@/server/dal/session";
 
 export default async function OnboardingPage() {
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getClaims();
-  const userId = data?.claims?.sub;
+  const userId = await getUserId();
   if (!userId) redirect("/login");
+  if (await hasProfile(userId)) redirect("/");
 
-  const { data: profile } = await supabase.from("profiles").select("user_id").eq("user_id", userId).maybeSingle();
-  if (profile) redirect("/");
-
-  const t = await getTranslations("onboarding");
-  const tAuth = await getTranslations("auth");
+  const [t, tAuth] = await Promise.all([getTranslations("onboarding"), getTranslations("auth")]);
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col gap-6 px-4 py-6">
@@ -27,7 +22,9 @@ export default async function OnboardingPage() {
       </div>
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">{t("title")}</CardTitle>
+          <CardTitle>
+            <h1 className="text-xl font-bold text-balance">{t("title")}</h1>
+          </CardTitle>
           <CardDescription>{t("intro")}</CardDescription>
         </CardHeader>
         <CardContent>

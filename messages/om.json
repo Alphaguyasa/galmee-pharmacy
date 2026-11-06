@@ -17,14 +17,15 @@
     "offline": "Interneetii hin qabdu",
     "offlineBody": "Galmeen ofumaan deebi'ee ni walqunnama. Gurgurtaan interneetii malee raawwatte yeroo interneetiin deebi'u ni ergama.",
     "retry": "Irra deebi'i yaali",
-    "today": "Har'a"
+    "today": "Har'a",
+    "skipToContent": "Gara qabiyyee ijootti darbi"
   },
   "auth": {
     "loginTitle": "Seeni",
     "signupTitle": "Herrega faarmaasii uumi",
     "email": "Imeelii",
     "password": "Jecha icciitii",
-    "passwordHint": "Yoo xiqqaate qubee 8",
+    "passwordHint": "Yoo xiqqaate qubee 10",
     "login": "Seeni",
     "signup": "Herrega uumi",
     "logout": "Ba'i",
@@ -33,7 +34,8 @@
     "checkEmail": "Herrega kee mirkaneessuuf imeelii kee banii liinkii tuqi, booda seeni.",
     "errorInvalid": "Imeeliin ykn jechi icciitii dogoggora.",
     "errorGeneric": "Rakkoon uumame. Maaloo irra deebi'ii yaali.",
-    "errorPassword": "Jechi icciitii yoo xiqqaate qubee 8 ta'uu qaba."
+    "errorPassword": "Jechi icciitii yoo xiqqaate qubee 10 ta'uu qaba.",
+    "errorEmail": "Imeelii sirrii galchi."
   },
   "onboarding": {
     "title": "Faarmaasii kee qopheessi",
@@ -42,7 +44,9 @@
     "fullName": "Maqaa kee guutuu",
     "phone": "Lakkoofsa bilbilaa",
     "submit": "Galmee fayyadamuu jalqabi",
-    "error": "Faarmaasii uumuun hin danda'amne. Maaloo irra deebi'ii yaali."
+    "error": "Faarmaasii uumuun hin danda'amne. Maaloo irra deebi'ii yaali.",
+    "errorPhone": "Lakkoofsa bilbilaa Itoophiyaa galchi, fkn. 0911 234 567.",
+    "errorRequired": "Bakka sadanuu guuti."
   },
   "home": {
     "welcome": "Baga nagaan dhuftan, {name}",
