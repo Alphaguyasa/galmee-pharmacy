@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "Galmee Pharmacy",
+    "tagline": "See which drugs expire next month and how much money is sitting in them."
+  },
+  "nav": {
+    "home": "Home",
+    "sell": "Sell",
+    "stock": "Stock",
+    "customers": "Credit",
+    "reports": "Reports",
+    "menu": "Main menu"
+  },
+  "common": {
+    "language": "Language",
+    "comingSoon": "This screen is coming soon.",
+    "offline": "You are offline",
+    "offlineBody": "Galmee will reconnect automatically. Sales you make offline will sync when the internet is back.",
+    "retry": "Try again",
+    "today": "Today"
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "signupTitle": "Create your pharmacy account",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "login": "Log in",
+    "signup": "Create account",
+    "logout": "Log out",
+    "noAccount": "New pharmacy?",
+    "haveAccount": "Already have an account?",
+    "checkEmail": "Check your email and open the link to confirm your account, then log in.",
+    "errorInvalid": "Wrong email or password.",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "errorPassword": "Password must be at least 8 characters."
+  },
+  "onboarding": {
+    "title": "Set up your pharmacy",
+    "intro": "One last step: tell us about your pharmacy.",
+    "pharmacyName": "Pharmacy name",
+    "fullName": "Your full name",
+    "phone": "Phone number",
+    "submit": "Start using Galmee",
+    "error": "Could not create the pharmacy. Please try again."
+  },
+  "home": {
+    "welcome": "Welcome, {name}",
+    "expiringSoon": "Expiring within 30 days",
+    "lowStock": "Below reorder level",
+    "salesToday": "Sales today",
+    "notYet": "Available soon"
+  },
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "staff": "Staff"
+  }
+}

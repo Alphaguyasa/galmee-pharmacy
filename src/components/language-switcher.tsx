@@ -1,0 +1,38 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+import { useTransition } from "react";
+import { setLocale } from "@/actions/locale";
+import { locales, type Locale } from "@/i18n/config";
+import { cn } from "@/lib/utils";
+
+const LABELS: Record<Locale, string> = { am: "አማ", om: "Oro", en: "EN" };
+const FULL: Record<Locale, string> = { am: "አማርኛ", om: "Afaan Oromoo", en: "English" };
+
+export function LanguageSwitcher({ className }: { className?: string }) {
+  const current = useLocale();
+  const t = useTranslations("common");
+  const [pending, startTransition] = useTransition();
+
+  return (
+    <div role="group" aria-label={t("language")} className={cn("inline-flex rounded-md border p-0.5", className)}>
+      {locales.map((locale) => (
+        <button
+          key={locale}
+          type="button"
+          lang={locale}
+          title={FULL[locale]}
+          aria-pressed={current === locale}
+          disabled={pending}
+          onClick={() => startTransition(() => setLocale(locale))}
+          className={cn(
+            "h-8 min-w-11 rounded px-2 text-sm",
+            current === locale ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent",
+          )}
+        >
+          {LABELS[locale]}
+        </button>
+      ))}
+    </div>
+  );
+}

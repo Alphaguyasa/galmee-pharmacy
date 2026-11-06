@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "Galmee Faarmaasii",
+    "tagline": "Qorichoota ji'a dhufu yeroon isaanii darbu fi maallaqa isaan keessa jiru ilaali."
+  },
+  "nav": {
+    "home": "Jalqaba",
+    "sell": "Gurgurtaa",
+    "stock": "Kuusaa",
+    "customers": "Liqii",
+    "reports": "Gabaasa",
+    "menu": "Baafata ijoo"
+  },
+  "common": {
+    "language": "Afaan",
+    "comingSoon": "Fuulli kun dhiyootti ni dhufa.",
+    "offline": "Interneetii hin qabdu",
+    "offlineBody": "Galmeen ofumaan deebi'ee ni walqunnama. Gurgurtaan interneetii malee raawwatte yeroo interneetiin deebi'u ni ergama.",
+    "retry": "Irra deebi'i yaali",
+    "today": "Har'a"
+  },
+  "auth": {
+    "loginTitle": "Seeni",
+    "signupTitle": "Herrega faarmaasii uumi",
+    "email": "Imeelii",
+    "password": "Jecha icciitii",
+    "passwordHint": "Yoo xiqqaate qubee 8",
+    "login": "Seeni",
+    "signup": "Herrega uumi",
+    "logout": "Ba'i",
+    "noAccount": "Faarmaasii haaraa?",
+    "haveAccount": "Herrega qabdaa?",
+    "checkEmail": "Herrega kee mirkaneessuuf imeelii kee banii liinkii tuqi, booda seeni.",
+    "errorInvalid": "Imeeliin ykn jechi icciitii dogoggora.",
+    "errorGeneric": "Rakkoon uumame. Maaloo irra deebi'ii yaali.",
+    "errorPassword": "Jechi icciitii yoo xiqqaate qubee 8 ta'uu qaba."
+  },
+  "onboarding": {
+    "title": "Faarmaasii kee qopheessi",
+    "intro": "Tarkaanfii dhumaa: waa'ee faarmaasii keetii nutti himi.",
+    "pharmacyName": "Maqaa faarmaasii",
+    "fullName": "Maqaa kee guutuu",
+    "phone": "Lakkoofsa bilbilaa",
+    "submit": "Galmee fayyadamuu jalqabi",
+    "error": "Faarmaasii uumuun hin danda'amne. Maaloo irra deebi'ii yaali."
+  },
+  "home": {
+    "welcome": "Baga nagaan dhuftan, {name}",
+    "expiringSoon": "Guyyaa 30 keessatti kan darbu",
+    "lowStock": "Sadarkaa ajajaa gadi",
+    "salesToday": "Gurgurtaa har'aa",
+    "notYet": "Dhiyootti"
+  },
+  "roles": {
+    "owner": "Abbaa qabeenyaa",
+    "manager": "Hogganaa",
+    "staff": "Hojjetaa"
+  }
+}

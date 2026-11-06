@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "ጋልሜ ፋርማሲ",
+    "tagline": "በሚቀጥለው ወር የሚያልቁ መድኃኒቶችን እና በውስጣቸው ያለውን ገንዘብ ይመልከቱ።"
+  },
+  "nav": {
+    "home": "መነሻ",
+    "sell": "ሽያጭ",
+    "stock": "ክምችት",
+    "customers": "ዱቤ",
+    "reports": "ሪፖርት",
+    "menu": "ዋና ማውጫ"
+  },
+  "common": {
+    "language": "ቋንቋ",
+    "comingSoon": "ይህ ገጽ በቅርቡ ይመጣል።",
+    "offline": "ከኢንተርኔት ውጭ ነዎት",
+    "offlineBody": "ጋልሜ በራሱ እንደገና ይገናኛል። ያለ ኢንተርኔት የሚያደርጉት ሽያጭ ኢንተርኔት ሲመለስ ይላካል።",
+    "retry": "እንደገና ይሞክሩ",
+    "today": "ዛሬ"
+  },
+  "auth": {
+    "loginTitle": "ይግቡ",
+    "signupTitle": "የፋርማሲ መለያ ይፍጠሩ",
+    "email": "ኢሜይል",
+    "password": "የይለፍ ቃል",
+    "passwordHint": "ቢያንስ 8 ፊደላት",
+    "login": "ግባ",
+    "signup": "መለያ ፍጠር",
+    "logout": "ውጣ",
+    "noAccount": "አዲስ ፋርማሲ ነዎት?",
+    "haveAccount": "መለያ አለዎት?",
+    "checkEmail": "መለያዎን ለማረጋገጥ ኢሜይልዎን ከፍተው ሊንኩን ይጫኑ፣ ከዚያ ይግቡ።",
+    "errorInvalid": "ኢሜይል ወይም የይለፍ ቃል ተሳስቷል።",
+    "errorGeneric": "ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
+    "errorPassword": "የይለፍ ቃል ቢያንስ 8 ፊደላት መሆን አለበት።"
+  },
+  "onboarding": {
+    "title": "ፋርማሲዎን ያዘጋጁ",
+    "intro": "የመጨረሻ ደረጃ፦ ስለ ፋርማሲዎ ይንገሩን።",
+    "pharmacyName": "የፋርማሲው ስም",
+    "fullName": "ሙሉ ስምዎ",
+    "phone": "ስልክ ቁጥር",
+    "submit": "ጋልሜን መጠቀም ይጀምሩ",
+    "error": "ፋርማሲውን መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+  },
+  "home": {
+    "welcome": "እንኳን ደህና መጡ፣ {name}",
+    "expiringSoon": "በ30 ቀን ውስጥ የሚያልቁ",
+    "lowStock": "ከማዘዣ ደረጃ በታች",
+    "salesToday": "የዛሬ ሽያጭ",
+    "notYet": "በቅርቡ"
+  },
+  "roles": {
+    "owner": "ባለቤት",
+    "manager": "ሥራ አስኪያጅ",
+    "staff": "ሠራተኛ"
+  }
+}
