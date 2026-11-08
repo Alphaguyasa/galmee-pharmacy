@@ -767,8 +767,144 @@ export type Database = {
         }
         Relationships: []
       }
+      ph_suppliers: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          tenant_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          tenant_id?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          tenant_id?: string
+        }
+        Relationships: []
+      }
+      ph_purchase_orders: {
+        Row: {
+          client_ref: string | null
+          created_at: string
+          created_by: string | null
+          expected_date: string | null
+          id: string
+          notes: string | null
+          received_at: string | null
+          status: string
+          supplier_id: string
+          tenant_id: string
+        }
+        Insert: {
+          client_ref?: string | null
+          created_at?: string
+          created_by?: string | null
+          expected_date?: string | null
+          id?: string
+          notes?: string | null
+          received_at?: string | null
+          status?: string
+          supplier_id: string
+          tenant_id?: string
+        }
+        Update: {
+          client_ref?: string | null
+          created_at?: string
+          created_by?: string | null
+          expected_date?: string | null
+          id?: string
+          notes?: string | null
+          received_at?: string | null
+          status?: string
+          supplier_id?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
+      ph_purchase_lines: {
+        Row: {
+          batch_id: string | null
+          batch_no: string | null
+          created_at: string
+          expiry_date: string | null
+          id: string
+          item_id: string
+          po_id: string
+          qty: number
+          received_qty: number
+          tenant_id: string
+          unit_cost: number
+        }
+        Insert: {
+          batch_id?: string | null
+          batch_no?: string | null
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          item_id: string
+          po_id: string
+          qty: number
+          received_qty?: number
+          tenant_id?: string
+          unit_cost: number
+        }
+        Update: {
+          batch_id?: string | null
+          batch_no?: string | null
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          item_id?: string
+          po_id?: string
+          qty?: number
+          received_qty?: number
+          tenant_id?: string
+          unit_cost?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
+      ph_item_expiry: {
+        Row: {
+          batch_count: number | null
+          category: string | null
+          days_left: number | null
+          item_id: string | null
+          name_am: string | null
+          name_en: string | null
+          name_om: string | null
+          next_expiry: string | null
+          price: number | null
+          qty_on_hand: number | null
+          reorder_level: number | null
+          sku: string | null
+          stock_value: number | null
+          tenant_id: string | null
+          tracks_expiry: boolean | null
+          unit: string | null
+          value_30: number | null
+          value_60: number | null
+          value_90: number | null
+          value_expired: number | null
+        }
+        Relationships: []
+      }
       customer_balances: {
         Row: {
           balance: number | null
@@ -812,6 +948,42 @@ export type Database = {
       }
     }
     Functions: {
+      ph_create_purchase_order: {
+        Args: {
+          p_client_ref?: string
+          p_expected?: string
+          p_lines: Json
+          p_notes?: string
+          p_supplier: string
+        }
+        Returns: string
+      }
+      ph_expiry_totals: {
+        Args: never
+        Returns: {
+          items_30: number
+          items_90: number
+          items_expired: number
+          items_low: number
+          value_30: number
+          value_60: number
+          value_90: number
+          value_expired: number
+        }[]
+      }
+      ph_load_demo_data: { Args: never; Returns: number }
+      ph_receive_delivery: {
+        Args: { p_client_ref: string; p_lines: Json; p_supplier: string }
+        Returns: string
+      }
+      ph_receive_purchase_order: {
+        Args: { p_lines?: Json; p_po: string }
+        Returns: number
+      }
+      ph_stock_list: {
+        Args: { p_filter?: string; p_limit?: number; p_q?: string }
+        Returns: Database["public"]["Views"]["ph_item_expiry"]["Row"][]
+      }
       adjust_stock: {
         Args: { p_batch: string; p_new_qty: number; p_reason: string }
         Returns: undefined

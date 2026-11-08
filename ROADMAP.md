@@ -27,11 +27,11 @@
 - [ ] Receive-stock form (supplier, batch, expiry, cost) using `receive_stock`
 - [ ] Credit customers list and statement (uses `customer_balances`)
 - [ ] Daily closing report (cash vs Telebirr vs credit)
-- [ ] Migration: ph_suppliers
-- [ ] Migration: ph_purchase_orders
-- [ ] Migration: ph_purchase_lines
+- [x] Migration: ph_suppliers
+- [x] Migration: ph_purchase_orders
+- [x] Migration: ph_purchase_lines
 - [ ] Sales go through core `record_sale` (already FEFO: earliest expiry leaves first)
-- [ ] Nightly report query: items expiring in 30/60/90 days and items below reorder level
+- [x] Nightly report query: items expiring in 30/60/90 days and items below reorder level
 - [ ] Purchase order -> receive goods -> `receive_stock` per line
 
 ## M3: Notifications
@@ -60,7 +60,7 @@
 - [x] Tailwind theme tokens and `next/font` fonts from DESIGN.md
 - [x] `server-only` Data Access Layer in `src/server/dal/`; every Server Action validates with zod and re-checks auth + role
 - [x] Security headers and CSP with nonce (the security guidelines section 5)
-- [ ] Cross-tenant RLS test extended to this product's tables and passing
+- [x] Cross-tenant RLS test extended to this product's tables and passing
 - [x] Playwright screenshot script for 360 px and 1280 px
 - [x] `npm audit` clean, Dependabot active
 - [ ] Self-audit (the security guidelines section 9) recorded in the dev log
