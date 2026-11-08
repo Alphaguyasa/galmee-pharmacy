@@ -18,7 +18,10 @@
     "offlineBody": "ገልሜ በራሱ እንደገና ይገናኛል። ያለ ኢንተርኔት የሚያደርጉት ሽያጭ ኢንተርኔት ሲመለስ ይላካል።",
     "retry": "እንደገና ይሞክሩ",
     "today": "ዛሬ",
-    "skipToContent": "ወደ ዋናው ይዘት ይዝለሉ"
+    "skipToContent": "ወደ ዋናው ይዘት ይዝለሉ",
+    "notFoundTitle": "ገጹ አልተገኘም",
+    "notFoundBody": "ይህ ገጽ የለም ወይም የእርስዎ መድኃኒት ቤት አካል አይደለም።",
+    "notFoundHome": "ወደ መነሻ ሂድ"
   },
   "auth": {
     "loginTitle": "ይግቡ",

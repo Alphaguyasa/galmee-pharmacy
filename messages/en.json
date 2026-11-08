@@ -18,7 +18,10 @@
     "offlineBody": "Galmee will reconnect automatically. Sales you make offline will sync when the internet is back.",
     "retry": "Try again",
     "today": "Today",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "This page does not exist or is not part of your pharmacy.",
+    "notFoundHome": "Go to home"
   },
   "auth": {
     "loginTitle": "Log in",

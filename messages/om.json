@@ -18,7 +18,10 @@
     "offlineBody": "Galmeen ofumaan deebi'ee ni walqunnama. Gurgurtaan interneetii malee raawwatte yeroo interneetiin deebi'u ni ergama.",
     "retry": "Irra deebi'i yaali",
     "today": "Har'a",
-    "skipToContent": "Gara qabiyyee ijootti darbi"
+    "skipToContent": "Gara qabiyyee ijootti darbi",
+    "notFoundTitle": "Fuulli hin argamne",
+    "notFoundBody": "Fuulli kun hin jiru ykn kan farmaasii keetii miti.",
+    "notFoundHome": "Gara fuula duraatti deemi"
   },
   "auth": {
     "loginTitle": "Seeni",

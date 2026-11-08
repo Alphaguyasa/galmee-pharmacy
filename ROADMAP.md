@@ -14,9 +14,9 @@
 
 ## M1: Core screens
 
-- [ ] Customers: list, search by name/phone, detail with balance
+- [x] Customers: list, search by name/phone, detail with balance
 - [x] Items and stock (if this product uses stock): list, add, receive stock
-- [ ] Payments and credit: record payment, credit statement
+- [x] Payments and credit: record payment, credit statement
 - [ ] Reports: today / this week / this Ethiopian month; export CSV
 - [ ] Offline queue for the main money action with sync status indicator
 
@@ -25,7 +25,7 @@
 - [ ] POS sale screen with search and phone-camera barcode scan
 - [x] Stock list with expiry colours (red < 30 days, amber < 90 days)
 - [x] Receive-stock form (supplier, batch, expiry, cost) using `receive_stock`
-- [ ] Credit customers list and statement (uses `customer_balances`)
+- [x] Credit customers list and statement (uses `customer_balances`)
 - [ ] Daily closing report (cash vs Telebirr vs credit)
 - [x] Migration: ph_suppliers
 - [x] Migration: ph_purchase_orders
