@@ -1,4 +1,4 @@
-// Screenshots of every screen at 360 and 1280 px in Amharic and English (docs/FRONTEND.md step 3).
+// Screenshots of every screen at 360 and 1280 px in Amharic and English (the frontend guidelines step 3).
 // Usage: npm run build && npx next start -p 3123 &  then  npm run screenshots
 // Logged-in screens need SHOT_EMAIL and SHOT_PASSWORD (a demo account; never commit them).
 // Needs Playwright with Chromium (`npx playwright install chromium` on a new machine).

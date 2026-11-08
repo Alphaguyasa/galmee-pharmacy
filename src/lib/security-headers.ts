@@ -1,6 +1,6 @@
 import { SUPABASE_URL } from "./supabase/env";
 
-/** Content-Security-Policy for one request (docs/SECURITY.md section 5). */
+/** Content-Security-Policy for one request (the security guidelines section 5). */
 export function buildCsp(nonce: string, isDev = process.env.NODE_ENV === "development") {
   const supabase = new URL(SUPABASE_URL);
   return [

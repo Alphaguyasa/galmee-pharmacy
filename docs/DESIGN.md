@@ -1,6 +1,6 @@
 # DESIGN.md: Galmee Pharmacy
 
-Written per `docs/FRONTEND.md` and the `frontend-design` skill. Change this file first, then the code.
+Written per the frontend guidelines. Change this file first, then the code.
 
 ## Brief
 

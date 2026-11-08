@@ -1,6 +1,6 @@
 -- Galmee Pharmacy RLS + guard test. Run with Supabase `execute_sql`.
 -- Creates throwaway users/tenants, runs the checks, then RAISES so EVERYTHING ROLLS BACK.
--- The exception message is the result line; paste it into DAILY_LOG.md.
+-- The exception message is the result line; paste it into the dev log.
 do $$
 declare ua uuid := gen_random_uuid(); ub uuid := gen_random_uuid(); uc uuid := gen_random_uuid();
   ta uuid; tb uuid; n int; r text := ''; ok boolean; msg text;
