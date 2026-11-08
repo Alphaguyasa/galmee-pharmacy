@@ -103,7 +103,8 @@
       "bag": "korojoo",
       "cycle": "marsaa",
       "inhaler": "inheelara"
-    }
+    },
+    "newItem": "Qoricha haaraa"
   },
   "receive": {
     "title": "Meeshaa fudhachuu",
@@ -146,5 +147,23 @@
     "errorForbidden": "Meeshaa fudhachuu kan danda'an abbaa qabeenyaa ykn hoggantoota qofa.",
     "errorNotFound": "Qorichi ykn dhiyeessaan galmee kana keessaa hin argamne. Tarreeffama mirkaneessii irra deebi'ii yaali.",
     "errorGeneric": "Galmeessuun hin danda'amne. Quunnamtii kee mirkaneessii irra deebi'ii yaali. Yeroo lama hin lakkaa'amu."
+  },
+  "newItem": {
+    "title": "Qoricha dabali",
+    "nameEn": "Maqaa Afaan Ingilizii",
+    "nameAm": "Maqaa Afaan Amaaraa (filannoo)",
+    "nameOm": "Maqaa Afaan Oromoo (filannoo)",
+    "sku": "Koodii ykn baarkoodii (filannoo)",
+    "unit": "Madaallii gurgurtaa",
+    "price": "Gatii gurgurtaa (qarshii)",
+    "cost": "Gatii bittaa tokkoo (qarshii)",
+    "reorderLevel": "Yoo kana gadi ta'e ajaji",
+    "tracksExpiry": "Qorichi kun guyyaa dhumaa qaba",
+    "submit": "Qoricha galmeessi",
+    "errorName": "Maqaa Afaan Ingiliziitiin galchi.",
+    "errorNumbers": "Gatiiwwanii fi sadarkaa ajajaa mirkaneessi.",
+    "errorForbidden": "Qoricha dabaluu kan danda'an abbaa qabeenyaa ykn hoggantoota qofa.",
+    "errorDuplicateSku": "Koodiin kun qoricha biraaf qabameera.",
+    "errorGeneric": "Qoricha galmeessuun hin danda'amne. Quunnamtii kee mirkaneessii irra deebi'ii yaali."
   }
 }

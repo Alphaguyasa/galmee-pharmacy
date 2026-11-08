@@ -103,7 +103,8 @@
       "bag": "bags",
       "cycle": "cycles",
       "inhaler": "inhalers"
-    }
+    },
+    "newItem": "New drug"
   },
   "receive": {
     "title": "Receive stock",
@@ -146,5 +147,23 @@
     "errorForbidden": "Only the owner or a manager can receive stock.",
     "errorNotFound": "A drug or supplier in this delivery no longer exists. Check the list and try again.",
     "errorGeneric": "Could not record the delivery. Check your connection and try again. It will not be counted twice."
+  },
+  "newItem": {
+    "title": "Add a drug",
+    "nameEn": "Name in English",
+    "nameAm": "Name in Amharic (optional)",
+    "nameOm": "Name in Afaan Oromo (optional)",
+    "sku": "Code or barcode (optional)",
+    "unit": "Sold by",
+    "price": "Selling price (birr)",
+    "cost": "Cost per unit (birr)",
+    "reorderLevel": "Reorder when below",
+    "tracksExpiry": "This drug has an expiry date",
+    "submit": "Save drug",
+    "errorName": "Enter the name in English.",
+    "errorNumbers": "Check the prices and the reorder level.",
+    "errorForbidden": "Only the owner or a manager can add drugs.",
+    "errorDuplicateSku": "Another drug already uses that code.",
+    "errorGeneric": "Could not save the drug. Check your connection and try again."
   }
 }

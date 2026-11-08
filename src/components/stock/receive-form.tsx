@@ -165,7 +165,14 @@ export function ReceiveForm({
   }
 
   if (items.length === 0) {
-    return <p className="rounded-md border p-5">{t("noItemsYet")}</p>;
+    return (
+      <div className="grid justify-items-start gap-3 rounded-md border p-5">
+        <p>{t("noItemsYet")}</p>
+        <Link href="/stock/new" className={cn(buttonVariants({ size: "lg" }))}>
+          {tStock("newItem")}
+        </Link>
+      </div>
+    );
   }
 
   return (

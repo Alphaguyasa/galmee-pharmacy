@@ -15,7 +15,7 @@
 ## M1: Core screens
 
 - [ ] Customers: list, search by name/phone, detail with balance
-- [ ] Items and stock (if this product uses stock): list, add, receive stock
+- [x] Items and stock (if this product uses stock): list, add, receive stock
 - [ ] Payments and credit: record payment, credit statement
 - [ ] Reports: today / this week / this Ethiopian month; export CSV
 - [ ] Offline queue for the main money action with sync status indicator

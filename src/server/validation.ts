@@ -52,3 +52,28 @@ export const deliverySchema = z.object({
     .min(1)
     .max(200),
 });
+
+const moneyField = z.coerce.number().finite().min(0).max(10_000_000);
+const optionalName = z
+  .string()
+  .trim()
+  .max(120)
+  .transform((v) => v || undefined);
+
+export const ITEM_UNITS = ["strip", "bottle", "sachet", "tube", "tablet", "pack", "piece", "pair", "roll", "bag"] as const;
+
+export const itemSchema = z.object({
+  nameEn: z.string().trim().min(2).max(120),
+  nameAm: optionalName,
+  nameOm: optionalName,
+  sku: z
+    .string()
+    .trim()
+    .max(40)
+    .transform((v) => v || undefined),
+  unit: z.enum(ITEM_UNITS),
+  price: moneyField,
+  cost: moneyField,
+  reorderLevel: moneyField,
+  tracksExpiry: z.boolean(),
+});

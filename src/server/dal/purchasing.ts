@@ -77,6 +77,33 @@ export async function createSupplier(input: {
   return { ok: true, supplier: data };
 }
 
+export async function createItem(input: {
+  nameEn: string;
+  nameAm?: string;
+  nameOm?: string;
+  sku?: string;
+  unit: string;
+  price: number;
+  cost: number;
+  reorderLevel: number;
+  tracksExpiry: boolean;
+}): Promise<{ ok: true } | { ok: false; code: "duplicateSku" | "generic" }> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("items").insert({
+    name_en: input.nameEn,
+    name_am: input.nameAm ?? null,
+    name_om: input.nameOm ?? null,
+    sku: input.sku ?? null,
+    unit: input.unit,
+    price: input.price,
+    cost: input.cost,
+    reorder_level: input.reorderLevel,
+    tracks_expiry: input.tracksExpiry,
+  });
+  if (!error) return { ok: true };
+  return { ok: false, code: error.code === "23505" ? "duplicateSku" : "generic" };
+}
+
 export async function recordDelivery(input: {
   supplierId: string;
   clientRef: string;

@@ -42,10 +42,15 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">{t("title")}</h1>
         {canReceive ? (
-          <Link href="/stock/receive" className={cn(buttonVariants({ size: "lg" }))}>
-            <PackagePlus className="size-5" aria-hidden />
-            {t("receive")}
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/stock/new" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+              {t("newItem")}
+            </Link>
+            <Link href="/stock/receive" className={cn(buttonVariants({ size: "lg" }))}>
+              <PackagePlus className="size-5" aria-hidden />
+              {t("receive")}
+            </Link>
+          </div>
         ) : null}
       </div>
 
