@@ -77,3 +77,19 @@ export const itemSchema = z.object({
   reorderLevel: moneyField,
   tracksExpiry: z.boolean(),
 });
+
+export const customerSchema = z.object({
+  name: z.string().trim().min(2).max(120),
+  phone: z.union([z.literal(""), phoneSchema]).transform((v) => v || undefined),
+  creditLimit: z.number().finite().min(0).max(10_000_000).optional(),
+});
+
+export const PAY_METHODS = ["cash", "telebirr", "cbe_birr", "bank"] as const;
+
+export const repaymentSchema = z.object({
+  customerId: z.uuid(),
+  amount: z.number().finite().positive().max(10_000_000),
+  method: z.enum(PAY_METHODS),
+  reference: z.string().trim().max(60).optional(),
+  clientRef: z.uuid(),
+});

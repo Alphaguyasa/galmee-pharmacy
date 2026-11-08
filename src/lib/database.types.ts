@@ -767,6 +767,27 @@ export type Database = {
         }
         Relationships: []
       }
+      ph_payment_refs: {
+        Row: {
+          client_ref: string
+          created_at: string
+          payment_id: string
+          tenant_id: string
+        }
+        Insert: {
+          client_ref: string
+          created_at?: string
+          payment_id: string
+          tenant_id?: string
+        }
+        Update: {
+          client_ref?: string
+          created_at?: string
+          payment_id?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       ph_suppliers: {
         Row: {
           active: boolean
@@ -948,6 +969,35 @@ export type Database = {
       }
     }
     Functions: {
+      ph_credit_totals: {
+        Args: never
+        Returns: { customers_owing: number; total_owed: number }[]
+      }
+      ph_customer_list: {
+        Args: { p_limit?: number; p_owing?: boolean; p_q?: string }
+        Returns: Database["public"]["Views"]["customer_balances"]["Row"][]
+      }
+      ph_customer_statement: {
+        Args: { p_customer: string; p_limit?: number }
+        Returns: {
+          amount: number
+          balance_after: number
+          created_at: string
+          due_date: string | null
+          id: string
+          type: string
+        }[]
+      }
+      ph_record_repayment: {
+        Args: {
+          p_amount: number
+          p_client_ref: string
+          p_customer: string
+          p_method: Database["public"]["Enums"]["pay_method"]
+          p_reference: string | null
+        }
+        Returns: string
+      }
       ph_create_purchase_order: {
         Args: {
           p_client_ref?: string
