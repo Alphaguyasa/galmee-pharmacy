@@ -27,3 +27,28 @@ export const onboardingSchema = z.object({
 export function formToObject(formData: FormData, keys: readonly string[]) {
   return Object.fromEntries(keys.map((k) => [k, formData.get(k) ?? ""]));
 }
+
+const positiveNumber = z.number().finite().positive().max(10_000_000);
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+export const supplierSchema = z.object({
+  name: z.string().trim().min(1).max(120),
+  phone: z.string().trim().max(20).optional(),
+});
+
+export const deliverySchema = z.object({
+  supplierId: z.uuid(),
+  clientRef: z.uuid(),
+  lines: z
+    .array(
+      z.object({
+        itemId: z.uuid(),
+        qty: positiveNumber,
+        unitCost: z.number().finite().min(0).max(10_000_000),
+        batchNo: z.string().trim().max(60).optional(),
+        expiryDate: isoDate.optional(),
+      }),
+    )
+    .min(1)
+    .max(200),
+});

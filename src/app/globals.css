@@ -47,6 +47,9 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-warning: var(--warning);
+  --color-expiry-red: var(--expiry-red);
+  --color-expiry-amber: var(--expiry-amber);
+  --color-shelf: var(--shelf);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
