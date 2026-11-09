@@ -39,10 +39,10 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
 
   return (
     <div className="grid gap-5">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">{t("title")}</h1>
         {canReceive ? (
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Link href="/stock/new" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
               {t("newItem")}
             </Link>
