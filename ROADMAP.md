@@ -30,7 +30,7 @@
 - [x] Migration: ph_suppliers
 - [x] Migration: ph_purchase_orders
 - [x] Migration: ph_purchase_lines
-- [ ] Sales go through core `record_sale` (already FEFO: earliest expiry leaves first)
+- [x] Sales go through core `record_sale` (already FEFO: earliest expiry leaves first)
 - [x] Nightly report query: items expiring in 30/60/90 days and items below reorder level
 - [ ] Purchase order -> receive goods -> `receive_stock` per line
 

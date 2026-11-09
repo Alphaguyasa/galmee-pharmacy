@@ -93,3 +93,19 @@ export const repaymentSchema = z.object({
   reference: z.string().trim().max(60).optional(),
   clientRef: z.uuid(),
 });
+
+export const SALE_PAYMENTS = [...PAY_METHODS, "credit"] as const;
+export const saleSchema = z
+  .object({
+    lines: z
+      .array(z.object({ itemId: z.uuid(), qty: z.number().finite().positive().max(100_000) }))
+      .min(1)
+      .max(100),
+    payment: z.enum(SALE_PAYMENTS),
+    customerId: z.uuid().optional(),
+    clientRef: z.uuid(),
+  })
+  .refine((v) => v.payment !== "credit" || v.customerId !== undefined, { path: ["customerId"] })
+  .refine((v) => new Set(v.lines.map((l) => l.itemId)).size === v.lines.length, { path: ["lines"] });
+
+export const sellSearchSchema = z.string().trim().min(1).max(80);

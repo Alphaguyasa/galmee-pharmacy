@@ -998,6 +998,15 @@ export type Database = {
         }
         Returns: string
       }
+      ph_record_sale: {
+        Args: {
+          p_client_ref?: string
+          p_customer?: string
+          p_lines: Json
+          p_payment: string
+        }
+        Returns: { sale_id: string; total: number }[]
+      }
       ph_create_purchase_order: {
         Args: {
           p_client_ref?: string
