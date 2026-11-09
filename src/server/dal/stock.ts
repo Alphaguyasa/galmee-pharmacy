@@ -68,3 +68,11 @@ export async function getExpiryTotals(): Promise<ExpiryTotalsDTO> {
     itemsLow: row.items_low,
   };
 }
+
+/** Owner and manager only, enforced again by the database. Returns false when refused. */
+export async function writeOffExpiredStock(itemId: string): Promise<boolean> {
+  await getSession();
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("ph_write_off_expired", { p_item: itemId });
+  return !error;
+}

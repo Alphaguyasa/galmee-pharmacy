@@ -1007,6 +1007,10 @@ export type Database = {
         }
         Returns: { sale_id: string; total: number }[]
       }
+      ph_write_off_expired: {
+        Args: { p_item: string }
+        Returns: number
+      }
       ph_create_purchase_order: {
         Args: {
           p_client_ref?: string

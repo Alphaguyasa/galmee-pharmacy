@@ -107,7 +107,12 @@
       "cycle": "ዙር",
       "inhaler": "ኢንሄለር"
     },
-    "newItem": "አዲስ መድኃኒት"
+    "newItem": "አዲስ መድኃኒት",
+    "writeOff": "ጊዜው ያለፈበትን አስወግድ",
+    "writeOffConfirm": "ጊዜው ያለፈበትን የ{name} ክምችት በሙሉ ላስወግድ? ይህ ሊመለስ አይችልም።",
+    "writeOffYes": "አዎ፣ አስወግድ",
+    "writeOffNo": "ተው",
+    "writeOffError": "ማስወገድ አልተቻለም። እንደገና ይሞክሩ።"
   },
   "receive": {
     "title": "ዕቃ መቀበያ",

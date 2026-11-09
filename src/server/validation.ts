@@ -109,3 +109,5 @@ export const saleSchema = z
   .refine((v) => new Set(v.lines.map((l) => l.itemId)).size === v.lines.length, { path: ["lines"] });
 
 export const sellSearchSchema = z.string().trim().min(1).max(80);
+
+export const writeOffSchema = z.object({ itemId: z.uuid() });

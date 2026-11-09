@@ -107,7 +107,12 @@
       "cycle": "marsaa",
       "inhaler": "inheelara"
     },
-    "newItem": "Qoricha haaraa"
+    "newItem": "Qoricha haaraa",
+    "writeOff": "Kuusaa yeroon darbe baasi",
+    "writeOffConfirm": "Kuusaa {name} yeroon isaa darbe hunda baasuu? Kun deebi'uu hin danda'u.",
+    "writeOffYes": "Eeyyee, baasi",
+    "writeOffNo": "Dhiisi",
+    "writeOffError": "Baasuun hin danda'amne. Irra deebi'ii yaali."
   },
   "receive": {
     "title": "Meeshaa fudhachuu",

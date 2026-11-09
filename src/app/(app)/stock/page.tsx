@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { PackagePlus, Search } from "lucide-react";
 import { ExpiryLabel } from "@/components/stock/expiry-label";
+import { WriteOffButton } from "@/components/stock/write-off-button";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Locale } from "@/i18n/config";
@@ -142,6 +143,9 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
                     <p className="num text-sm font-semibold text-expiry-amber">
                       {t("lowBadge", { level: formatQty(row.reorderLevel) })}
                     </p>
+                  ) : null}
+                  {canReceive && row.daysLeft !== null && row.daysLeft < 0 ? (
+                    <WriteOffButton itemId={row.itemId} name={itemName(row.names, locale)} />
                   ) : null}
                 </div>
                 <p className="num hidden text-right md:block">

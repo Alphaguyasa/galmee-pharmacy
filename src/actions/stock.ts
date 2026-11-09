@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createItem, createSupplier, recordDelivery, type DeliveryResult, type SupplierDTO } from "@/server/dal/purchasing";
 import { getSession } from "@/server/dal/session";
-import { deliverySchema, itemSchema, supplierSchema } from "@/server/validation";
+import { writeOffExpiredStock } from "@/server/dal/stock";
+import { deliverySchema, itemSchema, supplierSchema, writeOffSchema } from "@/server/validation";
 
 async function canManageStock() {
   const { profile } = await getSession();
@@ -57,4 +58,13 @@ export async function addItem(_prev: ItemFormState, formData: FormData): Promise
   if (!result.ok) return { error: result.code === "duplicateSku" ? "errorDuplicateSku" : "errorGeneric" };
   revalidatePath("/stock");
   redirect("/stock/receive");
+}
+
+export async function writeOffExpired(input: unknown): Promise<boolean> {
+  const parsed = writeOffSchema.safeParse(input);
+  if (!parsed.success) return false;
+  if (!(await canManageStock())) return false;
+  const ok = await writeOffExpiredStock(parsed.data.itemId);
+  if (ok) revalidatePath("/stock");
+  return ok;
 }

@@ -26,6 +26,7 @@
 - [x] Stock list with expiry colours (red < 30 days, amber < 90 days)
 - [x] Receive-stock form (supplier, batch, expiry, cost) using `receive_stock`
 - [x] Credit customers list and statement (uses `customer_balances`)
+- [x] Remove expired stock from the stock list (owner and manager)
 - [ ] Daily closing report (cash vs Telebirr vs credit)
 - [x] Migration: ph_suppliers
 - [x] Migration: ph_purchase_orders

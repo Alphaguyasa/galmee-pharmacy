@@ -107,7 +107,12 @@
       "cycle": "cycles",
       "inhaler": "inhalers"
     },
-    "newItem": "New drug"
+    "newItem": "New drug",
+    "writeOff": "Remove expired stock",
+    "writeOffConfirm": "Remove all expired stock of {name}? This cannot be undone.",
+    "writeOffYes": "Yes, remove",
+    "writeOffNo": "Keep",
+    "writeOffError": "Could not remove the stock. Try again."
   },
   "receive": {
     "title": "Receive stock",
