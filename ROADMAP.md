@@ -22,7 +22,7 @@
 
 ## M2: Galmee Pharmacy features
 
-- [ ] POS sale screen with search and phone-camera barcode scan
+- [x] POS sale screen with search and phone-camera barcode scan
 - [x] Stock list with expiry colours (red < 30 days, amber < 90 days)
 - [x] Receive-stock form (supplier, batch, expiry, cost) using `receive_stock`
 - [x] Credit customers list and statement (uses `customer_balances`)
