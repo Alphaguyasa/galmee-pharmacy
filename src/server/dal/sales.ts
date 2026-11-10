@@ -7,6 +7,7 @@ export const SELL_SEARCH_LIMIT = 30;
 export type SellableItemDTO = {
   itemId: string;
   names: { en: string; am: string | null; om: string | null };
+  sku: string | null;
   unit: string;
   price: number;
   qtyOnHand: number;
@@ -25,6 +26,7 @@ export async function searchSellable(q: string): Promise<SellableItemDTO[]> {
   return data.map((row) => ({
     itemId: row.item_id ?? "",
     names: { en: row.name_en ?? "", am: row.name_am, om: row.name_om },
+    sku: row.sku,
     unit: row.unit ?? "",
     price: row.price ?? 0,
     qtyOnHand: row.qty_on_hand ?? 0,

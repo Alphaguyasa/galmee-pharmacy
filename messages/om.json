@@ -257,6 +257,13 @@
     "erroritemNotFound": "Qorichoota kana keessaa tokko hin argamne.",
     "errorcustomerNotFound": "Maamilli hin argamne.",
     "errornotPermitted": "Seensi kun ammatti gurgurtaa galmeessuu hin danda'u. Abbaa qabeenyaa gaafadhu.",
-    "errorgeneric": "Gurgurtaan hin galmoofne. Quunnamtii kee mirkaneessii irra deebi'ii yaali."
+    "errorgeneric": "Gurgurtaan hin galmoofne. Quunnamtii kee mirkaneessii irra deebi'ii yaali.",
+    "scan": "Baarkoodii dubbisi",
+    "scanTitle": "Kaameraa gara baarkoodichaatti qajeelchi",
+    "scanCancel": "Dhiisi",
+    "scanDenied": "Hayyamni kaameraa dhorkameera. Qindaa’ina biraawuzarii keessatti kaameraa hayyami, ykn koodicha barreessi.",
+    "scanFailed": "Kaameraa banuun hin danda’amne. Koodicha barreessi.",
+    "scanNotFound": "Qorichi koodii {code} qabu hin jiru.",
+    "scanAdded": "Dabalameera: {name}"
   }
 }

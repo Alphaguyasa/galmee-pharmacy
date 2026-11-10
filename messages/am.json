@@ -257,6 +257,13 @@
     "erroritemNotFound": "ከእነዚህ መድኃኒቶች አንዱ አልተገኘም።",
     "errorcustomerNotFound": "ደንበኛው አልተገኘም።",
     "errornotPermitted": "ይህ መለያ ገና ሽያጭ መመዝገብ አይችልም። ባለቤቱን ይጠይቁ።",
-    "errorgeneric": "ሽያጩ አልተመዘገበም። ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ።"
+    "errorgeneric": "ሽያጩ አልተመዘገበም። ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ።",
+    "scan": "ባርኮድ አንብብ",
+    "scanTitle": "ካሜራውን ወደ ባርኮዱ ያዙሩ",
+    "scanCancel": "ተው",
+    "scanDenied": "የካሜራ ፈቃድ ተከልክሏል። በአሳሹ ቅንብር ካሜራውን ይፍቀዱ ወይም ኮዱን ይጻፉ።",
+    "scanFailed": "ካሜራውን መክፈት አልተቻለም። ኮዱን ይጻፉ።",
+    "scanNotFound": "ኮድ {code} ያለው መድኃኒት የለም።",
+    "scanAdded": "ተጨምሯል፦ {name}"
   }
 }

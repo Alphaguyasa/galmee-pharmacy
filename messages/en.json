@@ -257,6 +257,13 @@
     "erroritemNotFound": "One of these medicines was not found.",
     "errorcustomerNotFound": "Customer not found.",
     "errornotPermitted": "This login cannot record sales yet. Ask the owner.",
-    "errorgeneric": "The sale did not go through. Check your connection and try again."
+    "errorgeneric": "The sale did not go through. Check your connection and try again.",
+    "scan": "Scan barcode",
+    "scanTitle": "Point the camera at the barcode",
+    "scanCancel": "Cancel",
+    "scanDenied": "Camera permission was refused. Allow the camera in the browser settings, or type the code.",
+    "scanFailed": "Could not open the camera. Type the code instead.",
+    "scanNotFound": "No medicine has the code {code}.",
+    "scanAdded": "Added: {name}"
   }
 }

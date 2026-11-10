@@ -8,6 +8,7 @@ import { findSellable, sell } from "@/actions/sales";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BarcodeScanner } from "./barcode-scanner";
 import type { Locale } from "@/i18n/config";
 import { formatBirr, formatQty, itemName } from "@/lib/format";
 import type { SellableItemDTO } from "@/server/dal/sales";
@@ -40,12 +41,15 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
   // After an unanswered attempt the cart stays as sent: the sale may already be recorded.
   const [locked, setLocked] = useState(false);
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
+  // Result of the last scan, shown under the search box where the cashier is looking.
+  const [scanNote, setScanNote] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestSearch = useRef(0);
 
   function onSearch(value: string) {
     setQuery(value);
+    setScanNote(null);
     if (timer.current) clearTimeout(timer.current);
     const id = ++latestSearch.current;
     if (value.trim() === "") {
@@ -76,6 +80,36 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
     setQuery("");
     setResults([]);
     setSearchState("idle");
+  }
+
+  /** A scanned code that matches exactly one sellable medicine goes straight into the cart. */
+  async function onScanned(code: string) {
+    if (timer.current) clearTimeout(timer.current);
+    const id = ++latestSearch.current;
+    setScanNote(null);
+    setQuery(code);
+    setSearchState("loading");
+    try {
+      const rows = await findSellable(code);
+      if (id !== latestSearch.current) return;
+      const exact = rows.filter((r) => r.sku !== null && r.sku.trim().toLowerCase() === code.toLowerCase());
+      if (exact.length === 1 && blockReason(exact[0]) === null) {
+        addToCart(exact[0]);
+        setScanNote({ tone: "ok", text: t("scanAdded", { name: itemName(exact[0].names, locale) }) });
+        return;
+      }
+      if (exact.length === 0 && rows.length === 0) {
+        setResults([]);
+        setSearchState("idle");
+        setScanNote({ tone: "error", text: t("scanNotFound", { code }) });
+        return;
+      }
+      // Several matches, or a blocked one: show them so the reason is visible.
+      setResults(exact.length > 0 ? exact : rows);
+      setSearchState("done");
+    } catch {
+      if (id === latestSearch.current) setSearchState("error");
+    }
   }
 
   function setQty(itemId: string, qty: number) {
@@ -139,8 +173,14 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
             />
           </div>
         </div>
-        <p aria-live="polite" className="text-sm text-muted-foreground empty:hidden">
-          {searchState === "loading"
+        <BarcodeScanner disabled={locked} onCode={onScanned} />
+        <p
+          aria-live="polite"
+          className={`text-sm empty:hidden ${scanNote ? `font-semibold ${scanNote.tone === "ok" ? "text-primary" : "text-expiry-red"}` : "text-muted-foreground"}`}
+        >
+          {scanNote
+            ? scanNote.text
+            : searchState === "loading"
             ? t("searching")
             : searchState === "error"
               ? t("searchError")
