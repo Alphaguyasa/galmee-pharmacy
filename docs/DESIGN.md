@@ -2,6 +2,12 @@
 
 Written per the frontend guidelines. Change this file first, then the code.
 
+> Pharmacy is the reference app of the **Galmee design system** (dev-playbook,
+> `shared/galmee/DESIGN_SYSTEM.md`). Tokens live in `src/app/globals.css`
+> (only `--trade` is pharmacy-specific), shared components in
+> `src/components/galmee/`. The notes below are the pharmacy-specific layer:
+> the brief, the expiry stamp, and the screen wireframes.
+
 ## Brief
 
 - **Subject:** the dispensing counter of a small pharmacy in Shashamane. Shelves of boxed medicine, each box carrying a printed batch number and an EXP date; a cashier with one phone, a busy queue, often bright daylight.

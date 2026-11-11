@@ -15,7 +15,7 @@ export default async function NewItemPage() {
         <Link href="/stock" className="-my-3 w-fit py-3 text-sm underline underline-offset-4">
           {tReceive("back")}
         </Link>
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+        <h1 className="text-[1.5625rem] leading-tight font-bold">{t("title")}</h1>
       </div>
       <ItemForm />
     </div>

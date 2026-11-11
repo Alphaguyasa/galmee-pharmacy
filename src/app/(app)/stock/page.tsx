@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { PackagePlus, Search } from "lucide-react";
+import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
+import { EmptyState } from "@/components/galmee/empty-state";
 import { ExpiryLabel } from "@/components/stock/expiry-label";
 import { WriteOffButton } from "@/components/stock/write-off-button";
 import { buttonVariants } from "@/components/ui/button";
@@ -41,7 +43,7 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
   return (
     <div className="grid gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+        <h1 className="text-[1.5625rem] leading-tight font-bold">{t("title")}</h1>
         {canReceive ? (
           <div className="flex flex-wrap gap-2">
             <Link href="/stock/new" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
@@ -56,21 +58,26 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
       </div>
 
       <section aria-label={t("moneyHeading")} className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <div className="col-span-2 grid gap-1 rounded-md border-2 border-expiry-red p-4 sm:col-span-1">
-          <p className="text-sm">{t("value30")}</p>
-          <p className="num text-2xl font-bold text-expiry-red">{formatBirr(totals.value30, locale)}</p>
-          <p className="num text-sm text-muted-foreground">{t("itemsCount", { count: totals.items30 })}</p>
-        </div>
-        <div className="grid gap-1 rounded-md border p-4">
-          <p className="text-sm">{t("value3089")}</p>
-          <p className="num text-lg font-bold text-expiry-amber sm:text-xl">{formatBirr(totals.value3089, locale)}</p>
-          <p className="num text-sm text-muted-foreground">{t("itemsCount", { count: totals.items3089 })}</p>
-        </div>
-        <div className="grid gap-1 rounded-md border p-4">
-          <p className="text-sm">{t("valueExpired")}</p>
-          <p className="num text-lg font-bold sm:text-xl">{formatBirr(totals.valueExpired, locale)}</p>
-          <p className="num text-sm text-muted-foreground">{t("itemsCount", { count: totals.itemsExpired })}</p>
-        </div>
+        <MoneySummaryCard
+          className="col-span-2 sm:col-span-1"
+          tone="owed"
+          label={t("value30")}
+          figure={formatBirr(totals.value30, locale)}
+          sub={t("itemsCount", { count: totals.items30 })}
+        />
+        <MoneySummaryCard
+          tone="warn"
+          size="md"
+          label={t("value3089")}
+          figure={formatBirr(totals.value3089, locale)}
+          sub={t("itemsCount", { count: totals.items3089 })}
+        />
+        <MoneySummaryCard
+          size="md"
+          label={t("valueExpired")}
+          figure={formatBirr(totals.valueExpired, locale)}
+          sub={t("itemsCount", { count: totals.itemsExpired })}
+        />
       </section>
 
       <form action="/stock" className="flex gap-2" role="search">
@@ -114,14 +121,17 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
       </nav>
 
       {rows.length === 0 ? (
-        <div className="grid justify-items-start gap-3 rounded-md border p-5">
-          <p>{nothingAtAll ? t("empty") : t("noResults")}</p>
-          {nothingAtAll && canReceive ? (
-            <Link href="/stock/receive" className={cn(buttonVariants({ size: "lg" }))}>
-              {t("receive")}
-            </Link>
-          ) : null}
-        </div>
+        <EmptyState
+          icon={PackagePlus}
+          message={nothingAtAll ? t("empty") : t("noResults")}
+          action={
+            nothingAtAll && canReceive ? (
+              <Link href="/stock/receive" className={cn(buttonVariants({ size: "lg" }))}>
+                {t("receive")}
+              </Link>
+            ) : undefined
+          }
+        />
       ) : (
         <ul className="divide-y rounded-md border bg-card">
           {rows.map((row) => {
