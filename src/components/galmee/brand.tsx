@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
 /**
- * The Galmee mark: an abstract ገ drawn as a counter — a top bar standing on
- * two legs, the left one hooked. Same geometry in every Galmee app; only the
- * tile colour (--trade via bg-primary) changes.
+ * The Galmee mark: the letter ገ reduced to one stroke — the left curl, the
+ * bar, the leg. Same geometry in every Galmee app; only the tile colour
+ * (--trade via bg-primary) changes.
  */
 export function GalmeeMark({ className, inverse = false }: { className?: string; inverse?: boolean }) {
   return (
@@ -13,11 +13,13 @@ export function GalmeeMark({ className, inverse = false }: { className?: string;
       className={cn("size-8 shrink-0", inverse ? "text-primary" : "text-primary-foreground", className)}
     >
       <rect width="48" height="48" rx="12" className={inverse ? "fill-primary-foreground" : "fill-primary"} />
-      <g fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round">
-        <path d="M13 16h22" />
-        <path d="M33 16v18" />
-        <path d="M19 16v11c0 3.5-2 6-5.5 6.5" />
-      </g>
+      <path
+        d="M12.5 22c0-4 2.5-6.5 6.5-6.5h13a3 3 0 0 1 3 3v16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
