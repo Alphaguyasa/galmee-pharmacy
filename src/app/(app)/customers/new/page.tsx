@@ -10,7 +10,7 @@ export default async function NewCustomerPage() {
         <Link href="/customers" className="-my-3 w-fit py-3 text-sm underline underline-offset-4">
           {t("back")}
         </Link>
-        <h1 className="text-2xl font-semibold">{t("addTitle")}</h1>
+        <h1 className="text-[1.5625rem] leading-tight font-bold">{t("addTitle")}</h1>
       </div>
       <CustomerForm />
     </div>

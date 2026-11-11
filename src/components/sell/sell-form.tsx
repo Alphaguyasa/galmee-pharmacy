@@ -304,25 +304,28 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
           )
         ) : null}
 
-        <div className="flex items-baseline justify-between">
-          <span className="font-semibold">{t("total")}</span>
-          <span className="num text-2xl font-bold">{formatBirr(total, locale)}</span>
-        </div>
+        {/* The money moment stays under the thumb: on phones this bar sticks just above the bottom nav. */}
+        <div className="sticky bottom-[calc(4rem+env(safe-area-inset-bottom))] z-10 -mx-3 -mb-3 grid gap-3 rounded-b-md border-t bg-card px-3 py-3 lg:static lg:mx-0 lg:mb-0 lg:border-t-0 lg:p-0">
+          <div className="flex items-baseline justify-between gap-3 rounded-md bg-band px-3 py-2">
+            <span className="font-semibold">{t("total")}</span>
+            <span className="num text-[1.9375rem] leading-tight font-bold">{formatBirr(total, locale)}</span>
+          </div>
 
-        <p
-          aria-live="polite"
-          className={message ? `text-sm font-semibold ${message.tone === "ok" ? "text-primary" : "text-expiry-red"}` : "sr-only"}
-        >
-          {message?.text ?? ""}
-        </p>
+          <p
+            aria-live="polite"
+            className={message ? `text-sm font-semibold ${message.tone === "ok" ? "text-money-in" : "text-owed"}` : "sr-only"}
+          >
+            {message?.text ?? ""}
+          </p>
 
-        <div className="grid grid-cols-[auto_1fr] gap-2">
-          <Button type="button" variant="outline" size="lg" disabled={pending || (cart.length === 0 && !locked)} onClick={() => { reset(); setMessage(null); }}>
-            {t("clear")}
-          </Button>
-          <Button type="button" size="lg" disabled={pending || cart.length === 0} aria-busy={pending} onClick={submit}>
-            {t("confirm")}
-          </Button>
+          <div className="grid grid-cols-[auto_1fr] gap-2">
+            <Button type="button" variant="outline" size="lg" disabled={pending || (cart.length === 0 && !locked)} onClick={() => { reset(); setMessage(null); }}>
+              {t("clear")}
+            </Button>
+            <Button type="button" size="lg" disabled={pending || cart.length === 0} aria-busy={pending} onClick={submit}>
+              {t("confirm")}
+            </Button>
+          </div>
         </div>
       </section>
     </div>

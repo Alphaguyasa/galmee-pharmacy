@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { CalendarDays } from "lucide-react";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
 import type { Locale } from "@/i18n/config";
 import { formatEthiopianDate } from "@/lib/ethiopian-date";
 import { formatBirr } from "@/lib/format";
@@ -21,7 +20,7 @@ export default async function HomePage() {
   return (
     <div className="grid gap-6">
       <div className="grid gap-1">
-        <h1 className="text-2xl font-semibold">{t("welcome", { name: profile.fullName })}</h1>
+        <h1 className="text-[1.5625rem] leading-tight font-bold">{t("welcome", { name: profile.fullName })}</h1>
         <p className="flex items-center gap-2 text-muted-foreground">
           <CalendarDays className="size-4" aria-hidden />
           <span className="num">
@@ -29,30 +28,22 @@ export default async function HomePage() {
           </span>
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Link href="/stock?filter=urgent" className="rounded-md focus-visible:outline-2">
-          <Card className="h-full border-2 border-expiry-red">
-            <CardHeader>
-              <CardDescription>{t("expiringSoon")}</CardDescription>
-              <CardTitle className="num text-2xl text-expiry-red">{formatBirr(totals.value30, locale)}</CardTitle>
-              <CardDescription className="num">{tStock("itemsCount", { count: totals.items30 })}</CardDescription>
-            </CardHeader>
-          </Card>
-        </Link>
-        <Link href="/stock?filter=low" className="rounded-md focus-visible:outline-2">
-          <Card className="h-full">
-            <CardHeader>
-              <CardDescription>{t("lowStock")}</CardDescription>
-              <CardTitle className="num text-2xl">{tStock("itemsCount", { count: totals.itemsLow })}</CardTitle>
-            </CardHeader>
-          </Card>
-        </Link>
-        <Card>
-          <CardHeader>
-            <CardDescription>{t("salesToday")}</CardDescription>
-            <CardTitle className="text-muted-foreground">{t("notYet")}</CardTitle>
-          </CardHeader>
-        </Card>
+      <div className="grid gap-3 sm:grid-cols-3 sm:items-stretch">
+        <MoneySummaryCard
+          href="/stock?filter=urgent"
+          tone="owed"
+          label={t("expiringSoon")}
+          figure={formatBirr(totals.value30, locale)}
+          sub={tStock("itemsCount", { count: totals.items30 })}
+        />
+        <MoneySummaryCard
+          href="/stock?filter=low"
+          tone={totals.itemsLow > 0 ? "warn" : "band"}
+          size="md"
+          label={t("lowStock")}
+          figure={tStock("itemsCount", { count: totals.itemsLow })}
+        />
+        <MoneySummaryCard size="md" label={t("salesToday")} figure={t("notYet")} />
       </div>
     </div>
   );

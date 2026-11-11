@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { repay } from "@/actions/customers";
+import { BirrInput } from "@/components/galmee/birr-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ type Method = (typeof METHODS)[number];
 
 export function RepaymentForm({ customerId }: { customerId: string }) {
   const t = useTranslations("customers");
+  const locale = useLocale();
   const [amount, setAmount] = useState("");
   const [method, setMethod] = useState<Method>("cash");
   const [reference, setReference] = useState("");
@@ -48,11 +50,9 @@ export function RepaymentForm({ customerId }: { customerId: string }) {
       <h2 className="font-semibold">{t("recordPayment")}</h2>
       <div className="grid gap-1.5">
         <Label htmlFor="amount">{t("amount")}</Label>
-        <Input
+        <BirrInput
           id="amount"
-          className="num"
-          inputMode="decimal"
-          autoComplete="off"
+          unitLabel={locale === "am" ? "ብር" : "ETB"}
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
@@ -94,7 +94,7 @@ export function RepaymentForm({ customerId }: { customerId: string }) {
       ) : null}
       <p
         aria-live="polite"
-        className={message ? `text-sm font-semibold ${message.tone === "ok" ? "text-primary" : "text-expiry-red"}` : "sr-only"}
+        className={message ? `text-sm font-semibold ${message.tone === "ok" ? "text-money-in" : "text-owed"}` : "sr-only"}
       >
         {message?.text ?? ""}
       </p>

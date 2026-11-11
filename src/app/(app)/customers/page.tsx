@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
-import { Search, UserPlus } from "lucide-react";
+import { HandCoins, Search, UserPlus } from "lucide-react";
+import { EmptyState } from "@/components/galmee/empty-state";
+import { ListRow, ListSheet } from "@/components/galmee/list-row";
+import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Locale } from "@/i18n/config";
@@ -35,18 +38,19 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
   return (
     <div className="grid gap-5">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+        <h1 className="text-[1.5625rem] leading-tight font-bold">{t("title")}</h1>
         <Link href="/customers/new" className={cn(buttonVariants({ size: "lg" }))}>
           <UserPlus className="size-5" aria-hidden />
           {t("add")}
         </Link>
       </div>
 
-      <section className="grid gap-1 rounded-md border-2 border-primary p-4">
-        <p className="text-sm">{t("totalOwed")}</p>
-        <p className="num text-2xl font-bold">{formatBirr(totals.totalOwed, locale)}</p>
-        <p className="num text-sm text-muted-foreground">{t("owingCount", { count: totals.customersOwing })}</p>
-      </section>
+      <MoneySummaryCard
+        tone={totals.totalOwed > 0 ? "owed" : "band"}
+        label={t("totalOwed")}
+        figure={formatBirr(totals.totalOwed, locale)}
+        sub={t("owingCount", { count: totals.customersOwing })}
+      />
 
       <form action="/customers" className="flex gap-2" role="search">
         {filter !== "all" ? <input type="hidden" name="filter" value={filter} /> : null}
@@ -89,35 +93,41 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
       </nav>
 
       {rows.length === 0 ? (
-        <div className="grid justify-items-start gap-3 rounded-md border p-5">
-          <p>{nothingAtAll ? t("empty") : t("noResults")}</p>
-          {nothingAtAll ? (
-            <Link href="/customers/new" className={cn(buttonVariants({ size: "lg" }))}>
-              {t("add")}
-            </Link>
-          ) : null}
-        </div>
+        <EmptyState
+          icon={HandCoins}
+          message={nothingAtAll ? t("empty") : t("noResults")}
+          action={
+            nothingAtAll ? (
+              <Link href="/customers/new" className={cn(buttonVariants({ size: "lg" }))}>
+                {t("add")}
+              </Link>
+            ) : undefined
+          }
+        />
       ) : (
-        <ul className="divide-y rounded-md border bg-card">
+        <ListSheet>
           {rows.map((row) => (
-            <li key={row.id}>
-              <Link href={`/customers/${row.id}`} className="flex min-h-16 items-center justify-between gap-3 p-3">
-                <span className="grid min-w-0 gap-0.5">
-                  <span className="font-semibold break-words">{row.name}</span>
-                  {row.phone ? <span className="num text-sm text-muted-foreground">{row.phone}</span> : null}
+            <ListRow
+              key={row.id}
+              href={`/customers/${row.id}`}
+              title={row.name}
+              className="items-center"
+              sub={
+                <>
+                  {row.phone ? <span className="num">{row.phone}</span> : null}
                   {row.balance > 0 && row.oldestDebtAt ? (
-                    <span className="num text-sm text-muted-foreground">
-                      {t("owingFor", { days: Math.max(0, -daysBetween(row.oldestDebtAt)) })}
-                    </span>
+                    <span className="num">{t("owingFor", { days: Math.max(0, -daysBetween(row.oldestDebtAt)) })}</span>
                   ) : null}
-                </span>
-                <span className={cn("num shrink-0 text-right font-bold", row.balance > 0 ? "text-expiry-red" : "text-muted-foreground")}>
+                </>
+              }
+              right={
+                <span className={cn("num font-bold", row.balance > 0 ? "text-owed" : "text-muted-foreground")}>
                   {formatBirr(row.balance, locale)}
                 </span>
-              </Link>
-            </li>
+              }
+            />
           ))}
-        </ul>
+        </ListSheet>
       )}
       {rows.length === CUSTOMER_PAGE_LIMIT ? (
         <p className="num text-sm text-muted-foreground">{t("capped", { count: CUSTOMER_PAGE_LIMIT })}</p>

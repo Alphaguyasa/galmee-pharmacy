@@ -1,11 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import { Logo } from "@/components/logo";
+import { GalmeeMark } from "@/components/galmee/brand";
 
 export default async function OfflinePage() {
   const t = await getTranslations("common");
   return (
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col items-center justify-center gap-4 px-4 text-center">
-      <Logo className="size-14 text-2xl" />
+      <GalmeeMark className="size-14" />
       <h1 className="text-xl font-semibold">{t("offline")}</h1>
       <p className="text-muted-foreground">{t("offlineBody")}</p>
       {/* Full reload on purpose: client-side navigation cannot recover from offline. */}

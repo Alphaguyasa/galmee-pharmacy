@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { Phone } from "lucide-react";
+import { ListRow, ListSheet } from "@/components/galmee/list-row";
+import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
 import { RepaymentForm } from "@/components/customers/repayment-form";
 import type { Locale } from "@/i18n/config";
 import { formatEthiopianDate } from "@/lib/ethiopian-date";
@@ -29,7 +31,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ id: s
         <Link href="/customers" className="-my-3 w-fit py-3 text-sm underline underline-offset-4">
           {t("back")}
         </Link>
-        <h1 className="text-2xl font-semibold break-words">{customer.name}</h1>
+        <h1 className="text-[1.5625rem] leading-tight font-bold break-words">{customer.name}</h1>
         {customer.phone ? (
           <a href={`tel:${customer.phone}`} className="num flex min-h-12 w-fit items-center gap-2 underline underline-offset-4">
             <Phone className="size-4" aria-hidden />
@@ -38,39 +40,39 @@ export default async function CustomerPage({ params }: { params: Promise<{ id: s
         ) : null}
       </div>
 
-      <section className={cn("grid gap-1 rounded-md border-2 p-4", customer.balance > 0 ? "border-expiry-red" : "border-primary")}>
-        <p className="text-sm">{t("balance")}</p>
-        <p className={cn("num text-2xl font-bold", customer.balance > 0 && "text-expiry-red")}>
-          {formatBirr(customer.balance, locale)}
-        </p>
-      </section>
+      <MoneySummaryCard
+        tone={customer.balance > 0 ? "owed" : "in"}
+        label={t("balance")}
+        figure={formatBirr(customer.balance, locale)}
+      />
 
       {customer.balance > 0 ? <RepaymentForm customerId={customer.id} /> : null}
 
       <section className="grid gap-2">
         <h2 className="font-semibold">{t("statement")}</h2>
         {entries.length === 0 ? (
-          <p className="rounded-md border p-5">{t("noEntries")}</p>
+          <p className="rounded-md border border-dashed p-5 text-center">{t("noEntries")}</p>
         ) : (
-          <ul className="divide-y rounded-md border bg-card">
+          <ListSheet>
             {entries.map((entry) => (
-              <li key={entry.id} className="flex items-start justify-between gap-3 p-3">
-                <div className="grid min-w-0 gap-0.5">
-                  <p className="font-semibold">{t(entry.type === "debt" ? "debt" : "repayment")}</p>
-                  <p className="num text-sm text-muted-foreground">{formatEthiopianDate(entry.createdAt, locale)}</p>
-                </div>
-                <div className="grid shrink-0 justify-items-end gap-0.5">
-                  <p className={cn("num font-bold", entry.type === "debt" ? "text-expiry-red" : "text-primary")}>
-                    {entry.type === "debt" ? "+" : "-"}
-                    {formatBirr(entry.amount, locale)}
-                  </p>
-                  <p className="num text-sm text-muted-foreground">
-                    {t("balanceAfter", { amount: formatBirr(entry.balanceAfter, locale) })}
-                  </p>
-                </div>
-              </li>
+              <ListRow
+                key={entry.id}
+                title={t(entry.type === "debt" ? "debt" : "repayment")}
+                sub={<span className="num">{formatEthiopianDate(entry.createdAt, locale)}</span>}
+                right={
+                  <>
+                    <span className={cn("num font-bold", entry.type === "debt" ? "text-owed" : "text-money-in")}>
+                      {entry.type === "debt" ? "+" : "-"}
+                      {formatBirr(entry.amount, locale)}
+                    </span>
+                    <span className="num text-sm text-muted-foreground">
+                      {t("balanceAfter", { amount: formatBirr(entry.balanceAfter, locale) })}
+                    </span>
+                  </>
+                }
+              />
             ))}
-          </ul>
+          </ListSheet>
         )}
       </section>
     </div>

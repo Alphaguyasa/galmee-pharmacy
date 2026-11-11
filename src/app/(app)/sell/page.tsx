@@ -8,7 +8,7 @@ export default async function SellPage() {
 
   return (
     <div className="grid gap-5">
-      <h1 className="text-2xl font-semibold">{t("title")}</h1>
+      <h1 className="text-[1.5625rem] leading-tight font-bold">{t("title")}</h1>
       <SellForm customers={customers.map((c) => ({ id: c.id, name: c.name }))} />
     </div>
   );
