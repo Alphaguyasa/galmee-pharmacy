@@ -49,11 +49,33 @@
 
 ## M5: Client ready
 
-- [ ] Receipt printing (58/80 mm thermal) and Telegram receipt
-- [ ] Data import from Excel/CSV
-- [ ] Export all tenant data to Excel
+- [ ] Receipt printing (58/80 mm thermal) and Telegram receipt (see M-next)
+- [ ] Data import from Excel/CSV (see M-after)
+- [ ] Export all tenant data to Excel (see M-after)
+
+## Later (after the first paying pharmacy)
+
 - [ ] Error monitoring hook (Sentry, DSN via env)
 - [ ] README: setup, env vars, deploy steps
+
+## M-next: close out the essentials
+
+- [ ] Daily closing screen reading `ph_daily_closing` (cash/Telebirr/credit tiles + per-method list)
+- [ ] Receipt layout component (58 mm CSS print) for one sale, EN/AM
+- [ ] Print flow from sale success screen + reprint from sale detail
+- [ ] Telegram receipt: queue `notifications` row with receipt text on sale
+
+## M-after: keep them paying, then grow
+
+- [ ] Offline queue: IndexedDB queue for `record_sale` with client_ref
+- [ ] Sync status chip + retry on reconnect
+- [ ] Evening Telegram summary generator (SQL + notifications row)
+- [ ] Reports screen: today / this week / Ethiopian month from existing views
+- [ ] CSV export of reports
+- [ ] Staff invite (owner-only) + role select
+- [ ] Per-staff sales column in daily closing
+- [ ] Excel import of items (template + parser)
+- [ ] Export-all to Excel
 
 ## Q: Quality and security baseline (do these inside M0 and M1, not after)
 
