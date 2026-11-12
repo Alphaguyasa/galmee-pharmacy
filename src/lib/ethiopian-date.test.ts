@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  addisToday,
   daysBetween,
+  isIsoDay,
+  shiftIsoDay,
   formatEthiopianDate,
   isEthiopianLeapYear,
   parseGregorian,
@@ -67,5 +70,25 @@ describe("daysBetween", () => {
   it("counts calendar days", () => {
     expect(daysBetween("2026-12-06", "2026-11-06")).toBe(30);
     expect(daysBetween("2026-11-01", "2026-11-06")).toBe(-5);
+  });
+});
+
+describe("closing-day helpers", () => {
+  it("reads today in Addis Ababa time", () => {
+    // 22:30 UTC on 11 Nov is 01:30 on 12 Nov in Addis.
+    expect(addisToday(new Date(Date.UTC(2026, 10, 11, 22, 30)))).toBe("2026-11-12");
+    expect(addisToday(new Date(Date.UTC(2026, 10, 11, 20, 59)))).toBe("2026-11-11");
+  });
+  it("moves across month and year ends", () => {
+    expect(shiftIsoDay("2026-03-01", -1)).toBe("2026-02-28");
+    expect(shiftIsoDay("2024-02-28", 1)).toBe("2024-02-29");
+    expect(shiftIsoDay("2026-12-31", 1)).toBe("2027-01-01");
+  });
+  it("accepts only real dates", () => {
+    expect(isIsoDay("2026-11-12")).toBe(true);
+    expect(isIsoDay("2026-02-30")).toBe(false);
+    expect(isIsoDay("2026-13-01")).toBe(false);
+    expect(isIsoDay("12-11-2026")).toBe(false);
+    expect(isIsoDay("1999-01-01")).toBe(false);
   });
 });

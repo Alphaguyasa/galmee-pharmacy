@@ -265,5 +265,38 @@
     "scanFailed": "ካሜራውን መክፈት አልተቻለም። ኮዱን ይጻፉ።",
     "scanNotFound": "ኮድ {code} ያለው መድኃኒት የለም።",
     "scanAdded": "ተጨምሯል፦ {name}"
+  },
+  "reports": {
+    "title": "የዕለት መዝጊያ",
+    "dayLabel": "ቀን",
+    "show": "አሳይ",
+    "previousDay": "ያለፈው ቀን",
+    "nextDay": "የሚቀጥለው ቀን",
+    "today": "ዛሬ",
+    "cashIn": "በመሳቢያው መኖር ያለበት ጥሬ ገንዘብ",
+    "totalIn": "በሁሉም ዓይነት የገባ፦ {amount}",
+    "salesCount": "{count, plural, =0 {ሽያጭ የለም} other {# ሽያጭ}}",
+    "creditGiven": "በዱቤ የተሰጠ",
+    "creditSub": "{count, plural, =0 {የዱቤ ሽያጭ የለም} other {# የዱቤ ሽያጭ}}",
+    "byMethod": "በክፍያ ዓይነት",
+    "repaymentsLine": "የዱቤ ክፍያ {amount}",
+    "collected": "የገባ",
+    "empty": "በዚህ ቀን ሽያጭም ሆነ የዱቤ ክፍያ የለም።",
+    "countTitle": "መሳቢያውን ይቁጠሩ",
+    "countLabel": "የተቆጠረ ጥሬ ገንዘብ (ብር)",
+    "countHint": "ብሩንና ሳንቲሙን ቆጥረው ድምሩን ያስገቡ። ምንም አይቀመጥም።",
+    "countMatch": "መሳቢያው ትክክል ነው።",
+    "countShort": "{amount} ጎድሏል",
+    "countOver": "{amount} ተርፏል",
+    "error": "መዝጊያውን መጫን አልተቻለም። ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ።",
+    "methods": {
+      "cash": "ጥሬ ገንዘብ",
+      "telebirr": "ቴሌብር",
+      "cbe_birr": "ሲቢኢ ብር",
+      "bank": "ባንክ",
+      "chapa": "ቻፓ",
+      "other": "ሌላ",
+      "credit": "ዱቤ"
+    }
   }
 }

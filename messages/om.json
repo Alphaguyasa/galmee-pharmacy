@@ -265,5 +265,38 @@
     "scanFailed": "Kaameraa banuun hin danda’amne. Koodicha barreessi.",
     "scanNotFound": "Qorichi koodii {code} qabu hin jiru.",
     "scanAdded": "Dabalameera: {name}"
+  },
+  "reports": {
+    "title": "Cufiinsa guyyaa",
+    "dayLabel": "Guyyaa",
+    "show": "Agarsiisi",
+    "previousDay": "Guyyaa darbe",
+    "nextDay": "Guyyaa itti aanu",
+    "today": "Har'a",
+    "cashIn": "Qarshii harkaa sanduuqa keessa jiraachuu qabu",
+    "totalIn": "Mala hundaan kan gale: {amount}",
+    "salesCount": "{count, plural, =0 {Gurgurtaan hin jiru} one {Gurgurtaa #} other {Gurgurtaa #}}",
+    "creditGiven": "Liqiidhaan kan kenname",
+    "creditSub": "{count, plural, =0 {Gurgurtaan liqii hin jiru} one {Gurgurtaa liqii #} other {Gurgurtaa liqii #}}",
+    "byMethod": "Akkaataa kaffaltiitiin",
+    "repaymentsLine": "Liqii deebi'e {amount}",
+    "collected": "Kan gale",
+    "empty": "Guyyaa kana gurgurtaanis liqiin deebi'es hin jiru.",
+    "countTitle": "Sanduuqa lakkaa'i",
+    "countLabel": "Qarshii lakkaa'ame (birrii)",
+    "countHint": "Maallaqa fi saantima lakkaa'iitii ida'ama barreessi. Homtuu hin kuufamu.",
+    "countMatch": "Sanduuqni sirrii dha.",
+    "countShort": "{amount} hir'ata",
+    "countOver": "{amount} dabalata",
+    "error": "Cufiinsa fe'uu hin dandeenye. Walqunnamtii kee mirkaneessiitii irra deebi'ii yaali.",
+    "methods": {
+      "cash": "Qarshii harkaa",
+      "telebirr": "Telebirr",
+      "cbe_birr": "CBE Birr",
+      "bank": "Baankii",
+      "chapa": "Chapa",
+      "other": "Kan biraa",
+      "credit": "Liqii"
+    }
   }
 }

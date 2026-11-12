@@ -27,7 +27,7 @@
 - [x] Receive-stock form (supplier, batch, expiry, cost) using `receive_stock`
 - [x] Credit customers list and statement (uses `customer_balances`)
 - [x] Remove expired stock from the stock list (owner and manager)
-- [ ] Daily closing report (cash vs Telebirr vs credit)
+- [x] Daily closing report (cash vs Telebirr vs credit)
 - [x] Migration: ph_suppliers
 - [x] Migration: ph_purchase_orders
 - [x] Migration: ph_purchase_lines
@@ -60,7 +60,7 @@
 
 ## M-next: close out the essentials
 
-- [ ] Daily closing screen reading `ph_daily_closing` (cash/Telebirr/credit tiles + per-method list)
+- [x] Daily closing screen reading `ph_daily_closing` (cash/Telebirr/credit tiles + per-method list)
 - [ ] Receipt layout component (58 mm CSS print) for one sale, EN/AM
 - [ ] Print flow from sale success screen + reprint from sale detail
 - [ ] Telegram receipt: queue `notifications` row with receipt text on sale

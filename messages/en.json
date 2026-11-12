@@ -265,5 +265,38 @@
     "scanFailed": "Could not open the camera. Type the code instead.",
     "scanNotFound": "No medicine has the code {code}.",
     "scanAdded": "Added: {name}"
+  },
+  "reports": {
+    "title": "Daily closing",
+    "dayLabel": "Day",
+    "show": "Show",
+    "previousDay": "Previous day",
+    "nextDay": "Next day",
+    "today": "Today",
+    "cashIn": "Cash that should be in the drawer",
+    "totalIn": "Taken in by all methods: {amount}",
+    "salesCount": "{count, plural, =0 {No sales} one {# sale} other {# sales}}",
+    "creditGiven": "Given on credit",
+    "creditSub": "{count, plural, =0 {No credit sales} one {# credit sale} other {# credit sales}}",
+    "byMethod": "By payment method",
+    "repaymentsLine": "Repayments {amount}",
+    "collected": "Taken in",
+    "empty": "No sales or repayments on this day.",
+    "countTitle": "Count the drawer",
+    "countLabel": "Cash counted (birr)",
+    "countHint": "Count the notes and coins, then type the total. Nothing is saved.",
+    "countMatch": "The drawer matches.",
+    "countShort": "Short by {amount}",
+    "countOver": "Over by {amount}",
+    "error": "Could not load the closing. Check your connection and try again.",
+    "methods": {
+      "cash": "Cash",
+      "telebirr": "Telebirr",
+      "cbe_birr": "CBE Birr",
+      "bank": "Bank",
+      "chapa": "Chapa",
+      "other": "Other",
+      "credit": "Credit (ዱቤ)"
+    }
   }
 }

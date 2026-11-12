@@ -103,3 +103,27 @@ export function formatEthiopianDate(
 export function daysBetween(to: Date | string, from: Date | string = new Date()): number {
   return gregorianToJdn(parseGregorian(to)) - gregorianToJdn(parseGregorian(from));
 }
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/** Today in Addis Ababa as a Gregorian 'YYYY-MM-DD' (the day a shop closes its books). */
+export function addisToday(now: Date = new Date()): string {
+  const { year, month, day } = parseGregorian(now);
+  return `${year}-${pad(month)}-${pad(day)}`;
+}
+
+/** 'YYYY-MM-DD' moved by `days` (negative goes back). */
+export function shiftIsoDay(iso: string, days: number): string {
+  const { year, month, day } = jdnToGregorian(gregorianToJdn(parseGregorian(iso)) + days);
+  return `${year}-${pad(month)}-${pad(day)}`;
+}
+
+/** True for a real calendar date written as 'YYYY-MM-DD'. */
+export function isIsoDay(input: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(input);
+  if (!m) return false;
+  const g = { year: +m[1], month: +m[2], day: +m[3] };
+  if (g.year < 2000 || g.year > 2100) return false;
+  const back = jdnToGregorian(gregorianToJdn(g));
+  return back.year === g.year && back.month === g.month && back.day === g.day;
+}
