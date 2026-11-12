@@ -256,6 +256,7 @@
     "errornoPrice": "One of these medicines has no price.",
     "erroritemNotFound": "One of these medicines was not found.",
     "errorcustomerNotFound": "Customer not found.",
+    "errorcreditLimit": "This sale would take the customer over their credit limit. Take it in cash, or record a repayment first.",
     "errornotPermitted": "This login cannot record sales yet. Ask the owner.",
     "errorgeneric": "The sale did not go through. Check your connection and try again.",
     "scan": "Scan barcode",

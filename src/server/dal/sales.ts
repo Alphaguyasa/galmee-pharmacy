@@ -16,7 +16,7 @@ export type SellableItemDTO = {
 
 export type SaleResult =
   | { ok: true; saleId: string; total: number }
-  | { ok: false; code: "insufficientStock" | "expiredStock" | "noPrice" | "itemNotFound" | "customerNotFound" | "notPermitted" | "generic" };
+  | { ok: false; code: "insufficientStock" | "expiredStock" | "noPrice" | "itemNotFound" | "customerNotFound" | "creditLimit" | "notPermitted" | "generic" };
 
 export async function searchSellable(q: string): Promise<SellableItemDTO[]> {
   await getSession();
@@ -56,6 +56,7 @@ export async function recordSale(input: {
     if (message.startsWith("no_price")) return { ok: false, code: "noPrice" };
     if (message.startsWith("item_not_found")) return { ok: false, code: "itemNotFound" };
     if (message.startsWith("customer_not_found")) return { ok: false, code: "customerNotFound" };
+    if (message.startsWith("credit_limit")) return { ok: false, code: "creditLimit" };
     if (message.startsWith("sale_not_permitted")) return { ok: false, code: "notPermitted" };
     return { ok: false, code: "generic" };
   }

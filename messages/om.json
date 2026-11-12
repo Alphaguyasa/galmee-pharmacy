@@ -256,6 +256,7 @@
     "errornoPrice": "Qorichoota kana keessaa tokko gatii hin qabu.",
     "erroritemNotFound": "Qorichoota kana keessaa tokko hin argamne.",
     "errorcustomerNotFound": "Maamilli hin argamne.",
+    "errorcreditLimit": "Gurgurtaan kun maamila daangaa liqii isaa ol isa godha. Qarshii harkaan gurguri, ykn dura liqii deebi'e galmeessi.",
     "errornotPermitted": "Seensi kun ammatti gurgurtaa galmeessuu hin danda'u. Abbaa qabeenyaa gaafadhu.",
     "errorgeneric": "Gurgurtaan hin galmoofne. Quunnamtii kee mirkaneessii irra deebi'ii yaali.",
     "scan": "Baarkoodii dubbisi",
