@@ -297,6 +297,9 @@
       "chapa": "Chapa",
       "other": "Kan biraa",
       "credit": "Liqii"
-    }
+    },
+    "bySeller": "Gurgurtaa namaan",
+    "unknownSeller": "Hojjetaa duraanii",
+    "sellerLine": "Kan fudhate {collected} · liqii {credit}"
   }
 }

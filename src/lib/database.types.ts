@@ -983,6 +983,17 @@ export type Database = {
           sales_count: number
         }[]
       }
+      ph_daily_closing_by_staff: {
+        Args: { p_day?: string }
+        Returns: {
+          collected: number
+          credit_given: number
+          full_name: string
+          sales_count: number
+          sales_total: number
+          staff_id: string | null
+        }[]
+      }
       ph_customer_list: {
         Args: { p_limit?: number; p_owing?: boolean; p_q?: string }
         Returns: Database["public"]["Views"]["customer_balances"]["Row"][]

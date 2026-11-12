@@ -297,6 +297,9 @@
       "chapa": "Chapa",
       "other": "Other",
       "credit": "Credit (ዱቤ)"
-    }
+    },
+    "bySeller": "By seller",
+    "unknownSeller": "Former staff member",
+    "sellerLine": "Took {collected} · credit {credit}"
   }
 }

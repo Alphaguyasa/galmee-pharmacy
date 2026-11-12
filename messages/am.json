@@ -297,6 +297,9 @@
       "chapa": "ቻፓ",
       "other": "ሌላ",
       "credit": "ዱቤ"
-    }
+    },
+    "bySeller": "በሻጭ",
+    "unknownSeller": "የቀድሞ ሠራተኛ",
+    "sellerLine": "የተቀበለው {collected} · ዱቤ {credit}"
   }
 }

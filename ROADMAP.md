@@ -73,7 +73,7 @@
 - [ ] Reports screen: today / this week / Ethiopian month from existing views
 - [ ] CSV export of reports
 - [ ] Staff invite (owner-only) + role select
-- [ ] Per-staff sales column in daily closing
+- [x] Per-staff sales column in daily closing
 - [ ] Excel import of items (template + parser)
 - [ ] Export-all to Excel
 

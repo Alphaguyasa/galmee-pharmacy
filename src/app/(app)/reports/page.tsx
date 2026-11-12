@@ -12,7 +12,7 @@ import type { Locale } from "@/i18n/config";
 import { addisToday, formatEthiopianDate, isIsoDay, shiftIsoDay } from "@/lib/ethiopian-date";
 import { formatBirr } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { getDailyClosing, type ClosingRowDTO } from "@/server/dal/reports";
+import { getClosingByStaff, getDailyClosing, type ClosingRowDTO } from "@/server/dal/reports";
 
 // Cash and Telebirr are always listed (the owner looks for them); the rest only when used that day.
 const ALWAYS_SHOWN = new Set(["cash", "telebirr"]);
@@ -23,8 +23,9 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
     .object({ day: z.string().refine((d) => isIsoDay(d) && d <= today).catch(today) })
     .parse({ day: today, ...(await searchParams) });
 
-  const [closing, t, locale] = await Promise.all([
+  const [closing, sellers, t, locale] = await Promise.all([
     getDailyClosing(day),
+    getClosingByStaff(day),
     getTranslations("reports"),
     getLocale() as Promise<Locale>,
   ]);
@@ -118,6 +119,35 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
           </ListSheet>
         </section>
       )}
+
+      {sellers.length > 0 ? (
+        <section aria-labelledby="by-seller" className="grid gap-2">
+          <h2 id="by-seller" className="font-semibold">
+            {t("bySeller")}
+          </h2>
+          <ListSheet>
+            {sellers.map((s) => (
+              <ListRow
+                key={s.staffId}
+                title={s.name || t("unknownSeller")}
+                className="items-center"
+                sub={
+                  <>
+                    <span className="num">{t("salesCount", { count: s.salesCount })}</span>
+                    <span className="num">
+                      {t("sellerLine", {
+                        collected: formatBirr(s.collected, locale),
+                        credit: formatBirr(s.creditGiven, locale),
+                      })}
+                    </span>
+                  </>
+                }
+                right={<span className="num font-bold">{formatBirr(s.salesTotal, locale)}</span>}
+              />
+            ))}
+          </ListSheet>
+        </section>
+      ) : null}
 
       {isToday || closing.cashIn > 0 ? <CashCount key={day} expected={closing.cashIn} /> : null}
     </div>

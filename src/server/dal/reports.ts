@@ -60,3 +60,28 @@ export async function getDailyClosing(day: string): Promise<DailyClosingDTO> {
 function round2(n: number) {
   return Math.round(n * 100) / 100;
 }
+
+export type StaffClosingDTO = {
+  staffId: string;
+  name: string;
+  salesCount: number;
+  salesTotal: number;
+  collected: number;
+  creditGiven: number;
+};
+
+/** Who sold what on one day. Owners and managers get everyone; staff get only their own line. */
+export async function getClosingByStaff(day: string): Promise<StaffClosingDTO[]> {
+  await getSession();
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("ph_daily_closing_by_staff", { p_day: day });
+  if (error) throw new Error("closing_by_staff_failed");
+  return data.map((r) => ({
+    staffId: r.staff_id ?? "unknown",
+    name: r.full_name,
+    salesCount: Number(r.sales_count),
+    salesTotal: Number(r.sales_total),
+    collected: Number(r.collected),
+    creditGiven: Number(r.credit_given),
+  }));
+}
