@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 
 export type NavItem = { href: string; label: string; icon: LucideIcon };
 
+// Static class names, not an inline style: the CSP blocks style attributes.
+const COLUMNS: Record<number, string> = { 3: "grid-cols-3", 4: "grid-cols-4", 5: "grid-cols-5" };
+
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -27,10 +30,7 @@ export function BottomNav({ items, menuLabel, variant }: { items: NavItem[]; men
           : "hidden flex-col gap-1 md:flex",
       )}
     >
-      <div
-        className={variant === "bottom" ? "grid" : "contents"}
-        style={variant === "bottom" ? { gridTemplateColumns: `repeat(${Math.min(items.length, 5)}, 1fr)` } : undefined}
-      >
+      <div className={variant === "bottom" ? cn("grid", COLUMNS[Math.min(Math.max(items.length, 3), 5)]) : "contents"}>
         {items.map(({ href, label, icon: Icon }) => {
           const active = isActive(pathname, href);
           return (
