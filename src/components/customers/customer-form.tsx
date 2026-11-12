@@ -24,7 +24,17 @@ export function CustomerForm() {
       </div>
       <div className="grid gap-1.5">
         <Label htmlFor="creditLimit">{t("creditLimit")}</Label>
-        <Input id="creditLimit" name="creditLimit" inputMode="decimal" autoComplete="off" className="num" />
+        <Input
+          id="creditLimit"
+          name="creditLimit"
+          inputMode="decimal"
+          autoComplete="off"
+          className="num"
+          aria-describedby="creditLimit-hint"
+        />
+        <p id="creditLimit-hint" className="text-sm text-muted-foreground">
+          {t("creditLimitHint")}
+        </p>
       </div>
       <p aria-live="polite" className={state.error ? "text-sm font-semibold text-expiry-red" : "sr-only"}>
         {state.error ? t(state.error) : ""}

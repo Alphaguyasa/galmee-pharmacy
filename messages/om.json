@@ -196,6 +196,7 @@
     "name": "Maqaa guutuu",
     "phone": "Bilbila (filannoo)",
     "creditLimit": "Daangaa liqii qarshiin (filannoo)",
+    "creditLimitHint": "Daangaan yoo hin jiraanne duwwaa dhiisi. Maamila kanaaf liqii akka hin kennamneef 0 galchi.",
     "save": "Maamila galmeessi",
     "errorName": "Maqaa maamilaa galchi.",
     "errorPhone": "Lakkoofsa bilbila Itoophiyaa galchi, fakkeenyaaf 0911 234 567.",

@@ -196,6 +196,7 @@
     "name": "Full name",
     "phone": "Phone (optional)",
     "creditLimit": "Credit limit in birr (optional)",
+    "creditLimitHint": "Leave empty for no limit. Enter 0 to give this customer no credit.",
     "save": "Save customer",
     "errorName": "Enter the customer's name.",
     "errorPhone": "Enter an Ethiopian phone number, for example 0911 234 567.",
