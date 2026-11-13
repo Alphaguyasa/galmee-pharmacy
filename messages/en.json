@@ -56,7 +56,7 @@
     "expiringSoon": "Expiring within 30 days",
     "lowStock": "Below reorder level",
     "salesToday": "Sales today",
-    "notYet": "Available soon"
+    "salesSub": "{sales} · cash {amount}"
   },
   "roles": {
     "owner": "Owner",

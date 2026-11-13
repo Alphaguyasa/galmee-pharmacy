@@ -85,3 +85,30 @@ export async function getClosingByStaff(day: string): Promise<StaffClosingDTO[]>
     creditGiven: Number(r.credit_given),
   }));
 }
+
+export type TodaySummaryDTO = {
+  salesTotal: number;
+  salesCount: number;
+  /** Cash taken in today: cash sales paid at the till + cash repayments. */
+  cashIn: number;
+  /** Everything customers owe right now. */
+  owed: number;
+};
+
+/** Today's figures for this pharmacy (Addis Ababa day), from ph_owner_summary. */
+export async function getTodaySummary(): Promise<TodaySummaryDTO> {
+  const { tenant } = await getSession();
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("ph_owner_summary")
+    .select("tx_count, sales_total, cash_total, owed_total")
+    .eq("tenant_id", tenant.id)
+    .maybeSingle();
+  if (error) throw new Error("summary_failed");
+  return {
+    salesTotal: Number(data?.sales_total ?? 0),
+    salesCount: Number(data?.tx_count ?? 0),
+    cashIn: Number(data?.cash_total ?? 0),
+    owed: Number(data?.owed_total ?? 0),
+  };
+}

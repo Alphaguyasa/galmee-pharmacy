@@ -5,15 +5,19 @@ import type { Locale } from "@/i18n/config";
 import { formatEthiopianDate } from "@/lib/ethiopian-date";
 import { formatBirr } from "@/lib/format";
 import { getSession } from "@/server/dal/session";
+import { getTodaySummary } from "@/server/dal/reports";
 import { getExpiryTotals } from "@/server/dal/stock";
 
 export default async function HomePage() {
-  const [{ profile }, totals, t, tCommon, tStock, locale] = await Promise.all([
+  const [{ profile }, totals, today, t, tCommon, tStock, tReports, tCustomers, locale] = await Promise.all([
     getSession(),
     getExpiryTotals(),
+    getTodaySummary(),
     getTranslations("home"),
     getTranslations("common"),
     getTranslations("stock"),
+    getTranslations("reports"),
+    getTranslations("customers"),
     getLocale() as Promise<Locale>,
   ]);
 
@@ -28,7 +32,7 @@ export default async function HomePage() {
           </span>
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-3 sm:items-stretch">
+      <div className="grid gap-3 sm:grid-cols-2 sm:items-stretch lg:grid-cols-4">
         <MoneySummaryCard
           href="/stock?filter=urgent"
           tone="owed"
@@ -43,7 +47,24 @@ export default async function HomePage() {
           label={t("lowStock")}
           figure={tStock("itemsCount", { count: totals.itemsLow })}
         />
-        <MoneySummaryCard size="md" label={t("salesToday")} figure={t("notYet")} />
+        <MoneySummaryCard
+          href="/reports"
+          tone="in"
+          size="md"
+          label={t("salesToday")}
+          figure={formatBirr(today.salesTotal, locale)}
+          sub={t("salesSub", {
+            sales: tReports("salesCount", { count: today.salesCount }),
+            amount: formatBirr(today.cashIn, locale),
+          })}
+        />
+        <MoneySummaryCard
+          href="/customers"
+          tone={today.owed > 0 ? "owed" : "band"}
+          size="md"
+          label={tCustomers("totalOwed")}
+          figure={formatBirr(today.owed, locale)}
+        />
       </div>
     </div>
   );

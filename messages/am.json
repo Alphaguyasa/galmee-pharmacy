@@ -56,7 +56,7 @@
     "expiringSoon": "በ30 ቀን ውስጥ የሚያልቁ",
     "lowStock": "ከማዘዣ ደረጃ በታች",
     "salesToday": "የዛሬ ሽያጭ",
-    "notYet": "በቅርቡ"
+    "salesSub": "{sales} · ጥሬ ገንዘብ {amount}"
   },
   "roles": {
     "owner": "ባለቤት",

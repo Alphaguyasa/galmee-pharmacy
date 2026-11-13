@@ -56,7 +56,7 @@
     "expiringSoon": "Guyyaa 30 keessatti kan darbu",
     "lowStock": "Sadarkaa ajajaa gadi",
     "salesToday": "Gurgurtaa har'aa",
-    "notYet": "Dhiyootti"
+    "salesSub": "{sales} · maallaqa callaa {amount}"
   },
   "roles": {
     "owner": "Abbaa qabeenyaa",

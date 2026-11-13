@@ -901,6 +901,20 @@ export type Database = {
       }
     }
     Views: {
+      ph_owner_summary: {
+        Row: {
+          attention_count: number | null
+          cash_total: number | null
+          credit_total: number | null
+          day: string | null
+          extra: Json | null
+          owed_total: number | null
+          sales_total: number | null
+          tenant_id: string | null
+          tx_count: number | null
+        }
+        Relationships: []
+      }
       ph_item_expiry: {
         Row: {
           batch_count: number | null
