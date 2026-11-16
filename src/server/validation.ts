@@ -104,8 +104,11 @@ export const saleSchema = z
     payment: z.enum(SALE_PAYMENTS),
     customerId: z.uuid().optional(),
     clientRef: z.uuid(),
+    // Only owners and managers may use it; the database checks the role itself.
+    overrideReason: z.string().trim().min(3).max(200).optional(),
   })
   .refine((v) => v.payment !== "credit" || v.customerId !== undefined, { path: ["customerId"] })
+  .refine((v) => v.overrideReason === undefined || v.payment === "credit", { path: ["overrideReason"] })
   .refine((v) => new Set(v.lines.map((l) => l.itemId)).size === v.lines.length, { path: ["lines"] });
 
 export const sellSearchSchema = z.string().trim().min(1).max(80);

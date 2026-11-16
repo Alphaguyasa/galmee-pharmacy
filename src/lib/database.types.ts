@@ -1038,6 +1038,7 @@ export type Database = {
           p_client_ref?: string
           p_customer?: string
           p_lines: Json
+          p_override_reason?: string
           p_payment: string
         }
         Returns: { sale_id: string; total: number }[]

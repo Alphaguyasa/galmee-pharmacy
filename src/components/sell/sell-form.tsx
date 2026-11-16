@@ -25,7 +25,14 @@ function blockReason(item: SellableItemDTO): "expiredStock" | "outOfStock" | "no
   return null;
 }
 
-export function SellForm({ customers }: { customers: { id: string; name: string }[] }) {
+export function SellForm({
+  customers,
+  canOverride,
+}: {
+  customers: { id: string; name: string }[];
+  /** Owners and managers may sell on credit past a customer's limit with a reason. */
+  canOverride: boolean;
+}) {
   const t = useTranslations("sell");
   const tCustomers = useTranslations("customers");
   const tStock = useTranslations("stock");
@@ -43,6 +50,9 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
   // Result of the last scan, shown under the search box where the cashier is looking.
   const [scanNote, setScanNote] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
+  // Set when the database refused a credit sale for the limit: how far over, for this cart only.
+  const [over, setOver] = useState<number | null>(null);
+  const [reason, setReason] = useState("");
   const [pending, startTransition] = useTransition();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestSearch = useRef(0);
@@ -70,8 +80,14 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
     }, 250);
   }
 
+  function clearOver() {
+    setOver(null);
+    setReason("");
+  }
+
   function addToCart(item: SellableItemDTO) {
     setMessage(null);
+    clearOver();
     setCart((lines) =>
       lines.some((l) => l.item.itemId === item.itemId)
         ? lines.map((l) => (l.item.itemId === item.itemId ? { ...l, qty: Math.min(l.qty + 1, item.qtyOnHand) } : l))
@@ -113,6 +129,7 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
   }
 
   function setQty(itemId: string, qty: number) {
+    clearOver();
     setCart((lines) =>
       lines.map((l) => (l.item.itemId === itemId ? { ...l, qty: Math.min(Math.max(qty, 1), l.item.qtyOnHand) } : l)),
     );
@@ -124,12 +141,18 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
     setCustomerId("");
     setClientRef(crypto.randomUUID());
     setLocked(false);
+    clearOver();
   }
 
-  function submit() {
+  function submit(withOverride = false) {
     setMessage(null);
     if (payment === "credit" && !customerId) {
       setMessage({ tone: "error", text: t("errorCustomer") });
+      return;
+    }
+    const overrideReason = withOverride ? reason.trim() : undefined;
+    if (overrideReason !== undefined && (overrideReason.length < 3 || overrideReason.length > 200)) {
+      setMessage({ tone: "error", text: t("errorbadReason") });
       return;
     }
     startTransition(async () => {
@@ -138,6 +161,7 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
         payment,
         customerId: payment === "credit" ? customerId : undefined,
         clientRef,
+        overrideReason,
       }).catch(() => ({ ok: false, code: "generic" }) as const);
 
       if (result.ok) {
@@ -147,6 +171,19 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
       }
       if (result.code === "generic") setLocked(true);
       else setClientRef(crypto.randomUUID());
+      const overLimit = result.code === "creditLimit" || result.code === "overrideNotPermitted";
+      if (overLimit && result.amountOver !== undefined) {
+        const amount = formatBirr(result.amountOver, locale);
+        if (canOverride && result.code === "creditLimit") {
+          setOver(result.amountOver);
+          setMessage({ tone: "error", text: `${t("errorcreditLimit")} ${t("overBy", { amount })}` });
+        } else {
+          clearOver();
+          setMessage({ tone: "error", text: t("errorcreditLimitStaff", { amount }) });
+        }
+        return;
+      }
+      if (result.code !== "badReason") clearOver();
       setMessage({ tone: "error", text: t(`error${result.code}`) });
     });
   }
@@ -250,7 +287,7 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
                     <Button type="button" variant="outline" size="icon" aria-label={`${t("increase")}: ${name}`} disabled={locked || line.qty >= line.item.qtyOnHand} onClick={() => setQty(line.item.itemId, line.qty + 1)}>
                       <Plus className="size-5" aria-hidden />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="ml-auto" aria-label={`${t("remove")}: ${name}`} disabled={locked} onClick={() => setCart((lines) => lines.filter((l) => l.item.itemId !== line.item.itemId))}>
+                    <Button type="button" variant="ghost" size="icon" className="ml-auto" aria-label={`${t("remove")}: ${name}`} disabled={locked} onClick={() => { clearOver(); setCart((lines) => lines.filter((l) => l.item.itemId !== line.item.itemId)); }}>
                       <Trash2 className="size-5" aria-hidden />
                     </Button>
                   </div>
@@ -268,7 +305,7 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
                 key={p}
                 className="flex h-12 items-center justify-center rounded-md border text-sm has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:font-semibold has-[:checked]:text-primary-foreground has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring/50"
               >
-                <input type="radio" name="payment" value={p} checked={payment === p} onChange={() => setPayment(p)} className="sr-only" />
+                <input type="radio" name="payment" value={p} checked={payment === p} onChange={() => { setPayment(p); clearOver(); }} className="sr-only" />
                 {p === "credit" ? t("credit") : tCustomers(`methods.${p}`)}
               </label>
             ))}
@@ -291,7 +328,10 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
                 className="h-12 w-full rounded-md border bg-background px-3"
                 disabled={locked}
                 value={customerId}
-                onChange={(e) => setCustomerId(e.target.value)}
+                onChange={(e) => {
+                  setCustomerId(e.target.value);
+                  clearOver();
+                }}
               >
                 <option value="">{t("chooseCustomer")}</option>
                 {customers.map((c) => (
@@ -302,6 +342,34 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
               </select>
             </div>
           )
+        ) : null}
+
+        {over !== null && canOverride && payment === "credit" ? (
+          <div className="grid gap-2 rounded-md border border-owed/40 bg-owed/5 p-3">
+            <p className="text-sm font-semibold text-owed">{t("overBy", { amount: formatBirr(over, locale) })}</p>
+            <Label htmlFor="sell-override-reason">{t("overrideReasonLabel")}</Label>
+            <textarea
+              id="sell-override-reason"
+              className="min-h-20 w-full rounded-md border bg-background px-3 py-2 text-base focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+              maxLength={200}
+              aria-describedby="sell-override-hint"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            />
+            <p id="sell-override-hint" className="text-sm text-muted-foreground">
+              {t("overrideReasonHint")}
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              disabled={pending || reason.trim().length < 3}
+              aria-busy={pending}
+              onClick={() => submit(true)}
+            >
+              {t("sellAnyway")}
+            </Button>
+          </div>
         ) : null}
 
         {/* The money moment stays under the thumb: on phones this bar sticks just above the bottom nav. */}
@@ -322,7 +390,7 @@ export function SellForm({ customers }: { customers: { id: string; name: string 
             <Button type="button" variant="outline" size="lg" disabled={pending || (cart.length === 0 && !locked)} onClick={() => { reset(); setMessage(null); }}>
               {t("clear")}
             </Button>
-            <Button type="button" size="lg" disabled={pending || cart.length === 0} aria-busy={pending} onClick={submit}>
+            <Button type="button" size="lg" disabled={pending || cart.length === 0} aria-busy={pending} onClick={() => submit()}>
               {t("confirm")}
             </Button>
           </div>

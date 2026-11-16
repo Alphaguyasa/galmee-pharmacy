@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+import { parseAmountOver } from "@/lib/sale-errors";
 import { getSession } from "./session";
 
 export const SELL_SEARCH_LIMIT = 30;
@@ -14,9 +15,20 @@ export type SellableItemDTO = {
   daysLeft: number | null;
 };
 
+export type SaleErrorCode =
+  | "insufficientStock"
+  | "expiredStock"
+  | "noPrice"
+  | "itemNotFound"
+  | "customerNotFound"
+  | "creditLimit"
+  | "overrideNotPermitted"
+  | "badReason"
+  | "generic";
+
 export type SaleResult =
   | { ok: true; saleId: string; total: number }
-  | { ok: false; code: "insufficientStock" | "expiredStock" | "noPrice" | "itemNotFound" | "customerNotFound" | "creditLimit" | "notPermitted" | "generic" };
+  | { ok: false; code: SaleErrorCode; amountOver?: number };
 
 export async function searchSellable(q: string): Promise<SellableItemDTO[]> {
   await getSession();
@@ -40,6 +52,7 @@ export async function recordSale(input: {
   payment: string;
   customerId?: string;
   clientRef: string;
+  overrideReason?: string;
 }): Promise<SaleResult> {
   await getSession();
   const supabase = await createClient();
@@ -48,6 +61,7 @@ export async function recordSale(input: {
     p_payment: input.payment,
     p_customer: input.customerId,
     p_client_ref: input.clientRef,
+    p_override_reason: input.overrideReason,
   });
   if (error || !data?.[0]) {
     const message = error?.message ?? "";
@@ -56,8 +70,10 @@ export async function recordSale(input: {
     if (message.startsWith("no_price")) return { ok: false, code: "noPrice" };
     if (message.startsWith("item_not_found")) return { ok: false, code: "itemNotFound" };
     if (message.startsWith("customer_not_found")) return { ok: false, code: "customerNotFound" };
-    if (message.startsWith("credit_limit")) return { ok: false, code: "creditLimit" };
-    if (message.startsWith("sale_not_permitted")) return { ok: false, code: "notPermitted" };
+    if (message.startsWith("credit_limit")) return { ok: false, code: "creditLimit", amountOver: parseAmountOver(error?.details) };
+    if (message.startsWith("override_not_permitted"))
+      return { ok: false, code: "overrideNotPermitted", amountOver: parseAmountOver(error?.details) };
+    if (message.startsWith("bad_reason")) return { ok: false, code: "badReason" };
     return { ok: false, code: "generic" };
   }
   return { ok: true, saleId: data[0].sale_id, total: data[0].total };
