@@ -43,10 +43,10 @@ begin
   begin perform public.ph_record_sale(jsonb_build_array(jsonb_build_object('item_id', ia, 'qty', 1)), 'credit', cb, gen_random_uuid()::text); msg := 'ran'; exception when others then msg := sqlerrm; end;
   r := r || 'A credits B customer=' || msg || ' (expect customer_not_found); ';
 
-  -- Staff cannot lock stock_batches under the core RLS policy, so the sale is refused with a clear code.
+  -- Staff (cashiers) can sell: core record_sale runs as definer, so a plain cash sale goes through.
   perform set_config('request.jwt.claims', json_build_object('sub', uc, 'role','authenticated')::text, true);
   begin perform public.ph_record_sale(jsonb_build_array(jsonb_build_object('item_id', ia, 'qty', 1)), 'cash', null, gen_random_uuid()::text); msg := 'ran'; exception when others then msg := sqlerrm; end;
-  r := r || 'staff sale=' || msg || ' (core policy: sale_not_permitted); ';
+  r := r || 'staff sale=' || msg || ' (expect ran); ';
 
   perform set_config('request.jwt.claims', json_build_object('sub', ub, 'role','authenticated')::text, true);
   select count(*) into n from public.sales where id = s1; r := r || 'B reads A sale=' || n || ' (expect 0); ';
