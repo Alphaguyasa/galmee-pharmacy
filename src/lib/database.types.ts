@@ -1008,6 +1008,18 @@ export type Database = {
           sale_id: string
         }[]
       }
+      ph_sales_by_day: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          cash_in: number
+          collected: number
+          credit_given: number
+          day: string
+          repayments: number
+          sales_count: number
+          sales_total: number
+        }[]
+      }
       ph_daily_closing_by_staff: {
         Args: { p_day?: string }
         Returns: {

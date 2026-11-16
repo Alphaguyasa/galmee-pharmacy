@@ -312,6 +312,33 @@
     "sellerLine": "የተቀበለው {collected} · ዱቤ {credit}",
     "overLimit": "{count, plural, one {ከዱቤ ገደብ በላይ # ሽያጭ} other {ከዱቤ ገደብ በላይ # ሽያጮች}}",
     "overLimitBy": "{name} · {time}",
-    "unknownCustomer": "የተሰረዘ ደንበኛ"
+    "unknownCustomer": "የተሰረዘ ደንበኛ",
+    "periodLabel": "የሪፖርት ጊዜ",
+    "tabs": {
+      "day": "ቀን",
+      "week": "ሳምንት",
+      "month": "ወር"
+    },
+    "periodTitle": "የሽያጭ ሪፖርት",
+    "last7Days": "ያለፉት 7 ቀናት",
+    "monthLabel": "ወር",
+    "previousMonth": "ያለፈው ወር",
+    "nextMonth": "የሚቀጥለው ወር",
+    "salesInPeriod": "ሽያጭ · {period}",
+    "cashTaken": "የተገኘ ጥሬ ገንዘብ",
+    "byDay": "በቀን",
+    "dayLine": "ጥሬ ገንዘብ {cash} · ዱቤ {credit}",
+    "emptyPeriod": "በዚህ ጊዜ ውስጥ ሽያጭ ወይም የዱቤ ክፍያ የለም።",
+    "downloadCsv": "CSV አውርድ (ኤክሴል)",
+    "csv": {
+      "date": "ቀን (ፈረንጅ)",
+      "ethiopianDate": "ቀን (ኢትዮጵያ)",
+      "sales": "ሽያጮች",
+      "salesTotal": "የሽያጭ ድምር (ብር)",
+      "takenIn": "የገባ (ብር)",
+      "cash": "ጥሬ ገንዘብ (ብር)",
+      "repayments": "የዱቤ ክፍያ (ብር)",
+      "credit": "የተሰጠ ዱቤ (ብር)"
+    }
   }
 }

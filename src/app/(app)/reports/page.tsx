@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { CashCount } from "@/components/reports/cash-count";
+import { ReportTabs } from "@/components/reports/report-tabs";
 import { EmptyState } from "@/components/galmee/empty-state";
 import { ListRow, ListSheet } from "@/components/galmee/list-row";
 import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
@@ -48,6 +49,8 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
           {formatEthiopianDate(day, locale)}
         </p>
       </div>
+
+      <ReportTabs current="day" />
 
       <nav aria-label={t("dayLabel")} className="flex items-end gap-2 md:max-w-md">
         <Link href={dayHref(shiftIsoDay(day, -1))} className={navLink} aria-label={t("previousDay")}>

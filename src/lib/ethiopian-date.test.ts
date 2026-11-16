@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   addisToday,
   daysBetween,
+  ethiopianMonthRange,
+  ethiopianMonthsBetween,
   isIsoDay,
   shiftIsoDay,
   formatEthiopianDate,
@@ -90,5 +92,25 @@ describe("closing-day helpers", () => {
     expect(isIsoDay("2026-13-01")).toBe(false);
     expect(isIsoDay("12-11-2026")).toBe(false);
     expect(isIsoDay("1999-01-01")).toBe(false);
+  });
+});
+
+describe("ethiopianMonthRange", () => {
+  it("finds the Ethiopian month around a day", () => {
+    // 2026-11-16 is Hidar 7, 2019.
+    expect(ethiopianMonthRange("2026-11-16")).toEqual({ year: 2019, month: 3, from: "2026-11-10", to: "2026-12-09" });
+  });
+
+  it("moves back across the new year through Pagume", () => {
+    // Meskerem 2019 starts 2026-09-11; the month before is Pagume 2018 (5 days, 2018 is not a leap year).
+    expect(ethiopianMonthRange("2026-09-20", -1)).toEqual({ year: 2018, month: 13, from: "2026-09-06", to: "2026-09-10" });
+    // Pagume 2019 has 6 days (2019 is a leap year).
+    expect(ethiopianMonthRange("2027-09-08")).toEqual({ year: 2019, month: 13, from: "2027-09-06", to: "2027-09-11" });
+  });
+
+  it("counts months between two days", () => {
+    expect(ethiopianMonthsBetween("2026-11-16", "2026-11-16")).toBe(0);
+    expect(ethiopianMonthsBetween("2026-09-20", "2026-11-16")).toBe(2);
+    expect(ethiopianMonthsBetween("2026-09-08", "2026-09-12")).toBe(1);
   });
 });

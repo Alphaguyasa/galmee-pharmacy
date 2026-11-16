@@ -112,6 +112,35 @@ export async function getCreditOverrides(day: string): Promise<CreditOverrideDTO
   }));
 }
 
+export type DayTotalsDTO = {
+  day: string;
+  salesCount: number;
+  salesTotal: number;
+  /** Paid at the till for that day's sales, all methods. */
+  collected: number;
+  repayments: number;
+  creditGiven: number;
+  /** Cash sales + cash repayments. */
+  cashIn: number;
+};
+
+/** One row per Addis Ababa day from `from` to `to` (both 'YYYY-MM-DD', at most 62 days). */
+export async function getSalesByDay(from: string, to: string): Promise<DayTotalsDTO[]> {
+  await getSession();
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("ph_sales_by_day", { p_from: from, p_to: to });
+  if (error) throw new Error("sales_by_day_failed");
+  return data.map((r) => ({
+    day: r.day,
+    salesCount: Number(r.sales_count),
+    salesTotal: Number(r.sales_total),
+    collected: Number(r.collected),
+    repayments: Number(r.repayments),
+    creditGiven: Number(r.credit_given),
+    cashIn: Number(r.cash_in),
+  }));
+}
+
 export type TodaySummaryDTO = {
   salesTotal: number;
   salesCount: number;

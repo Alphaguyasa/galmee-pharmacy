@@ -312,6 +312,33 @@
     "sellerLine": "Kan fudhate {collected} · liqii {credit}",
     "overLimit": "{count, plural, one {Gurgurtaa daangaa liqii caale #} other {Gurgurtaawwan daangaa liqii caalan #}}",
     "overLimitBy": "{name} · {time}",
-    "unknownCustomer": "Maamila haqame"
+    "unknownCustomer": "Maamila haqame",
+    "periodLabel": "Yeroo gabaasaa",
+    "tabs": {
+      "day": "Guyyaa",
+      "week": "Torban",
+      "month": "Ji'a"
+    },
+    "periodTitle": "Gabaasa gurgurtaa",
+    "last7Days": "Guyyoota 7 darban",
+    "monthLabel": "Ji'a",
+    "previousMonth": "Ji'a darbe",
+    "nextMonth": "Ji'a itti aanu",
+    "salesInPeriod": "Gurgurtaa · {period}",
+    "cashTaken": "Qarshii harkaa galee",
+    "byDay": "Guyyaan",
+    "dayLine": "Qarshii {cash} · liqii {credit}",
+    "emptyPeriod": "Yeroo kana keessa gurgurtaan ykn liqii deebi'e hin jiru.",
+    "downloadCsv": "CSV buusi (Excel)",
+    "csv": {
+      "date": "Guyyaa",
+      "ethiopianDate": "Guyyaa (Itoophiyaa)",
+      "sales": "Gurgurtaa",
+      "salesTotal": "Waliigala gurgurtaa (ETB)",
+      "takenIn": "Kan galee (ETB)",
+      "cash": "Qarshii (ETB)",
+      "repayments": "Liqii deebi'e (ETB)",
+      "credit": "Liqii kenname (ETB)"
+    }
   }
 }

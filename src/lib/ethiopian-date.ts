@@ -127,3 +127,36 @@ export function isIsoDay(input: string): boolean {
   const back = jdnToGregorian(gregorianToJdn(g));
   return back.year === g.year && back.month === g.month && back.day === g.day;
 }
+
+export type EthiopianMonthRange = {
+  /** Ethiopian year and month (1 to 13, 13 = Pagume). */
+  year: number;
+  month: number;
+  /** First and last Gregorian day of that month, 'YYYY-MM-DD'. */
+  from: string;
+  to: string;
+};
+
+const isoOf = (g: GregorianDate) => `${g.year}-${pad(g.month)}-${pad(g.day)}`;
+
+/** The Ethiopian month holding `iso`, moved by `offset` months (-1 = the month before). */
+export function ethiopianMonthRange(iso: string, offset = 0): EthiopianMonthRange {
+  const e = toEthiopian(parseGregorian(iso));
+  const index = e.year * 13 + (e.month - 1) + offset;
+  const year = Math.floor(index / 13);
+  const month = mod(index, 13) + 1;
+  const days = month < 13 ? 30 : isEthiopianLeapYear(year) ? 6 : 5;
+  return {
+    year,
+    month,
+    from: isoOf(toGregorian({ year, month, day: 1 })),
+    to: isoOf(toGregorian({ year, month, day: days })),
+  };
+}
+
+/** Number of months from the month holding `from` to the month holding `to` (Ethiopian calendar). */
+export function ethiopianMonthsBetween(from: string, to: string): number {
+  const a = toEthiopian(parseGregorian(from));
+  const b = toEthiopian(parseGregorian(to));
+  return b.year * 13 + b.month - (a.year * 13 + a.month);
+}

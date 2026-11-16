@@ -312,6 +312,33 @@
     "sellerLine": "Took {collected} · credit {credit}",
     "overLimit": "{count, plural, one {# sale over a credit limit} other {# sales over a credit limit}}",
     "overLimitBy": "{name} · {time}",
-    "unknownCustomer": "Removed customer"
+    "unknownCustomer": "Removed customer",
+    "periodLabel": "Report period",
+    "tabs": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    },
+    "periodTitle": "Sales report",
+    "last7Days": "Last 7 days",
+    "monthLabel": "Month",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "salesInPeriod": "Sales · {period}",
+    "cashTaken": "Cash taken",
+    "byDay": "By day",
+    "dayLine": "Cash {cash} · credit {credit}",
+    "emptyPeriod": "No sales or repayments in this period.",
+    "downloadCsv": "Download CSV (Excel)",
+    "csv": {
+      "date": "Date",
+      "ethiopianDate": "Ethiopian date",
+      "sales": "Sales",
+      "salesTotal": "Sales total (ETB)",
+      "takenIn": "Taken in (ETB)",
+      "cash": "Cash (ETB)",
+      "repayments": "Repayments (ETB)",
+      "credit": "Credit given (ETB)"
+    }
   }
 }
