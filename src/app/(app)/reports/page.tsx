@@ -12,7 +12,7 @@ import type { Locale } from "@/i18n/config";
 import { addisToday, formatEthiopianDate, isIsoDay, shiftIsoDay } from "@/lib/ethiopian-date";
 import { formatBirr } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { getClosingByStaff, getDailyClosing, type ClosingRowDTO } from "@/server/dal/reports";
+import { getClosingByStaff, getCreditOverrides, getDailyClosing, type ClosingRowDTO } from "@/server/dal/reports";
 
 // Cash and Telebirr are always listed (the owner looks for them); the rest only when used that day.
 const ALWAYS_SHOWN = new Set(["cash", "telebirr"]);
@@ -23,9 +23,10 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
     .object({ day: z.string().refine((d) => isIsoDay(d) && d <= today).catch(today) })
     .parse({ day: today, ...(await searchParams) });
 
-  const [closing, sellers, t, locale] = await Promise.all([
+  const [closing, sellers, overrides, t, locale] = await Promise.all([
     getDailyClosing(day),
     getClosingByStaff(day),
+    getCreditOverrides(day),
     getTranslations("reports"),
     getLocale() as Promise<Locale>,
   ]);
@@ -149,9 +150,44 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
         </section>
       ) : null}
 
+      {overrides.length > 0 ? (
+        <section aria-labelledby="over-limit" className="grid gap-2">
+          <h2 id="over-limit" className="font-semibold">
+            {t("overLimit", { count: overrides.length })}
+          </h2>
+          <ListSheet>
+            {overrides.map((o) => (
+              <ListRow
+                key={o.saleId}
+                title={o.customer || t("unknownCustomer")}
+                sub={
+                  <>
+                    <span className="break-words">{o.reason}</span>
+                    <span className="num">
+                      {t("overLimitBy", { name: o.by || t("unknownSeller"), time: formatAddisTime(o.at, locale) })}
+                    </span>
+                  </>
+                }
+                right={<span className="num font-bold text-owed">{formatBirr(o.amountOver, locale)}</span>}
+              />
+            ))}
+          </ListSheet>
+        </section>
+      ) : null}
+
       {isToday || closing.cashIn > 0 ? <CashCount key={day} expected={closing.cashIn} /> : null}
     </div>
   );
+}
+
+/** Clock time of a sale in Addis Ababa, e.g. 14:05. */
+function formatAddisTime(iso: string, locale: Locale) {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Africa/Addis_Ababa",
+  }).format(new Date(iso));
 }
 
 function MethodRow({

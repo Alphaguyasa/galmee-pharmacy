@@ -86,6 +86,32 @@ export async function getClosingByStaff(day: string): Promise<StaffClosingDTO[]>
   }));
 }
 
+export type CreditOverrideDTO = {
+  saleId: string;
+  at: string;
+  customer: string;
+  amountOver: number;
+  reason: string;
+  by: string;
+};
+
+/** Credit sales that went over a customer's limit on one day. Only owners and managers can read them (RLS). */
+export async function getCreditOverrides(day: string): Promise<CreditOverrideDTO[]> {
+  const { profile } = await getSession();
+  if (profile.role === "staff") return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("ph_credit_overrides_for_day", { p_day: day });
+  if (error) throw new Error("overrides_failed");
+  return data.map((r) => ({
+    saleId: r.sale_id,
+    at: r.created_at,
+    customer: r.customer_name,
+    amountOver: Number(r.amount_over),
+    reason: r.reason,
+    by: r.by_name,
+  }));
+}
+
 export type TodaySummaryDTO = {
   salesTotal: number;
   salesCount: number;

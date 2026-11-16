@@ -260,6 +260,7 @@
     "errorcreditLimit": "Gurgurtaan kun maamila daangaa liqii isaa ol isa godha. Qarshii harkaan gurguri, ykn dura liqii deebi'e galmeessi.",
     "overBy": "Daangaa {amount}n caala.",
     "errorcreditLimitStaff": "Gurgurtaan kun maamila daangaa liqii isaa {amount}n ol isa godha. Qarshii harkaan gurguri, ykn abbaa qabeenyaa ykn hoggantaa gaafadhu.",
+    "errorcreditLimitOwner": "Gurgurtaan kun maamila daangaa liqii isaa {amount}n ol isa godha. Haa ta'u malee gurguruuf sababa barreessi, ykn qarshii harkaan gurguri.",
     "overrideReasonLabel": "Sababa daangaa caaluu",
     "overrideReasonHint": "Barbaachisaa dha, qubee 3 hanga 200. Cufiinsa guyyaa irratti mul'ata.",
     "sellAnyway": "Haa ta'u malee liqiin gurguri",
@@ -308,6 +309,9 @@
     },
     "bySeller": "Gurgurtaa namaan",
     "unknownSeller": "Hojjetaa duraanii",
-    "sellerLine": "Kan fudhate {collected} · liqii {credit}"
+    "sellerLine": "Kan fudhate {collected} · liqii {credit}",
+    "overLimit": "{count, plural, one {Gurgurtaa daangaa liqii caale #} other {Gurgurtaawwan daangaa liqii caalan #}}",
+    "overLimitBy": "{name} · {time}",
+    "unknownCustomer": "Maamila haqame"
   }
 }

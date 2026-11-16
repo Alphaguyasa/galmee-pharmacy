@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { Minus, Plus, Search, Trash2 } from "lucide-react";
@@ -53,6 +53,7 @@ export function SellForm({
   // Set when the database refused a credit sale for the limit: how far over, for this cart only.
   const [over, setOver] = useState<number | null>(null);
   const [reason, setReason] = useState("");
+  const reasonRef = useRef<HTMLTextAreaElement>(null);
   const [pending, startTransition] = useTransition();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestSearch = useRef(0);
@@ -79,6 +80,13 @@ export function SellForm({
       }
     }, 250);
   }
+
+  // The reason box opens above the sticky total bar: bring it into view and put the cursor in it.
+  useEffect(() => {
+    if (over === null) return;
+    reasonRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    reasonRef.current?.focus({ preventScroll: true });
+  }, [over]);
 
   function clearOver() {
     setOver(null);
@@ -176,7 +184,7 @@ export function SellForm({
         const amount = formatBirr(result.amountOver, locale);
         if (canOverride && result.code === "creditLimit") {
           setOver(result.amountOver);
-          setMessage({ tone: "error", text: `${t("errorcreditLimit")} ${t("overBy", { amount })}` });
+          setMessage({ tone: "error", text: t("errorcreditLimitOwner", { amount }) });
         } else {
           clearOver();
           setMessage({ tone: "error", text: t("errorcreditLimitStaff", { amount }) });
@@ -349,6 +357,7 @@ export function SellForm({
             <p className="text-sm font-semibold text-owed">{t("overBy", { amount: formatBirr(over, locale) })}</p>
             <Label htmlFor="sell-override-reason">{t("overrideReasonLabel")}</Label>
             <textarea
+              ref={reasonRef}
               id="sell-override-reason"
               className="min-h-20 w-full rounded-md border bg-background px-3 py-2 text-base focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
               maxLength={200}

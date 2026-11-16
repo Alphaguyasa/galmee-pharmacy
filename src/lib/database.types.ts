@@ -997,6 +997,17 @@ export type Database = {
           sales_count: number
         }[]
       }
+      ph_credit_overrides_for_day: {
+        Args: { p_day?: string }
+        Returns: {
+          amount_over: number
+          by_name: string
+          created_at: string
+          customer_name: string
+          reason: string
+          sale_id: string
+        }[]
+      }
       ph_daily_closing_by_staff: {
         Args: { p_day?: string }
         Returns: {

@@ -260,6 +260,7 @@
     "errorcreditLimit": "This sale would take the customer over their credit limit. Take it in cash, or record a repayment first.",
     "overBy": "Over the limit by {amount}.",
     "errorcreditLimitStaff": "This sale would take the customer over their credit limit by {amount}. Take it in cash, or ask the owner or a manager.",
+    "errorcreditLimitOwner": "This sale would take the customer over their credit limit by {amount}. Write a reason to sell anyway, or take it in cash.",
     "overrideReasonLabel": "Reason for going over the limit",
     "overrideReasonHint": "Required, 3 to 200 characters. It is shown on the daily closing.",
     "sellAnyway": "Sell on credit anyway",
@@ -308,6 +309,9 @@
     },
     "bySeller": "By seller",
     "unknownSeller": "Former staff member",
-    "sellerLine": "Took {collected} · credit {credit}"
+    "sellerLine": "Took {collected} · credit {credit}",
+    "overLimit": "{count, plural, one {# sale over a credit limit} other {# sales over a credit limit}}",
+    "overLimitBy": "{name} · {time}",
+    "unknownCustomer": "Removed customer"
   }
 }

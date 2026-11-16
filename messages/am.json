@@ -260,6 +260,7 @@
     "errorcreditLimit": "ይህ ሽያጭ ደንበኛውን ከዱቤ ገደቡ በላይ ያደርገዋል። በጥሬ ገንዘብ ይሽጡ ወይም መጀመሪያ የዱቤ ክፍያ ይመዝግቡ።",
     "overBy": "ከገደቡ በ{amount} ይበልጣል።",
     "errorcreditLimitStaff": "ይህ ሽያጭ ደንበኛውን ከዱቤ ገደቡ በ{amount} በላይ ያደርገዋል። በጥሬ ገንዘብ ይሽጡ ወይም ባለቤቱን ወይም ሥራ አስኪያጁን ይጠይቁ።",
+    "errorcreditLimitOwner": "ይህ ሽያጭ ደንበኛውን ከዱቤ ገደቡ በ{amount} በላይ ያደርገዋል። ቢሆንም ለመሸጥ ምክንያት ይጻፉ፣ ወይም በጥሬ ገንዘብ ይሽጡ።",
     "overrideReasonLabel": "ከገደቡ በላይ የሚሸጥበት ምክንያት",
     "overrideReasonHint": "ያስፈልጋል፣ ከ3 እስከ 200 ፊደላት። በዕለቱ መዝጊያ ላይ ይታያል።",
     "sellAnyway": "ቢሆንም በዱቤ ሽጥ",
@@ -308,6 +309,9 @@
     },
     "bySeller": "በሻጭ",
     "unknownSeller": "የቀድሞ ሠራተኛ",
-    "sellerLine": "የተቀበለው {collected} · ዱቤ {credit}"
+    "sellerLine": "የተቀበለው {collected} · ዱቤ {credit}",
+    "overLimit": "{count, plural, one {ከዱቤ ገደብ በላይ # ሽያጭ} other {ከዱቤ ገደብ በላይ # ሽያጮች}}",
+    "overLimitBy": "{name} · {time}",
+    "unknownCustomer": "የተሰረዘ ደንበኛ"
   }
 }
