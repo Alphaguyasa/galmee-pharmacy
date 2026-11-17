@@ -78,6 +78,10 @@
 - [ ] Excel import of items (template + parser)
 - [ ] Export-all to Excel
 
+## M-stars: features no notebook can do
+
+- [x] Walk-out log: one tap "asked for it, not in stock" at the till + weekly ranked restock list with missed sales
+
 ## Q: Quality and security baseline (do these inside M0 and M1, not after)
 
 - [x] `docs/DESIGN.md` written per the frontend guidelines (palette, type with Ethiopic support, layout wireframes, reviewed against generic defaults)
