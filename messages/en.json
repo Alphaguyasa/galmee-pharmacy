@@ -367,6 +367,17 @@
     "errorLog": "Could not log it. Check your connection and try again.",
     "errorLimit": "Today's limit for this list is reached.",
     "errorUndo": "Could not undo. An owner or manager can remove it later.",
-    "errorEmpty": "Type the medicine name."
+    "errorEmpty": "Type the medicine name.",
+    "csv": {
+      "rank": "Rank",
+      "medicine": "Medicine",
+      "asks": "Times asked",
+      "qtyAsked": "Quantity wanted",
+      "inStock": "In stock now",
+      "price": "Price (ETB)",
+      "missed": "Missed sales (ETB)",
+      "lastAsked": "Last asked"
+    },
+    "download": "Download list (CSV)"
   }
 }

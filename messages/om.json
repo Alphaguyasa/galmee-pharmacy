@@ -367,6 +367,17 @@
     "errorLog": "Galmeessuun hin danda'amne. Walqunnamtii keessan mirkaneessaatii irra deebi'aa yaalaa.",
     "errorLimit": "Daangaan har'aa tarree kanaa ga'eera.",
     "errorUndo": "Deebisuun hin danda'amne. Abbaan qabeenyaa ykn hoji-gaggeessaan booda haquu danda'a.",
-    "errorEmpty": "Maqaa qorichaa barreessaa."
+    "errorEmpty": "Maqaa qorichaa barreessaa.",
+    "csv": {
+      "rank": "Sadarkaa",
+      "medicine": "Qoricha",
+      "asks": "Si'a gaafatame",
+      "qtyAsked": "Baay'ina barbaadame",
+      "inStock": "Amma kuusaa keessa",
+      "price": "Gatii (Qarshii)",
+      "missed": "Gurgurtaa dabre (Qarshii)",
+      "lastAsked": "Yeroo dhumaa gaafatame"
+    },
+    "download": "Tarree buusi (CSV)"
   }
 }

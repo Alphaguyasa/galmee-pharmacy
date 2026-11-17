@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
-import { ArrowLeft, PackageX } from "lucide-react";
+import { ArrowLeft, Download, PackageX } from "lucide-react";
 import { EmptyState } from "@/components/galmee/empty-state";
 import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
+import { buttonVariants } from "@/components/ui/button";
 import { WalkoutQuickLog } from "@/components/walkouts/walkout-quick-log";
 import type { Locale } from "@/i18n/config";
 import { formatEthiopianDate } from "@/lib/ethiopian-date";
@@ -60,7 +61,17 @@ export default async function WalkoutsPage({ searchParams }: { searchParams: Pro
         <EmptyState icon={PackageX} message={t("empty")} />
       ) : (
         <section aria-labelledby="walkout-list" className="grid gap-2">
-          <h2 id="walkout-list" className="font-semibold">{t("listHeading")}</h2>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 id="walkout-list" className="font-semibold">{t("listHeading")}</h2>
+            <a
+              href={`/stock/walkouts/csv?days=${days}`}
+              download
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+            >
+              <Download aria-hidden />
+              {t("download")}
+            </a>
+          </div>
           <ol className="divide-y rounded-md border bg-card">
             {rows.map((row, index) => {
               const name = itemName(row.names, locale);

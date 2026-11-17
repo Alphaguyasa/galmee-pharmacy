@@ -80,7 +80,7 @@
 
 ## M-stars: features no notebook can do
 
-- [x] Walk-out log: one tap "asked for it, not in stock" at the till + weekly ranked restock list with missed sales
+- [x] Walk-out log: one tap "asked for it, not in stock" at the till + weekly ranked restock list with missed sales, CSV download
 
 ## Q: Quality and security baseline (do these inside M0 and M1, not after)
 
