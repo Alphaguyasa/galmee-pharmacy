@@ -112,7 +112,8 @@
     "writeOffConfirm": "Remove all expired stock of {name}? This cannot be undone.",
     "writeOffYes": "Yes, remove",
     "writeOffNo": "Keep",
-    "writeOffError": "Could not remove the stock. Try again."
+    "writeOffError": "Could not remove the stock. Try again.",
+    "walkouts": "Asked, not in stock"
   },
   "receive": {
     "title": "Receive stock",
@@ -340,5 +341,32 @@
       "repayments": "Repayments (ETB)",
       "credit": "Credit given (ETB)"
     }
+  },
+  "walkouts": {
+    "title": "Asked for, not in stock",
+    "intro": "Medicines customers asked for that you could not sell. The top of the list is your restock list.",
+    "back": "Stock",
+    "rangeLabel": "Period",
+    "lastDays": "Last {days} days",
+    "lostLabel": "Sales missed in the last {days} days",
+    "asksCount": "{count, plural, =0 {No requests} one {# request} other {# requests}} (typed names have no price)",
+    "quickLabel": "Log a request by name",
+    "quickPlaceholder": "Medicine name",
+    "quickButton": "Log",
+    "listHeading": "Most asked first",
+    "asked": "Asked {count, plural, one {# time} other {# times}} · {qty} wanted",
+    "lastAsked": "last {date}",
+    "notListed": "Not in your list yet",
+    "inStockNow": "In stock now: {qty}",
+    "stillOut": "Still out of stock",
+    "empty": "No requests logged in this period. When a customer asks for something you don't have, tap \"Asked for it\" on the Sell screen.",
+    "logButton": "Asked for \"{name}\", not in stock: log it",
+    "logged": "Logged: {name}",
+    "undo": "Undo",
+    "undone": "Removed from the list.",
+    "errorLog": "Could not log it. Check your connection and try again.",
+    "errorLimit": "Today's limit for this list is reached.",
+    "errorUndo": "Could not undo. An owner or manager can remove it later.",
+    "errorEmpty": "Type the medicine name."
   }
 }

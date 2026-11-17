@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
-import { PackagePlus, Search } from "lucide-react";
+import { PackagePlus, PackageX, Search } from "lucide-react";
 import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
 import { EmptyState } from "@/components/galmee/empty-state";
 import { ExpiryLabel } from "@/components/stock/expiry-label";
@@ -44,17 +44,23 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
     <div className="grid gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-[1.5625rem] leading-tight font-bold">{t("title")}</h1>
-        {canReceive ? (
-          <div className="flex flex-wrap gap-2">
-            <Link href="/stock/new" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
-              {t("newItem")}
-            </Link>
-            <Link href="/stock/receive" className={cn(buttonVariants({ size: "lg" }))}>
-              <PackagePlus className="size-5" aria-hidden />
-              {t("receive")}
-            </Link>
-          </div>
-        ) : null}
+        <div className="flex flex-wrap gap-2">
+          <Link href="/stock/walkouts" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+            <PackageX className="size-5" aria-hidden />
+            {t("walkouts")}
+          </Link>
+          {canReceive ? (
+            <>
+              <Link href="/stock/new" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+                {t("newItem")}
+              </Link>
+              <Link href="/stock/receive" className={cn(buttonVariants({ size: "lg" }))}>
+                <PackagePlus className="size-5" aria-hidden />
+                {t("receive")}
+              </Link>
+            </>
+          ) : null}
+        </div>
       </div>
 
       <section aria-label={t("moneyHeading")} className="grid grid-cols-2 gap-3 sm:grid-cols-3">

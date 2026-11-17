@@ -114,3 +114,11 @@ export const saleSchema = z
 export const sellSearchSchema = z.string().trim().min(1).max(80);
 
 export const writeOffSchema = z.object({ itemId: z.uuid() });
+
+export const walkoutSchema = z.object({
+  label: z.string().trim().min(1).max(80),
+  itemId: z.uuid().optional(),
+  qty: z.number().int().min(1).max(999).default(1),
+});
+
+export const walkoutIdSchema = z.uuid();

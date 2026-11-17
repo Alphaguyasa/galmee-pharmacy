@@ -112,7 +112,8 @@
     "writeOffConfirm": "Kuusaa {name} yeroon isaa darbe hunda baasuu? Kun deebi'uu hin danda'u.",
     "writeOffYes": "Eeyyee, baasi",
     "writeOffNo": "Dhiisi",
-    "writeOffError": "Baasuun hin danda'amne. Irra deebi'ii yaali."
+    "writeOffError": "Baasuun hin danda'amne. Irra deebi'ii yaali.",
+    "walkouts": "Gaafatame, hin jiru"
   },
   "receive": {
     "title": "Meeshaa fudhachuu",
@@ -340,5 +341,32 @@
       "repayments": "Liqii deebi'e (ETB)",
       "credit": "Liqii kenname (ETB)"
     }
+  },
+  "walkouts": {
+    "title": "Gaafatame, hin jiru",
+    "intro": "Qorichoota maamiltoonni gaafatanii gurguruu hin dandeenye. Jalqabni tarree kanaa tarree bittaa keessanii ti.",
+    "back": "Kuusaa",
+    "rangeLabel": "Yeroo",
+    "lastDays": "Guyyoota {days} darban",
+    "lostLabel": "Gurgurtaa guyyoota {days} darban keessatti dabre",
+    "asksCount": "{count, plural, =0 {Gaaffiin hin jiru} one {Gaaffii #} other {Gaaffii #}} (maqaan barreeffame gatii hin qabu)",
+    "quickLabel": "Gaaffii maqaan galmeessi",
+    "quickPlaceholder": "Maqaa qorichaa",
+    "quickButton": "Galmeessi",
+    "listHeading": "Kan baay'ee gaafatame dura",
+    "asked": "Si'a {count} gaafatame · {qty} barbaadame",
+    "lastAsked": "dhuma {date}",
+    "notListed": "Ammallee tarree keessan keessa hin jiru",
+    "inStockNow": "Amma kuusaa keessa: {qty}",
+    "stillOut": "Ammallee dhumeera",
+    "empty": "Yeroo kana keessatti gaaffiin galmaa'e hin jiru. Maamilli waan isin hin qabne yoo gaafate, fuula Gurgurtaa irratti \"Gaafatame\" tuqaa.",
+    "logButton": "\"{name}\" gaafatame, hin jiru: galmeessi",
+    "logged": "Galmaa'eera: {name}",
+    "undo": "Deebisi",
+    "undone": "Tarree irraa haqameera.",
+    "errorLog": "Galmeessuun hin danda'amne. Walqunnamtii keessan mirkaneessaatii irra deebi'aa yaalaa.",
+    "errorLimit": "Daangaan har'aa tarree kanaa ga'eera.",
+    "errorUndo": "Deebisuun hin danda'amne. Abbaan qabeenyaa ykn hoji-gaggeessaan booda haquu danda'a.",
+    "errorEmpty": "Maqaa qorichaa barreessaa."
   }
 }

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BarcodeScanner } from "./barcode-scanner";
+import { WalkoutButton } from "@/components/walkouts/walkout-button";
 import type { Locale } from "@/i18n/config";
 import { formatBirr, formatQty, itemName } from "@/lib/format";
 import type { SellableItemDTO } from "@/server/dal/sales";
@@ -196,6 +197,21 @@ export function SellForm({
     });
   }
 
+  // Nothing sellable for what the customer asked: offer to log it as a walk-out. One unsellable
+  // listed item logs that item; no match (or several) logs the words that were typed.
+  const typed = query.trim();
+  const unsellable = results.filter((r) => { const b = blockReason(r); return b === "outOfStock" || b === "expiredStock"; });
+  const walkout =
+    searchState !== "done" || typed === "" || scanNote !== null
+      ? null
+      : results.length === 0
+        ? { key: `q:${typed}`, label: typed, itemId: undefined, displayName: typed }
+        : unsellable.length === results.length
+          ? unsellable.length === 1
+            ? { key: `i:${unsellable[0].itemId}`, label: unsellable[0].names.en, itemId: unsellable[0].itemId, displayName: itemName(unsellable[0].names, locale) }
+            : { key: `q:${typed}`, label: typed, itemId: undefined, displayName: typed }
+          : null;
+
   // Display only: the database prices the sale and returns the total that is shown afterwards.
   const total = cart.reduce((sum, l) => sum + Math.round(l.item.price * 100) * l.qty, 0) / 100;
   const unitLabel = (unit: string) => (tStock.has(`units.${unit}`) ? tStock(`units.${unit}`) : unit);
@@ -233,6 +249,7 @@ export function SellForm({
                 ? t("noResults")
                 : ""}
         </p>
+        {walkout ? <WalkoutButton key={walkout.key} label={walkout.label} itemId={walkout.itemId} displayName={walkout.displayName} /> : null}
         {results.length > 0 ? (
           <ul className="grid gap-2">
             {results.map((item) => {

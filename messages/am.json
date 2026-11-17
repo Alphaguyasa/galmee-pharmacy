@@ -112,7 +112,8 @@
     "writeOffConfirm": "ጊዜው ያለፈበትን የ{name} ክምችት በሙሉ ላስወግድ? ይህ ሊመለስ አይችልም።",
     "writeOffYes": "አዎ፣ አስወግድ",
     "writeOffNo": "ተው",
-    "writeOffError": "ማስወገድ አልተቻለም። እንደገና ይሞክሩ።"
+    "writeOffError": "ማስወገድ አልተቻለም። እንደገና ይሞክሩ።",
+    "walkouts": "ተጠይቆ የሌለ"
   },
   "receive": {
     "title": "ዕቃ መቀበያ",
@@ -340,5 +341,32 @@
       "repayments": "የዱቤ ክፍያ (ብር)",
       "credit": "የተሰጠ ዱቤ (ብር)"
     }
+  },
+  "walkouts": {
+    "title": "የተጠየቁ ግን የሌሉ",
+    "intro": "ደንበኞች ጠይቀው መሸጥ ያልቻላችሁት መድኃኒቶች። የዝርዝሩ ላይኛው ክፍል የሚገዛው ዝርዝር ነው።",
+    "back": "ክምችት",
+    "rangeLabel": "ጊዜ",
+    "lastDays": "ያለፉት {days} ቀናት",
+    "lostLabel": "ባለፉት {days} ቀናት ያመለጠ ሽያጭ",
+    "asksCount": "{count, plural, =0 {ጥያቄ የለም} one {# ጥያቄ} other {# ጥያቄዎች}} (የተጻፉ ስሞች ዋጋ የላቸውም)",
+    "quickLabel": "ጥያቄን በስም መዝግብ",
+    "quickPlaceholder": "የመድኃኒት ስም",
+    "quickButton": "መዝግብ",
+    "listHeading": "በብዛት የተጠየቀው መጀመሪያ",
+    "asked": "{count, plural, one {# ጊዜ} other {# ጊዜ}} ተጠይቋል · {qty} ተፈልጓል",
+    "lastAsked": "መጨረሻ {date}",
+    "notListed": "ገና በዝርዝርዎ ውስጥ የለም",
+    "inStockNow": "አሁን በክምችት: {qty}",
+    "stillOut": "አሁንም አልቋል",
+    "empty": "በዚህ ጊዜ የተመዘገበ ጥያቄ የለም። ደንበኛ የሌላችሁን ሲጠይቅ በሽያጭ ገጽ ላይ \"ተጠይቋል\" የሚለውን ይንኩ።",
+    "logButton": "\"{name}\" ተጠይቋል፣ የለም፦ መዝግብ",
+    "logged": "ተመዝግቧል፦ {name}",
+    "undo": "መልስ",
+    "undone": "ከዝርዝሩ ተወግዷል።",
+    "errorLog": "መመዝገብ አልተቻለም። ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ።",
+    "errorLimit": "የዛሬው የዚህ ዝርዝር ገደብ ደርሷል።",
+    "errorUndo": "መመለስ አልተቻለም። ባለቤት ወይም ሥራ አስኪያጅ በኋላ ሊያስወግደው ይችላል።",
+    "errorEmpty": "የመድኃኒቱን ስም ይጻፉ።"
   }
 }
