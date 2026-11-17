@@ -788,6 +788,36 @@ export type Database = {
         }
         Relationships: []
       }
+      ph_walkouts: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          item_id: string | null
+          label: string
+          qty: number
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          item_id?: string | null
+          label: string
+          qty?: number
+          tenant_id?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          item_id?: string | null
+          label?: string
+          qty?: number
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       ph_suppliers: {
         Row: {
           active: boolean
@@ -1018,6 +1048,25 @@ export type Database = {
           repayments: number
           sales_count: number
           sales_total: number
+        }[]
+      }
+      ph_log_walkout: {
+        Args: { p_label: string; p_item?: string; p_qty?: number }
+        Returns: string
+      }
+      ph_walkout_ranking: {
+        Args: { p_days?: number }
+        Returns: {
+          asks: number
+          item_id: string | null
+          label: string
+          last_asked: string
+          lost_value: number | null
+          name_am: string | null
+          name_om: string | null
+          price: number | null
+          qty_asked: number
+          qty_on_hand: number | null
         }[]
       }
       ph_daily_closing_by_staff: {
