@@ -13,7 +13,7 @@ import type { Locale } from "@/i18n/config";
 import { addisToday, formatEthiopianDate, isIsoDay, shiftIsoDay } from "@/lib/ethiopian-date";
 import { formatBirr } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { getClosingByStaff, getCreditOverrides, getDailyClosing, type ClosingRowDTO } from "@/server/dal/reports";
+import { getClosingByStaff, getCreditOverrides, getDailyClosing, getSalesForDay, type ClosingRowDTO } from "@/server/dal/reports";
 
 // Cash and Telebirr are always listed (the owner looks for them); the rest only when used that day.
 const ALWAYS_SHOWN = new Set(["cash", "telebirr"]);
@@ -24,10 +24,11 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
     .object({ day: z.string().refine((d) => isIsoDay(d) && d <= today).catch(today) })
     .parse({ day: today, ...(await searchParams) });
 
-  const [closing, sellers, overrides, t, locale] = await Promise.all([
+  const [closing, sellers, overrides, daySales, t, locale] = await Promise.all([
     getDailyClosing(day),
     getClosingByStaff(day),
     getCreditOverrides(day),
+    getSalesForDay(day),
     getTranslations("reports"),
     getLocale() as Promise<Locale>,
   ]);
@@ -172,6 +173,32 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
                   </>
                 }
                 right={<span className="num font-bold text-owed">{formatBirr(o.amountOver, locale)}</span>}
+              />
+            ))}
+          </ListSheet>
+        </section>
+      ) : null}
+
+      {daySales.length > 0 ? (
+        <section aria-labelledby="day-sales" className="grid gap-2">
+          <div className="grid gap-0.5">
+            <h2 id="day-sales" className="font-semibold">
+              {t("daySales")}
+            </h2>
+            <p className="text-sm text-muted-foreground">{t("daySalesHint")}</p>
+          </div>
+          <ListSheet>
+            {daySales.map((s) => (
+              <ListRow
+                key={s.saleId}
+                href={`/sales/${s.saleId}`}
+                title={<span className="num">{s.receiptNo ?? t("saleNoNumber")}</span>}
+                sub={
+                  <span className="num">
+                    {formatAddisTime(s.at, locale)} · {t(`methods.${s.method}`)}
+                  </span>
+                }
+                right={<span className="num font-bold">{formatBirr(s.total, locale)}</span>}
               />
             ))}
           </ListSheet>

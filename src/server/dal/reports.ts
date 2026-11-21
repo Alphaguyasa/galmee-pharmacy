@@ -167,3 +167,47 @@ export async function getTodaySummary(): Promise<TodaySummaryDTO> {
     owed: Number(data?.owed_total ?? 0),
   };
 }
+
+export const DAY_SALES_LIMIT = 200;
+
+export type DaySaleDTO = {
+  saleId: string;
+  at: string;
+  total: number;
+  method: ClosingMethod;
+  receiptNo: string | null;
+};
+
+/** One Addis Ababa day's sales, newest first, each with its receipt number (for reprints). */
+export async function getSalesForDay(day: string): Promise<DaySaleDTO[]> {
+  await getSession();
+  const supabase = await createClient();
+  const start = new Date(`${day}T00:00:00+03:00`);
+  const end = new Date(start.getTime() + 24 * 3600 * 1000);
+  const { data, error } = await supabase
+    .from("sales")
+    .select("id, total, paid, method, customer_id, created_at")
+    .gte("created_at", start.toISOString())
+    .lt("created_at", end.toISOString())
+    .order("created_at", { ascending: false })
+    .limit(DAY_SALES_LIMIT);
+  if (error) throw new Error("day_sales_failed");
+  if (data.length === 0) return [];
+  const receipts = await supabase
+    .from("ph_sale_receipts")
+    .select("sale_id, receipt_no")
+    .in("sale_id", data.map((s) => s.id));
+  // Numbers are optional: a day before numbering started still lists its sales.
+  const numbers = new Map((receipts.error ? [] : receipts.data).map((r) => [r.sale_id, r.receipt_no]));
+  return data.map((s) => {
+    const total = Number(s.total);
+    const method = Number(s.paid) < total && s.customer_id ? "credit" : String(s.method);
+    return {
+      saleId: s.id,
+      at: s.created_at,
+      total,
+      method: isMethod(method) ? method : "other",
+      receiptNo: numbers.get(s.id) ?? null,
+    };
+  });
+}

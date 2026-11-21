@@ -340,7 +340,10 @@
       "cash": "Qarshii (ETB)",
       "repayments": "Liqii deebi'e (ETB)",
       "credit": "Liqii kenname (ETB)"
-    }
+    },
+    "daySales": "Gurgurtaa fi nagahee",
+    "daySalesHint": "Nagahee isaa ilaaluuf ykn irra deebiin maxxansuuf gurgurtaa tuqi.",
+    "saleNoNumber": "Gurgurtaa"
   },
   "walkouts": {
     "title": "Gaafatame, hin jiru",

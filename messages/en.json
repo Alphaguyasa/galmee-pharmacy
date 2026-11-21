@@ -340,7 +340,10 @@
       "cash": "Cash (ETB)",
       "repayments": "Repayments (ETB)",
       "credit": "Credit given (ETB)"
-    }
+    },
+    "daySales": "Sales and receipts",
+    "daySalesHint": "Tap a sale to see or reprint its receipt.",
+    "saleNoNumber": "Sale"
   },
   "walkouts": {
     "title": "Asked for, not in stock",
