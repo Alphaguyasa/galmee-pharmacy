@@ -379,5 +379,15 @@
       "lastAsked": "Last asked"
     },
     "download": "Download list (CSV)"
+  },
+  "receipt": {
+    "title": "Receipt",
+    "print": "Print receipt",
+    "width58": "58 mm",
+    "width80": "80 mm",
+    "widthLabel": "Paper width",
+    "newSale": "New sale",
+    "noNumber": "This sale was recorded before receipt numbers started, so it prints without a number.",
+    "openReceipt": "Receipt"
   }
 }

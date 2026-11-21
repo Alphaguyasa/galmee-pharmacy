@@ -818,6 +818,17 @@ export type Database = {
         }
         Relationships: []
       }
+      ph_sale_receipts: {
+        Row: {
+          created_at: string
+          receipt_no: string
+          sale_id: string
+          tenant_id: string
+        }
+        Insert: never
+        Update: never
+        Relationships: []
+      }
       ph_suppliers: {
         Row: {
           active: boolean

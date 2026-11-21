@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { Minus, Plus, Search, Trash2 } from "lucide-react";
+import { Minus, Plus, Printer, Search, Trash2 } from "lucide-react";
 import { findSellable, sell } from "@/actions/sales";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BarcodeScanner } from "./barcode-scanner";
@@ -37,6 +38,7 @@ export function SellForm({
   const t = useTranslations("sell");
   const tCustomers = useTranslations("customers");
   const tStock = useTranslations("stock");
+  const tReceipt = useTranslations("receipt");
   const locale = useLocale() as Locale;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SellableItemDTO[]>([]);
@@ -49,6 +51,8 @@ export function SellForm({
   // After an unanswered attempt the cart stays as sent: the sale may already be recorded.
   const [locked, setLocked] = useState(false);
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
+  // The sale just recorded, so its receipt is one tap away.
+  const [lastSaleId, setLastSaleId] = useState<string | null>(null);
   // Result of the last scan, shown under the search box where the cashier is looking.
   const [scanNote, setScanNote] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
   // Set when the database refused a credit sale for the limit: how far over, for this cart only.
@@ -175,6 +179,7 @@ export function SellForm({
 
       if (result.ok) {
         reset();
+        setLastSaleId(result.saleId);
         setMessage({ tone: "ok", text: t("recorded", { total: formatBirr(result.total, locale) }) });
         return;
       }
@@ -411,6 +416,13 @@ export function SellForm({
           >
             {message?.text ?? ""}
           </p>
+
+          {lastSaleId && message?.tone === "ok" ? (
+            <Link href={`/sales/${lastSaleId}`} className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+              <Printer aria-hidden="true" />
+              {tReceipt("openReceipt")}
+            </Link>
+          ) : null}
 
           <div className="grid grid-cols-[auto_1fr] gap-2">
             <Button type="button" variant="outline" size="lg" disabled={pending || (cart.length === 0 && !locked)} onClick={() => { reset(); setMessage(null); }}>

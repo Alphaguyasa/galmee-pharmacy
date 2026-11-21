@@ -379,5 +379,15 @@
       "lastAsked": "Yeroo dhumaa gaafatame"
     },
     "download": "Tarree buusi (CSV)"
+  },
+  "receipt": {
+    "title": "Nagahee",
+    "print": "Nagahee maxxansi",
+    "width58": "58 mm",
+    "width80": "80 mm",
+    "widthLabel": "Bal'ina waraqaa",
+    "newSale": "Gurgurtaa haaraa",
+    "noNumber": "Gurgurtaan kun osoo lakkoofsi nagahee hin jalqabin galmaa'e, kanaaf lakkoofsa malee maxxanfama.",
+    "openReceipt": "Nagahee"
   }
 }
