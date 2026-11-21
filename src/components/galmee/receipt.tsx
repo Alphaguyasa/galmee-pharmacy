@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { ReceiptQr } from "./receipt-qr";
 import { receiptModel, type ReceiptData, type ReceiptWidth } from "@/lib/galmee/receipt";
 
 /**
@@ -77,7 +78,7 @@ export function Receipt({
       </table>
       <hr className="my-2 border-t border-dashed border-black" />
       <div className="grid justify-items-center gap-0.5 text-center">
-        {m.qr ? <p className="text-xs break-all">{m.qr}</p> : null}
+        {m.qr ? <ReceiptQr value={m.qr} size={wide ? 120 : 96} /> : null}
         {m.footer.map((f, i) => (
           <p key={i} className={cn("break-words", i === m.footer.length - 1 && "num text-xs")}>{f}</p>
         ))}
