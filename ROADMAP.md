@@ -38,7 +38,7 @@
 ## M3: Notifications
 
 - [ ] Evening Telegram summary to owner: sales, cash vs Telebirr, expiring items, low stock
-- [ ] Edge Function reads `notifications` queue and sends (needs AfroMessage/Telegram keys: ask in the decision log)
+- [x] Edge Function reads `notifications` queue and sends (Telegram live; SMS switches on when AfroMessage credit is added)
 
 ## M4: Demo ready
 
