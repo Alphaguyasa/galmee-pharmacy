@@ -98,7 +98,9 @@ export function receiptModel(data: ReceiptData): ReceiptModel {
   if (data.tenant.phone) header.push(`${s.phone} ${data.tenant.phone}`);
   if (data.tenant.tin) header.push(`${s.tin} ${data.tenant.tin}`);
 
-  const meta = [{ label: s.no, value: data.no }, { label: data.ethDate, value: `(${data.gregDate})` }];
+  // A receipt without a number (a sale from before numbering started) leaves the number out instead of printing a blank.
+  const meta = data.no ? [{ label: s.no, value: data.no }] : [];
+  meta.push({ label: data.ethDate, value: `(${data.gregDate})` });
   if (data.customer) {
     meta.push({ label: s.customer, value: data.customer.name });
     if (data.customer.phone) meta.push({ label: s.phone, value: data.customer.phone });
@@ -120,7 +122,7 @@ export function receiptModel(data: ReceiptData): ReceiptModel {
   if (t.paid > due && data.kind !== "repayment") totals.push({ label: s.change, value: receiptAmount(t.paid - due) });
   if (t.balanceAfter != null) totals.push({ label: s.balanceAfter, value: `${receiptAmount(t.balanceAfter)} ${s.currency}` });
 
-  const footer = [data.footer ?? s.thanks, `${s.brand} · ${data.no}`];
+  const footer = [data.footer ?? s.thanks, data.no ? `${s.brand} · ${data.no}` : s.brand];
   return { header, title: s.title[data.kind] ?? s.title.sale, meta, lines, totals, footer, qr: data.qr };
 }
 
