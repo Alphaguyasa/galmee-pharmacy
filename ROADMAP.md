@@ -62,7 +62,7 @@
 
 - [x] Daily closing screen reading `ph_daily_closing` (cash/Telebirr/credit tiles + per-method list)
 - [x] Credit limit at the till: owners and managers can go over it with a reason; each one is listed on the daily closing
-- [ ] Receipt layout component (58 mm CSS print) for one sale, EN/AM
+- [x] Receipt layout component (58 mm CSS print) for one sale, EN/AM (also Afaan Oromo and 80 mm)
 - [ ] Print flow from sale success screen + reprint from sale detail
 - [ ] Telegram receipt: queue `notifications` row with receipt text on sale
 

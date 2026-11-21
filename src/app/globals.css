@@ -161,3 +161,25 @@
     background: #fff;
   }
 }
+
+/* Galmee receipt kit: when one receipt is marked for printing, only it prints, edge to edge. */
+@media print {
+  @page {
+    margin: 0;
+  }
+  body:has([data-printing]) > *:not(:has([data-printing])),
+  body:has([data-printing]) .galmee-receipt:not([data-printing]) {
+    display: none !important;
+  }
+  .galmee-receipt[data-printing] {
+    margin: 0;
+    border: 0;
+    padding: 2mm;
+    max-width: none;
+  }
+  .receipt-80 {
+    width: 80mm;
+    color: #000;
+    background: #fff;
+  }
+}
