@@ -153,3 +153,46 @@ describe("replay", () => {
     expect(seen).toEqual(["a"]);
   });
 });
+
+describe("sync state", () => {
+  it("tells subscribers about counts, syncing and the last sync", async () => {
+    const online = { v: false };
+    const { engine } = setup(() => ok(), online);
+    const seenStates: string[] = [];
+    const stop = engine.subscribe(() => {
+      const s = engine.getState();
+      seenStates.push(`${s.pending}/${s.dead}/${s.syncing ? "s" : "-"}`);
+    });
+    await engine.callOrQueue("record_sale", {});
+    expect(engine.getState()).toMatchObject({ pending: 1, dead: 0, syncing: false });
+    online.v = true;
+    await engine.replayNow();
+    expect(engine.getState()).toMatchObject({ pending: 0, dead: 0, syncing: false });
+    expect(engine.getState().lastSyncAt).toBeTypeOf("number");
+    expect(seenStates).toContain("1/0/s");
+    stop();
+  });
+
+  it("retries a dead entry in its old place, and discards only dead entries", async () => {
+    let refuse = true;
+    const { engine, seen } = setup((_r, args) => (refuse && args.p_client_ref === "a" ? badLine() : ok()));
+    await q.enqueue("record_sale", { p_client_ref: "a" });
+    await q.enqueue("record_sale", { p_client_ref: "b" });
+    await engine.replayNow();
+    expect(engine.getState()).toMatchObject({ pending: 0, dead: 1 });
+    const [dead] = await q.list("dead");
+    refuse = false;
+    expect(await engine.retry(dead.seq)).toEqual({ synced: 1, dead: 0, held: false });
+    expect(seen).toEqual(["a", "b", "a"]);
+    expect(engine.getState()).toMatchObject({ pending: 0, dead: 0 });
+
+    await q.enqueue("record_sale", { p_client_ref: "c" });
+    const [waiting] = await q.list("pending");
+    await engine.discard(waiting.seq); // not dead: left alone
+    expect(await q.counts()).toEqual({ pending: 1, dead: 0 });
+    await q.markDead(waiting.seq, "bad_line");
+    await engine.discard(waiting.seq);
+    expect(await q.counts()).toEqual({ pending: 0, dead: 0 });
+    expect(engine.getState()).toMatchObject({ pending: 0, dead: 0 });
+  });
+});

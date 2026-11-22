@@ -45,6 +45,9 @@ export type CallResult =
 
 export type ReplayReport = { synced: number; dead: number; held: boolean };
 
+/** What the sync chip shows. A new object on every change (safe for useSyncExternalStore). */
+export type SyncState = { pending: number; dead: number; syncing: boolean; lastSyncAt?: number };
+
 export type SyncEngineOptions = {
   queue: OfflineQueue;
   call: RpcCall;
@@ -84,6 +87,17 @@ export function createSyncEngine({
   };
 
   let running: Promise<ReplayReport> | null = null;
+  let state: SyncState = { pending: 0, dead: 0, syncing: false };
+  const listeners = new Set<() => void>();
+  const setState = (patch: Partial<SyncState>) => {
+    state = { ...state, ...patch };
+    listeners.forEach((l) => l());
+  };
+  /** Re-reads the counts from the queue and tells subscribers. */
+  const refresh = async () => {
+    setState(await queue.counts());
+    onChange?.();
+  };
 
   const replayOnce = async (): Promise<ReplayReport> => {
     const report: ReplayReport = { synced: 0, dead: 0, held: false };
@@ -110,13 +124,16 @@ export function createSyncEngine({
         if (i >= delays.length) break;
         await sleep(delays[i]);
       }
-      onChange?.();
+      await refresh();
       if (outcome === "retryable") {
         report.held = true;
         break;
       }
     }
-    if (report.synced > 0) onSynced?.(report);
+    if (report.synced > 0) {
+      setState({ lastSyncAt: Date.now() });
+      onSynced?.(report);
+    }
     return report;
   };
 
@@ -125,14 +142,40 @@ export function createSyncEngine({
    * so two triggers never send the same entry twice at once.
    */
   const replayNow = (): Promise<ReplayReport> => {
-    running ??= replayOnce().finally(() => {
-      running = null;
-    });
+    if (!running) {
+      setState({ syncing: true });
+      running = replayOnce().finally(() => {
+        running = null;
+        setState({ syncing: false });
+      });
+    }
     return running;
   };
 
   return {
     replayNow,
+    refresh,
+    getState: (): SyncState => state,
+    subscribe(listener: () => void): () => void {
+      listeners.add(listener);
+      return () => void listeners.delete(listener);
+    },
+    /** Puts a dead entry back in line and replays. */
+    async retry(seq: number): Promise<ReplayReport> {
+      await queue.retry(seq);
+      await refresh();
+      return replayNow();
+    },
+    /**
+     * Drops a dead entry for good. The screen checks the role (canDiscard) and
+     * records the attempt through the app's audit path before calling this.
+     */
+    async discard(seq: number): Promise<void> {
+      const entry = (await queue.list("dead")).find((e) => e.seq === seq);
+      if (!entry) return;
+      await queue.remove(seq);
+      await refresh();
+    },
 
     /**
      * Runs a whitelisted money RPC now, or queues it. The `client_ref` is fixed
@@ -145,7 +188,7 @@ export function createSyncEngine({
       const withRef = { ...args, p_client_ref: client_ref };
       const queueIt = async (): Promise<CallResult> => {
         await queue.enqueue(rpc, withRef);
-        onChange?.();
+        await refresh();
         return { status: "queued", client_ref };
       };
 
