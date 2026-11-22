@@ -173,7 +173,9 @@
     "errorNumbers": "Gatiiwwanii fi sadarkaa ajajaa mirkaneessi.",
     "errorForbidden": "Qoricha dabaluu kan danda'an abbaa qabeenyaa ykn hoggantoota qofa.",
     "errorDuplicateSku": "Koodiin kun qoricha biraaf qabameera.",
-    "errorGeneric": "Qoricha galmeessuun hin danda'amne. Quunnamtii kee mirkaneessii irra deebi'ii yaali."
+    "errorGeneric": "Qoricha galmeessuun hin danda'amne. Quunnamtii kee mirkaneessii irra deebi'ii yaali.",
+    "manyHint": "Qorichoota baay'ee dabaluuf jirtu?",
+    "importLink": "Gabatee irraa galchaa"
   },
   "customers": {
     "title": "Maamiltoota liqii",
@@ -392,5 +394,55 @@
     "newSale": "Gurgurtaa haaraa",
     "noNumber": "Gurgurtaan kun osoo lakkoofsi nagahee hin jalqabin galmaa'e, kanaaf lakkoofsa malee maxxanfama.",
     "openReceipt": "Nagahee"
+  },
+  "itemImport": {
+    "title": "Qorichoota gabatee irraa galchuu",
+    "intro": "Qorichoota hanga {max} yeroo tokkotti faayilii CSV irraa galchaa (gabatee Excel keessanii CSV tiin olkaa'aa). Hanga mirkaneessitanitti homtuu hin olkaa'amu.",
+    "downloadTemplate": "Unka buufadhaa",
+    "step1": "sarara tokkotti qoricha tokko guutaa. Maqaan utubaa Ingliffaa, Amaariffaa ykn Afaan Oromootiin ta'uu danda'a.",
+    "step2": "CSV tiin olkaa'aa (Excel keessatti: File, Save as, CSV UTF-8).",
+    "step3": "Faayilicha gadii filadhaa, tarree mirkaneeffadhaa, achiis qorichoota uumaa. Kuusaa booda Fudhachuun dabalaa.",
+    "chooseFile": "Faayilii CSV",
+    "fileHint": "Utubaawwan barbaachisan: name, unit, price, cost. Safartuuwwan: strip, bottle, sachet, tube, tablet, pack, piece, pair, roll, bag.",
+    "checking": "Faayiliin ilaalamaa jira…",
+    "ready": "dabaluuf qophaa'e",
+    "skipped": "sararoota darbaman",
+    "problemsTitle": "Sararoota darbaman",
+    "line": "Sarara {line}",
+    "more": "fi {count} biroo",
+    "previewTitle": "Qorichoota dabalaman",
+    "create": "Qoricha {count} uumi",
+    "saving": "Olkaa'amaa jira…",
+    "done": "Qorichi {count} dabalameera. Hanga galii galmeessitanitti kuusaan isaanii 0 dha.",
+    "receiveNow": "Kuusaa fudhadhu",
+    "toStock": "Gara kuusaa",
+    "errors": {
+      "empty": "Faayiliin sarara hin qabu.",
+      "noHeader": "Sararri jalqabaa maqaa utubaa qabaachuu qaba. Unka irraa jalqabaa.",
+      "missingColumns": "Utubaawwan kunneen hin jiran: {columns}.",
+      "tooManyRows": "Faayiliin sarara baay'ee qaba. Faayilii sarara 500 tti qoodaa.",
+      "tooBig": "Faayiliin tarree meeshaaf baay'ee guddaa dha.",
+      "forbidden": "Qoricha dabaluu kan danda'u abbaa qabeenyaa ykn hoggantaa qofa."
+    },
+    "columns": {
+      "nameEn": "maqaa",
+      "unit": "safartuu",
+      "price": "gatii",
+      "cost": "gatii bittaa"
+    },
+    "problems": {
+      "name": "maqaan hin jiru ykn baay'ee gabaabaa dha",
+      "unit": "safartuun hin beekamu",
+      "numbers": "gatii, gatii bittaa fi sadarkaa ajajaa ilaalaa",
+      "duplicate": "maqaa ykn koodii qoricha biraa wajjin walfakkaatu"
+    },
+    "saveErrors": {
+      "invalid": "Faayiliin dubbifamuu hin dandeenye. Irra deebi'aa filadhaa.",
+      "forbidden": "Qoricha dabaluu kan danda'u abbaa qabeenyaa ykn hoggantaa qofa.",
+      "nothing": "Sararri dabalamu hin jiru.",
+      "changed": "Tarreen jijjiirameera. Faayilicha irra deebi'aa filadhaa mirkaneeffadhaa.",
+      "duplicateSku": "Koodiin faayilicha keessa jiru duraan fayyadameera. Irra deebi'aa filadhaa.",
+      "generic": "Olkaa'uun hin danda'amne. Walqunnamtii keessan ilaalaa irra deebi'aa yaalaa."
+    }
   }
 }

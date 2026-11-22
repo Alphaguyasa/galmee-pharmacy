@@ -2,9 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createItem, createSupplier, recordDelivery, type DeliveryResult, type SupplierDTO } from "@/server/dal/purchasing";
+import { createItem, createItems, createSupplier, listItemSkus, recordDelivery, type DeliveryResult, type SupplierDTO } from "@/server/dal/purchasing";
 import { getSession } from "@/server/dal/session";
 import { writeOffExpiredStock } from "@/server/dal/stock";
+import { previewItemImport, type ImportPreview } from "@/lib/item-import";
 import { deliverySchema, itemSchema, supplierSchema, writeOffSchema } from "@/server/validation";
 
 async function canManageStock() {
@@ -67,4 +68,36 @@ export async function writeOffExpired(input: unknown): Promise<boolean> {
   const ok = await writeOffExpiredStock(parsed.data.itemId);
   if (ok) revalidatePath("/stock");
   return ok;
+}
+
+/** A spreadsheet export of 500 rows is far below this; anything bigger is not an item list. */
+const IMPORT_MAX_CHARS = 1_000_000;
+
+export type ImportResult =
+  | { ok: true; count: number }
+  | { ok: false; code: "invalid" | "forbidden" | "nothing" | "changed" | "duplicateSku" | "generic" };
+
+/** Checks an item sheet (CSV text) and says what would be created; saves nothing. */
+export async function checkItemImport(text: unknown): Promise<ImportPreview | { ok: false; error: "forbidden" | "tooBig" }> {
+  if (typeof text !== "string" || text.length > IMPORT_MAX_CHARS) return { ok: false, error: "tooBig" };
+  if (!(await canManageStock())) return { ok: false, error: "forbidden" };
+  return previewItemImport(text, await listItemSkus());
+}
+
+/**
+ * Creates the good rows of the sheet. The text is checked again here, never trusted from the
+ * browser; `expected` is the count the owner confirmed, so a sheet that changed meanwhile is refused.
+ */
+export async function importItems(text: unknown, expected: unknown): Promise<ImportResult> {
+  if (typeof text !== "string" || text.length > IMPORT_MAX_CHARS || !Number.isInteger(expected)) {
+    return { ok: false, code: "invalid" };
+  }
+  if (!(await canManageStock())) return { ok: false, code: "forbidden" };
+  const preview = previewItemImport(text, await listItemSkus());
+  if (!preview.ok) return { ok: false, code: "invalid" };
+  if (preview.items.length === 0) return { ok: false, code: "nothing" };
+  if (preview.items.length !== expected) return { ok: false, code: "changed" };
+  const result = await createItems(preview.items.map((r) => r.item));
+  if (result.ok) revalidatePath("/stock");
+  return result;
 }

@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { getSession } from "./session";
+import type { ImportItem } from "@/lib/item-import";
 
 export type SupplierDTO = { id: string; name: string };
 export type ReceivableItemDTO = {
@@ -101,6 +102,34 @@ export async function createItem(input: {
     tracks_expiry: input.tracksExpiry,
   });
   if (!error) return { ok: true };
+  return { ok: false, code: error.code === "23505" ? "duplicateSku" : "generic" };
+}
+
+/** Codes already used in this business (lower-case), so an import reports clashes before saving. */
+export async function listItemSkus(): Promise<Set<string>> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("items").select("sku").not("sku", "is", null).limit(20000);
+  if (error) throw new Error("item_skus_failed");
+  return new Set(data.map((r) => String(r.sku).toLowerCase()));
+}
+
+/** Creates all imported items in one insert: either every row is saved or none is. */
+export async function createItems(items: ImportItem[]): Promise<{ ok: true; count: number } | { ok: false; code: "duplicateSku" | "generic" }> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("items").insert(
+    items.map((input) => ({
+      name_en: input.nameEn,
+      name_am: input.nameAm ?? null,
+      name_om: input.nameOm ?? null,
+      sku: input.sku ?? null,
+      unit: input.unit,
+      price: input.price,
+      cost: input.cost,
+      reorder_level: input.reorderLevel,
+      tracks_expiry: input.tracksExpiry,
+    })),
+  );
+  if (!error) return { ok: true, count: items.length };
   return { ok: false, code: error.code === "23505" ? "duplicateSku" : "generic" };
 }
 

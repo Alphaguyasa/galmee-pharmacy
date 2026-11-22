@@ -173,7 +173,9 @@
     "errorNumbers": "Check the prices and the reorder level.",
     "errorForbidden": "Only the owner or a manager can add drugs.",
     "errorDuplicateSku": "Another drug already uses that code.",
-    "errorGeneric": "Could not save the drug. Check your connection and try again."
+    "errorGeneric": "Could not save the drug. Check your connection and try again.",
+    "manyHint": "Many drugs to add?",
+    "importLink": "Import them from a spreadsheet"
   },
   "customers": {
     "title": "Credit customers",
@@ -392,5 +394,55 @@
     "newSale": "New sale",
     "noNumber": "This sale was recorded before receipt numbers started, so it prints without a number.",
     "openReceipt": "Receipt"
+  },
+  "itemImport": {
+    "title": "Import drugs from a spreadsheet",
+    "intro": "Add up to {max} drugs at once from a CSV file (save your Excel sheet as CSV). Nothing is saved until you confirm.",
+    "downloadTemplate": "Download the template",
+    "step1": "and fill one drug per row. Column names can be in English, Amharic or Afaan Oromo.",
+    "step2": "Save it as CSV (in Excel: File, Save as, CSV UTF-8).",
+    "step3": "Choose the file below, check the list, then create the drugs. Add stock after with Receive.",
+    "chooseFile": "CSV file",
+    "fileHint": "Needed columns: name, unit, price, cost. Units: strip, bottle, sachet, tube, tablet, pack, piece, pair, roll, bag.",
+    "checking": "Checking the file…",
+    "ready": "ready to add",
+    "skipped": "rows skipped",
+    "problemsTitle": "Rows that will be skipped",
+    "line": "Row {line}",
+    "more": "and {count} more",
+    "previewTitle": "Drugs to add",
+    "create": "{count, plural, one {Create # drug} other {Create # drugs}}",
+    "saving": "Saving…",
+    "done": "{count, plural, one {# drug added.} other {# drugs added.}} Their stock is 0 until you receive a delivery.",
+    "receiveNow": "Receive stock",
+    "toStock": "Go to stock",
+    "errors": {
+      "empty": "The file has no rows.",
+      "noHeader": "The first row must hold the column names. Start from the template.",
+      "missingColumns": "These columns are missing: {columns}.",
+      "tooManyRows": "The file has too many rows. Split it into files of 500 rows.",
+      "tooBig": "The file is too big for an item list.",
+      "forbidden": "Only the owner or a manager can add drugs."
+    },
+    "columns": {
+      "nameEn": "name",
+      "unit": "unit",
+      "price": "price",
+      "cost": "cost"
+    },
+    "problems": {
+      "name": "name missing or too short",
+      "unit": "unit not known",
+      "numbers": "check price, cost and reorder level",
+      "duplicate": "same name or code as another drug"
+    },
+    "saveErrors": {
+      "invalid": "The file could not be read. Choose it again.",
+      "forbidden": "Only the owner or a manager can add drugs.",
+      "nothing": "No rows to add.",
+      "changed": "The list changed. Choose the file again and check it.",
+      "duplicateSku": "A code in the file is already used. Choose the file again.",
+      "generic": "Could not save. Check your connection and try again."
+    }
   }
 }

@@ -16,6 +16,12 @@ export default async function NewItemPage() {
           {tReceive("back")}
         </Link>
         <h1 className="text-[1.5625rem] leading-tight font-bold">{t("title")}</h1>
+        <p className="text-sm">
+          {t("manyHint")}{" "}
+          <Link href="/stock/import" className="font-semibold underline underline-offset-4">
+            {t("importLink")}
+          </Link>
+        </p>
       </div>
       <ItemForm />
     </div>
