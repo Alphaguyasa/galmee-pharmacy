@@ -49,6 +49,7 @@ type StoredEntry = Omit<QueueEntry, "seq"> & { seq?: number };
 
 interface QueueDb extends DBSchema {
   entries: { key: number; value: StoredEntry; indexes: { client_ref: string; state: QueueState } };
+  meta: { key: string; value: string };
 }
 
 export type OfflineQueueOptions = {
@@ -69,11 +70,14 @@ export function createOfflineQueue({ dbName, rpcs, isClosed, newRef }: OfflineQu
   const makeRef = newRef ?? (() => crypto.randomUUID());
   let dbp: Promise<IDBPDatabase<QueueDb>> | null = null;
   const db = () =>
-    (dbp ??= openDB<QueueDb>(dbName, 1, {
-      upgrade(d) {
-        const store = d.createObjectStore("entries", { keyPath: "seq", autoIncrement: true });
-        store.createIndex("client_ref", "client_ref", { unique: true });
-        store.createIndex("state", "state");
+    (dbp ??= openDB<QueueDb>(dbName, 2, {
+      upgrade(d, oldVersion) {
+        if (oldVersion < 1) {
+          const store = d.createObjectStore("entries", { keyPath: "seq", autoIncrement: true });
+          store.createIndex("client_ref", "client_ref", { unique: true });
+          store.createIndex("state", "state");
+        }
+        if (oldVersion < 2) d.createObjectStore("meta");
       },
     }));
 
@@ -152,6 +156,21 @@ export function createOfflineQueue({ dbName, rpcs, isClosed, newRef }: OfflineQu
       const d = await db();
       const e = await d.get("entries", seq);
       if (e && e.state === "dead") await d.put("entries", { ...e, state: "pending", error: undefined });
+    },
+
+    /**
+     * A random id for this install (this browser / PWA), made once and kept with
+     * the queue. The sync beacon reports under it; it is never a user id.
+     */
+    async deviceId(): Promise<string> {
+      const tx = (await db()).transaction("meta", "readwrite");
+      let id = await tx.store.get("device_id");
+      if (!id) {
+        id = makeRef().replace(/[^A-Za-z0-9_-]/g, "");
+        await tx.store.put(id, "device_id");
+      }
+      await tx.done;
+      return id;
     },
 
     /** Closes the database connection (tests, sign-out). */

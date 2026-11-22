@@ -196,3 +196,48 @@ describe("sync state", () => {
     expect(engine.getState()).toMatchObject({ pending: 0, dead: 0 });
   });
 });
+
+describe("sync beacon", () => {
+  it("reports the till's counts after each online replay cycle, under a stable device id", async () => {
+    const online = { v: true };
+    q = createOfflineQueue({ dbName: `beacon-test-${++n}`, rpcs: ["record_sale"], newRef: () => "dev-1234-abcd" });
+    const reports: unknown[] = [];
+    let fail = true;
+    const engine = createSyncEngine({
+      queue: q,
+      isOnline: () => online.v,
+      sleep: async () => {},
+      delays: [],
+      call: async (_r, args) => (args.p_client_ref === "bad" ? badLine() : fail ? down() : ok()),
+      beacon: async (b) => void reports.push(b),
+    });
+    await q.enqueue("record_sale", { p_client_ref: "bad" });
+    await q.enqueue("record_sale", { p_client_ref: "a" });
+    await engine.replayNow(); // bad dead-letters, a held by the network
+    const [first] = reports as { device: string; pending: number; dead: number; oldestAt: string | null }[];
+    expect(first).toMatchObject({ device: "dev-1234-abcd", pending: 1, dead: 1 });
+    expect(first.oldestAt).toMatch(/^\d{4}-\d\d-\d\dT/);
+    fail = false;
+    await engine.replayNow();
+    expect(reports[1]).toEqual({ device: "dev-1234-abcd", pending: 0, dead: 1, oldestAt: null });
+    online.v = false;
+    await engine.replayNow();
+    expect(reports).toHaveLength(2); // nothing sent while offline
+    expect(await q.deviceId()).toBe("dev-1234-abcd");
+  });
+
+  it("ignores a failing beacon", async () => {
+    q = createOfflineQueue({ dbName: `beacon-test-${++n}`, rpcs: ["record_sale"] });
+    const engine = createSyncEngine({
+      queue: q,
+      isOnline: () => true,
+      call: async () => ok(),
+      beacon: async () => {
+        throw new Error("down");
+      },
+    });
+    await q.enqueue("record_sale", {});
+    expect(await engine.replayNow()).toEqual({ synced: 1, dead: 0, held: false });
+    expect((await q.deviceId()).length).toBeGreaterThanOrEqual(8);
+  });
+});

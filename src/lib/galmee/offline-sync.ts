@@ -63,7 +63,16 @@ export type SyncEngineOptions = {
   onChange?: () => void;
   /** For tests; defaults to crypto.randomUUID. */
   newRef?: () => string;
+  /**
+   * Reports this till's queue to the server after every replay cycle that
+   * reached the network, e.g. `(b) => supabase.rpc("ph_sync_beacon", { p_device: b.device,
+   * p_pending: b.pending, p_dead: b.dead, p_oldest_at: b.oldestAt })` (kit template
+   * `sync_beacon_template.sql`). Failures are ignored: the next cycle reports again.
+   */
+  beacon?: (report: BeaconReport) => Promise<unknown>;
 };
+
+export type BeaconReport = { device: string; pending: number; dead: number; oldestAt: string | null };
 
 const errorText = (e: unknown) => (e instanceof Error ? `${e.name}: ${e.message}` : String(e));
 
@@ -76,6 +85,7 @@ export function createSyncEngine({
   onSynced,
   onChange,
   newRef = () => crypto.randomUUID(),
+  beacon,
 }: SyncEngineOptions) {
   /** A thrown call (fetch rejected outright) counts as a network failure. */
   const attempt = async (rpc: string, args: Record<string, unknown>): Promise<RpcResult> => {
@@ -129,6 +139,14 @@ export function createSyncEngine({
       if (outcome === "retryable") {
         report.held = true;
         break;
+      }
+    }
+    if (beacon && isOnline()) {
+      try {
+        const [counts, oldest, device] = await Promise.all([queue.counts(), queue.next(), queue.deviceId()]);
+        await beacon({ device, ...counts, oldestAt: oldest ? new Date(oldest.created_at).toISOString() : null });
+      } catch {
+        // offline again or refused: the next cycle reports again
       }
     }
     if (report.synced > 0) {
