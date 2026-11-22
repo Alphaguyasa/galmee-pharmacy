@@ -89,6 +89,7 @@ export function createSyncEngine({
   let running: Promise<ReplayReport> | null = null;
   let state: SyncState = { pending: 0, dead: 0, syncing: false };
   const listeners = new Set<() => void>();
+  const syncedListeners = new Set<(report: ReplayReport) => void>();
   const setState = (patch: Partial<SyncState>) => {
     state = { ...state, ...patch };
     listeners.forEach((l) => l());
@@ -133,6 +134,7 @@ export function createSyncEngine({
     if (report.synced > 0) {
       setState({ lastSyncAt: Date.now() });
       onSynced?.(report);
+      syncedListeners.forEach((l) => l(report));
     }
     return report;
   };
@@ -159,6 +161,11 @@ export function createSyncEngine({
     subscribe(listener: () => void): () => void {
       listeners.add(listener);
       return () => void listeners.delete(listener);
+    },
+    /** Runs `listener` after every replay cycle in which entries landed (screens refetch). */
+    onSynced(listener: (report: ReplayReport) => void): () => void {
+      syncedListeners.add(listener);
+      return () => void syncedListeners.delete(listener);
     },
     /** Puts a dead entry back in line and replays. */
     async retry(seq: number): Promise<ReplayReport> {

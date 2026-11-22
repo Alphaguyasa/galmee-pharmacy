@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import type { OfflineQueue, QueueEntry } from "./offline-queue";
-import type { SyncEngine, SyncState } from "./offline-sync";
+import type { ReplayReport, SyncEngine, SyncState } from "./offline-sync";
+import { startSyncTriggers } from "./sync-triggers";
 
 const SERVER_STATE: SyncState = { pending: 0, dead: 0, syncing: false };
 
@@ -29,4 +30,14 @@ export function useQueueEntries(queue: OfflineQueue, engine: SyncEngine, active:
     };
   }, [queue, active, state]);
   return entries;
+}
+
+/**
+ * Mount once near the top of the app: replays on reconnect, focus and every
+ * 60 s while entries wait, and calls `onSynced` (e.g. router.refresh) after
+ * entries land, so the screen shows the server's numbers.
+ */
+export function useSyncTriggers(engine: SyncEngine, onSynced?: (report: ReplayReport) => void) {
+  useEffect(() => startSyncTriggers(engine), [engine]);
+  useEffect(() => (onSynced ? engine.onSynced(onSynced) : undefined), [engine, onSynced]);
 }
