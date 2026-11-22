@@ -75,7 +75,7 @@
 - [x] CSV export of reports
 - [ ] Staff invite (owner-only) + role select
 - [x] Per-staff sales column in daily closing
-- [ ] Excel import of items (template + parser)
+- [x] Excel import of items (template + parser): CSV sheet saved from Excel, preview with skipped rows, one save
 - [ ] Export-all to Excel
 
 ## M-stars: features no notebook can do
