@@ -156,3 +156,24 @@ describe("createReportFetcher", () => {
     await expect(createReportFetcher(client)(def, period)).rejects.toThrow("permission denied");
   });
 });
+
+describe("80 mm summary", () => {
+  it("prints the tiles, a count as a number, and no payment rows", async () => {
+    const { reportSummaryReceipt } = await import("@/lib/galmee/report-summary");
+    const { receiptModel, layoutText } = await import("@/lib/galmee/receipt");
+    const p = resolveChoice({ kind: "week" }, "2026-11-25", "am");
+    const data = reportSummaryReceipt(def, p, rows, { name: "Galmee Pharmacy Demo" }, "am");
+    const m = receiptModel(data);
+    expect(m.title).toBe("የሪፖርት ማጠቃለያ");
+    expect(m.lines.map((l) => [l.name, l.total])).toEqual([
+      ["ሽያጭ", "200.10"],
+      ["ደረሰኞች", "3"],
+      ["አማካይ", "66.70"],
+    ]);
+    expect(m.totals).toEqual([]);
+    expect(m.meta[0]).toEqual({ label: "ሽያጭ · ኅዳር 14 – 16, 2019 ዓ.ም.", value: "(2026-11-23 – 2026-11-25)" });
+    const text = layoutText(data, 80).join("\n");
+    expect(text).not.toContain("የተከፈለ");
+    expect(text).toContain("200.10");
+  });
+});

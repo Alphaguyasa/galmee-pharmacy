@@ -14,7 +14,8 @@
  */
 
 export type ReceiptLang = "en" | "am" | "om";
-export type ReceiptKind = "sale" | "repayment" | "fee" | "invoice" | "folio" | "ticket" | "label";
+/** "summary": a report summary (totals for a period); prints no payment rows. */
+export type ReceiptKind = "sale" | "repayment" | "fee" | "invoice" | "folio" | "ticket" | "label" | "summary";
 export type ReceiptWidth = 58 | 80;
 
 export type ReceiptData = {
@@ -22,7 +23,7 @@ export type ReceiptData = {
   /** e.g. "GS-000123", issued by the server inside the money RPC. */
   no: string;
   kind: ReceiptKind;
-  lines: { name: string; qty?: number; unit?: string; price?: number; total: number }[];
+  lines: { name: string; qty?: number; unit?: string; price?: number; total: number; /** Printed instead of the amount (a count on a summary). */ display?: string }[];
   /** `method` is a payment method code (cash, telebirr, cbe_birr, credit, bank, other) or free text. */
   totals: { sub?: number; due?: number; paid: number; method: string; balanceAfter?: number };
   customer?: { name: string; phone?: string };
@@ -44,21 +45,21 @@ type Strings = {
 
 const STRINGS: Record<ReceiptLang, Strings> = {
   en: {
-    title: { sale: "Sales receipt", repayment: "Credit repayment receipt", fee: "Fee receipt", invoice: "Invoice", folio: "Guest folio", ticket: "Ticket", label: "Label" },
+    title: { sale: "Sales receipt", repayment: "Credit repayment receipt", fee: "Fee receipt", invoice: "Invoice", folio: "Guest folio", ticket: "Ticket", label: "Label", summary: "Report summary" },
     no: "Receipt no.", customer: "Customer", phone: "Tel", tin: "TIN",
     sub: "Subtotal", due: "Total", paid: "Paid", method: "Method", balanceAfter: "Balance owed", change: "Change",
     thanks: "Thank you", brand: "Galmee", currency: "ETB", more: "more items",
     methods: { cash: "Cash", telebirr: "Telebirr", cbe_birr: "CBE Birr", credit: "Credit", bank: "Bank transfer", other: "Other" },
   },
   am: {
-    title: { sale: "የሽያጭ ደረሰኝ", repayment: "የዱቤ ክፍያ ደረሰኝ", fee: "የክፍያ ደረሰኝ", invoice: "የሂሳብ መጠየቂያ", folio: "የእንግዳ ሂሳብ", ticket: "ትኬት", label: "መለያ" },
+    title: { sale: "የሽያጭ ደረሰኝ", repayment: "የዱቤ ክፍያ ደረሰኝ", fee: "የክፍያ ደረሰኝ", invoice: "የሂሳብ መጠየቂያ", folio: "የእንግዳ ሂሳብ", ticket: "ትኬት", label: "መለያ", summary: "የሪፖርት ማጠቃለያ" },
     no: "ደረሰኝ ቁ.", customer: "ደንበኛ", phone: "ስልክ", tin: "ቲን",
     sub: "ንዑስ ድምር", due: "ጠቅላላ", paid: "የተከፈለ", method: "የክፍያ ዘዴ", balanceAfter: "ቀሪ ዱቤ", change: "መልስ",
     thanks: "እናመሰግናለን", brand: "ገልሜ", currency: "ብር", more: "ተጨማሪ ዕቃዎች",
     methods: { cash: "ጥሬ ገንዘብ", telebirr: "ቴሌብር", cbe_birr: "ሲቢኢ ብር", credit: "ዱቤ", bank: "የባንክ ዝውውር", other: "ሌላ" },
   },
   om: {
-    title: { sale: "Nagahee gurgurtaa", repayment: "Nagahee kaffaltii liqii", fee: "Nagahee kaffaltii", invoice: "Herrega kaffaltii", folio: "Herrega keessummaa", ticket: "Tikeetii", label: "Mallattoo" },
+    title: { sale: "Nagahee gurgurtaa", repayment: "Nagahee kaffaltii liqii", fee: "Nagahee kaffaltii", invoice: "Herrega kaffaltii", folio: "Herrega keessummaa", ticket: "Tikeetii", label: "Mallattoo", summary: "Cuunfaa gabaasaa" },
     no: "Lakk. nagahee", customer: "Maamila", phone: "Bilb.", tin: "TIN",
     sub: "Ida'ama xiqqaa", due: "Waliigala", paid: "Kan kaffalame", method: "Mala kaffaltii", balanceAfter: "Liqii hafe", change: "Deebii",
     thanks: "Galatoomaa", brand: "Galmee", currency: "ETB", more: "meeshaalee dabalataa",
@@ -109,10 +110,14 @@ export function receiptModel(data: ReceiptData): ReceiptModel {
   const lines = data.lines.map((l) => {
     const qty = l.qty != null ? `${qtyFormat.format(l.qty)}${l.unit ? ` ${l.unit}` : ""}` : null;
     const detail = qty && l.price != null ? `${qty} × ${receiptAmount(l.price)}` : qty;
-    return { name: l.name, detail, total: receiptAmount(l.total) };
+    return { name: l.name, detail, total: l.display ?? receiptAmount(l.total) };
   });
 
   const t = data.totals;
+  if (data.kind === "summary") {
+    const totals = t.due != null ? [{ label: s.due, value: `${receiptAmount(t.due)} ${s.currency}`, strong: true }] : [];
+    return { header, title: s.title.summary, meta, lines, totals, footer: [data.footer ?? s.brand], qr: data.qr };
+  }
   const due = t.due ?? data.lines.reduce((a, l) => a + (Number(l.total) || 0), 0);
   const totals: ReceiptModel["totals"] = [];
   if (t.sub != null && t.sub !== due) totals.push({ label: s.sub, value: receiptAmount(t.sub) });
