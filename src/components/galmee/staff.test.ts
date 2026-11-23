@@ -8,6 +8,7 @@ import {
   hoursLeft,
   normalizeCode,
   openInvites,
+  redeemStatus,
   staffErrorKey,
   staffPermissions,
   staffStrings,
@@ -15,6 +16,7 @@ import {
   type StaffMember,
 } from "@/lib/galmee/staff";
 import { InviteSheet, invitePayload } from "./invite-sheet";
+import { JoinForm } from "./join-form";
 import { StaffList } from "./staff-list";
 
 const NOW = Date.parse("2026-11-23T08:00:00Z");
@@ -151,5 +153,54 @@ describe("InviteSheet", () => {
     const owner = sheet("owner", null);
     expect(owner).toContain('<option value="manager"');
     expect(owner.match(/data-action="revoke"/g)).toHaveLength(2);
+  });
+});
+
+describe("JoinForm", () => {
+  const join = (signedIn: boolean, initialCode?: string, lang = "en") =>
+    renderToStaticMarkup(
+      createElement(JoinForm, {
+        lang,
+        initialCode,
+        signedIn,
+        loginHref: "/login?next=%2Fjoin%2FK7P2QX",
+        signupHref: "/signup?next=%2Fjoin%2FK7P2QX",
+        onRedeem: async () => "ok" as const,
+      }),
+    );
+
+  it("prefills the code from the link, cleaned up, and lets a signed-in user join", () => {
+    const html = join(true, "k7p2-qx");
+    expect(html).toContain('value="K7P2QX"');
+    expect(html).toContain('id="join-name"');
+    expect(html).toMatch(/<button[^>]*type="submit"[^>]*>Join<\/button>/);
+    expect(html).not.toContain("data-signed-out");
+  });
+  it("keeps Join disabled until the code is a valid one", () => {
+    expect(join(true, "K7P")).toMatch(/<button[^>]*disabled=""[^>]*>Join/);
+    expect(join(true, "K7P20X")).toContain('aria-invalid="true"');
+  });
+  it("sends a signed-out user to sign in or sign up and back to this code", () => {
+    const html = join(false, "K7P2QX", "am");
+    expect(html).toContain("data-signed-out");
+    expect(html).toContain('href="/login?next=%2Fjoin%2FK7P2QX"');
+    expect(html).toContain('href="/signup?next=%2Fjoin%2FK7P2QX"');
+    expect(html).not.toContain('type="submit"');
+    expect(html).toContain("ንግድ ይቀላቀሉ");
+  });
+  it("turns the server's answer into a status with words in every language", () => {
+    expect(redeemStatus({ status: "ok" })).toBe("ok");
+    expect(redeemStatus({ status: "used" })).toBe("used");
+    expect(redeemStatus({ status: "rate_limited" })).toBe("rate_limited");
+    expect(redeemStatus({ status: "weird" })).toBe("error");
+    expect(redeemStatus(null, "already_member")).toBe("already_member");
+    expect(redeemStatus(null, "not_signed_in")).toBe("not_signed_in");
+    expect(redeemStatus(null, "network down")).toBe("error");
+    for (const lang of ["en", "am", "om"]) {
+      const r = staffStrings(lang).redeem;
+      for (const k of ["bad_code", "expired", "used", "rate_limited", "already_member", "not_signed_in", "error"] as const) {
+        expect(r[k].length).toBeGreaterThan(5);
+      }
+    }
   });
 });

@@ -89,6 +89,19 @@ export function staffErrorKey(message: string | null | undefined): StaffErrorKey
   return "generic";
 }
 
+export type RedeemStatus = "ok" | "bad_code" | "expired" | "used" | "rate_limited" | "already_member" | "not_signed_in" | "error";
+
+/** staff_redeem_invite returns a status for code problems and raises only for not signed in / already a member. */
+export function redeemStatus(result: { status?: string | null } | null, errorMessage?: string | null): RedeemStatus {
+  if (errorMessage) {
+    if (errorMessage.includes("already_member")) return "already_member";
+    if (errorMessage.includes("not_signed_in")) return "not_signed_in";
+    return "error";
+  }
+  const st = result?.status;
+  return st === "ok" || st === "bad_code" || st === "expired" || st === "used" || st === "rate_limited" ? st : "error";
+}
+
 export type StaffStrings = {
   title: string;
   roles: Record<StaffRole, string>;
@@ -121,6 +134,16 @@ export type StaffStrings = {
   newCode: string;
   close: string;
   errors: Record<StaffErrorKey, string>;
+  joinTitle: string;
+  joinHelp: string;
+  codeLabel: string;
+  yourName: string;
+  join: string;
+  joining: string;
+  signInFirst: string;
+  signIn: string;
+  createAccount: string;
+  redeem: Record<Exclude<RedeemStatus, "ok">, string>;
 };
 
 const STRINGS: Record<StaffLang, StaffStrings> = {
@@ -163,6 +186,24 @@ const STRINGS: Record<StaffLang, StaffStrings> = {
       too_many_invites: "10 invites are already open. Revoke one first.",
       generic: "That did not work. Try again.",
     },
+    joinTitle: "Join a business",
+    joinHelp: "Enter the code the owner gave you.",
+    codeLabel: "Invite code",
+    yourName: "Your name",
+    join: "Join",
+    joining: "Joining…",
+    signInFirst: "Sign in or create an account first. The code stays here.",
+    signIn: "Sign in",
+    createAccount: "Create account",
+    redeem: {
+      bad_code: "That code is not right. Check it with the owner.",
+      expired: "This code has expired or was revoked. Ask for a new one.",
+      used: "This code was already used. Ask for a new one.",
+      rate_limited: "Too many tries. Wait an hour and try again.",
+      already_member: "This account already belongs to a business.",
+      not_signed_in: "Sign in first.",
+      error: "That did not work. Try again.",
+    },
   },
   am: {
     title: "ሠራተኞች",
@@ -203,6 +244,24 @@ const STRINGS: Record<StaffLang, StaffStrings> = {
       too_many_invites: "10 ግብዣዎች ክፍት ናቸው። መጀመሪያ አንዱን ይሰርዙ።",
       generic: "አልተሳካም። እንደገና ይሞክሩ።",
     },
+    joinTitle: "ንግድ ይቀላቀሉ",
+    joinHelp: "ባለቤቱ የሰጠዎትን ኮድ ያስገቡ።",
+    codeLabel: "የግብዣ ኮድ",
+    yourName: "ስምዎ",
+    join: "ተቀላቀል",
+    joining: "በመቀላቀል ላይ…",
+    signInFirst: "መጀመሪያ ይግቡ ወይም አካውንት ይክፈቱ። ኮዱ እዚህ ይቆያል።",
+    signIn: "ግባ",
+    createAccount: "አካውንት ክፈት",
+    redeem: {
+      bad_code: "ኮዱ ትክክል አይደለም። ከባለቤቱ ጋር ያረጋግጡ።",
+      expired: "ኮዱ ጊዜው አልፏል ወይም ተሰርዟል። አዲስ ይጠይቁ።",
+      used: "ኮዱ ቀድሞ ጥቅም ላይ ውሏል። አዲስ ይጠይቁ።",
+      rate_limited: "ብዙ ሙከራ ተደርጓል። ከአንድ ሰዓት በኋላ እንደገና ይሞክሩ።",
+      already_member: "ይህ አካውንት ቀድሞ የአንድ ንግድ አባል ነው።",
+      not_signed_in: "መጀመሪያ ይግቡ።",
+      error: "አልተሳካም። እንደገና ይሞክሩ።",
+    },
   },
   om: {
     title: "Hojjettoota",
@@ -242,6 +301,24 @@ const STRINGS: Record<StaffLang, StaffStrings> = {
       not_found: "Namni kun daldala keessan keessa hin jiru.",
       too_many_invites: "Affeerraan 10 banaadha. Dura tokko haqaa.",
       generic: "Hin milkoofne. Irra deebi'aa yaalaa.",
+    },
+    joinTitle: "Daldala makamaa",
+    joinHelp: "Koodii abbaan qabeenyaa isiniif kenne galchaa.",
+    codeLabel: "Koodii affeerraa",
+    yourName: "Maqaa keessan",
+    join: "Makami",
+    joining: "Makamaa jira…",
+    signInFirst: "Dura seenaa ykn akkaawuntii uumaa. Koodiin asuma tura.",
+    signIn: "Seeni",
+    createAccount: "Akkaawuntii uumi",
+    redeem: {
+      bad_code: "Koodiin sun sirrii miti. Abbaa qabeenyaa waliin mirkaneeffadhaa.",
+      expired: "Koodiin kun yeroon isaa darbeera ykn haqameera. Haaraa gaafadhaa.",
+      used: "Koodiin kun duraan itti fayyadameera. Haaraa gaafadhaa.",
+      rate_limited: "Yaaliin baay'ateera. Sa'aatii tokko booda irra deebi'aa yaalaa.",
+      already_member: "Akkaawuntiin kun duraan daldala tokkoof galmaa'eera.",
+      not_signed_in: "Dura seenaa.",
+      error: "Hin milkoofne. Irra deebi'aa yaalaa.",
     },
   },
 };
