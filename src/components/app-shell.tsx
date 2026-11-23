@@ -71,7 +71,8 @@ export async function AppShell({ tenantName, logoUrl, userName, roleLabel, role,
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-2 bg-primary px-4 text-primary-foreground md:hidden">
           <TenantBadge tenantName={tenantName} logoUrl={logoUrl} inverse />
           <div className="flex items-center gap-1">
-            <OfflineSync role={role} className="bg-card" />
+            {/* On a phone the header is tight: the chip shows only when something waits or was refused. */}
+            <OfflineSync role={role} className="bg-card data-[sync=synced]:hidden" />
             <LanguageSwitcher inverse />
             <form action={logout}>
               <Button
