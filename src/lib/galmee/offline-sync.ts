@@ -70,7 +70,22 @@ export type SyncEngineOptions = {
    * `sync_beacon_template.sql`). Failures are ignored: the next cycle reports again.
    */
   beacon?: (report: BeaconReport) => Promise<unknown>;
+  /**
+   * True while the tenant is read-only (billing locked or canceled), e.g.
+   * `billingStore.isLocked`. Then `callOrQueue` throws `QueueClosedError`
+   * instead of stacking writes the server will refuse, and replay holds the
+   * entries already waiting so they land once the subscription is paid.
+   */
+  isClosed?: () => boolean;
 };
+
+/** Thrown by `callOrQueue` while the queue is closed (the tenant is read-only). */
+export class QueueClosedError extends Error {
+  constructor() {
+    super("queue_closed");
+    this.name = "QueueClosedError";
+  }
+}
 
 export type BeaconReport = { device: string; pending: number; dead: number; oldestAt: string | null };
 
@@ -86,6 +101,7 @@ export function createSyncEngine({
   onChange,
   newRef = () => crypto.randomUUID(),
   beacon,
+  isClosed = () => false,
 }: SyncEngineOptions) {
   /** A thrown call (fetch rejected outright) counts as a network failure. */
   const attempt = async (rpc: string, args: Record<string, unknown>): Promise<RpcResult> => {
@@ -112,6 +128,10 @@ export function createSyncEngine({
 
   const replayOnce = async (): Promise<ReplayReport> => {
     const report: ReplayReport = { synced: 0, dead: 0, held: false };
+    if (isClosed()) {
+      await refresh();
+      return { ...report, held: (await queue.counts()).pending > 0 };
+    }
     for (let entry = await queue.next(); entry; entry = await queue.next()) {
       let outcome: Outcome = "retryable";
       for (let i = 0; ; i++) {
@@ -208,6 +228,7 @@ export function createSyncEngine({
      * answer is not written twice when the queued copy replays.
      */
     async callOrQueue(rpc: string, args: Record<string, unknown>): Promise<CallResult> {
+      if (isClosed()) throw new QueueClosedError();
       const given = args.p_client_ref;
       const client_ref = typeof given === "string" && given ? given : newRef();
       const withRef = { ...args, p_client_ref: client_ref };
