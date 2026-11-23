@@ -21,20 +21,46 @@ export type SaleResult =
   | { ok: true; saleId: string; total: number }
   | { ok: false; code: SaleErrorCode; amountOver?: number };
 
+type StockRow = {
+  item_id: string | null;
+  name_en: string | null;
+  name_am: string | null;
+  name_om: string | null;
+  sku: string | null;
+  unit: string | null;
+  price: number | null;
+  qty_on_hand: number | null;
+  days_left: number | null;
+};
+
+const toSellable = (row: StockRow): SellableItemDTO => ({
+  itemId: row.item_id ?? "",
+  names: { en: row.name_en ?? "", am: row.name_am, om: row.name_om },
+  sku: row.sku,
+  unit: row.unit ?? "",
+  price: row.price ?? 0,
+  qtyOnHand: row.qty_on_hand ?? 0,
+  daysLeft: row.days_left,
+});
+
 export async function searchSellable(q: string): Promise<SellableItemDTO[]> {
   await getSession();
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("ph_stock_list", { p_q: q, p_filter: "all", p_limit: SELL_SEARCH_LIMIT });
   if (error) throw new Error("sell_search_failed");
-  return data.map((row) => ({
-    itemId: row.item_id ?? "",
-    names: { en: row.name_en ?? "", am: row.name_am, om: row.name_om },
-    sku: row.sku,
-    unit: row.unit ?? "",
-    price: row.price ?? 0,
-    qtyOnHand: row.qty_on_hand ?? 0,
-    daysLeft: row.days_left,
-  }));
+  return data.map(toSellable);
+}
+
+/** Most medicines the till keeps on the phone for searching without a network (the database caps a list at 500). */
+export const SELL_CATALOGUE_LIMIT = 500;
+
+/** The whole sellable list, for the till's offline search. Same rows and order as a search, without the filter. */
+export async function sellableCatalogue(): Promise<SellableItemDTO[]> {
+  await getSession();
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("ph_stock_list", { p_filter: "all", p_limit: SELL_CATALOGUE_LIMIT });
+  if (error) throw new Error("sell_catalogue_failed");
+  return data.map(toSellable);
 }
 
 /** Prices and the total are decided by the database; the phone only sends items and quantities. */

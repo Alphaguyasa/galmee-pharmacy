@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Minus, Plus, Printer, Search, Trash2 } from "lucide-react";
-import { findSellable, sell } from "@/actions/sales";
+import { findSellable, loadSellCatalogue, sell } from "@/actions/sales";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ import type { Locale } from "@/i18n/config";
 import { formatBirr, formatQty, itemName } from "@/lib/format";
 import type { SellableItemDTO } from "@/server/dal/sales";
 import { getOffline } from "@/lib/offline";
+import { loadCatalogue, saveCatalogue, searchCatalogue, type SellCatalogue } from "@/lib/sell-catalogue";
 import { sendSaleOrQueue, type QueuedSaleResult, type SaleInput } from "@/lib/offline-sale";
 
 const PAYMENTS = ["cash", "telebirr", "cbe_birr", "bank", "credit"] as const;
@@ -66,6 +67,51 @@ export function SellForm({
   const [pending, startTransition] = useTransition();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestSearch = useRef(0);
+  // The phone's copy of the sellable list, for searching when the network drops.
+  const catalogue = useRef<SellCatalogue | null>(null);
+  // Set while the results come from that copy: when its stock figures were taken.
+  const [offlineAt, setOfflineAt] = useState<number | null>(null);
+
+  // Keep the phone's copy fresh while online; fall back to the last one saved.
+  useEffect(() => {
+    let live = true;
+    const fromPhone = () =>
+      loadCatalogue()
+        .then((c) => {
+          if (live && c && !catalogue.current) catalogue.current = c;
+        })
+        .catch(() => {});
+    void fromPhone();
+    if (navigator.onLine)
+      loadSellCatalogue()
+        .then((items) => saveCatalogue(items))
+        .then((c) => {
+          if (live) catalogue.current = c;
+        })
+        .catch(() => fromPhone());
+    return () => {
+      live = false;
+    };
+  }, []);
+
+  /** Searches the phone's copy; false when there is none yet. */
+  function searchOffline(value: string): SellableItemDTO[] | null {
+    const c = catalogue.current;
+    if (!c) return null;
+    setOfflineAt(c.savedAt);
+    return searchCatalogue(c.items, value);
+  }
+
+  async function find(value: string): Promise<SellableItemDTO[] | null> {
+    if (!navigator.onLine) return searchOffline(value);
+    try {
+      const rows = await findSellable(value);
+      setOfflineAt(null);
+      return rows;
+    } catch {
+      return searchOffline(value);
+    }
+  }
 
   function onSearch(value: string) {
     setQuery(value);
@@ -79,14 +125,14 @@ export function SellForm({
     }
     setSearchState("loading");
     timer.current = setTimeout(async () => {
-      try {
-        const rows = await findSellable(value);
-        if (id !== latestSearch.current) return;
-        setResults(rows);
-        setSearchState("done");
-      } catch {
-        if (id === latestSearch.current) setSearchState("error");
+      const rows = await find(value);
+      if (id !== latestSearch.current) return;
+      if (rows === null) {
+        setSearchState("error");
+        return;
       }
+      setResults(rows);
+      setSearchState("done");
     }, 250);
   }
 
@@ -123,8 +169,9 @@ export function SellForm({
     setQuery(code);
     setSearchState("loading");
     try {
-      const rows = await findSellable(code);
+      const rows = await find(code);
       if (id !== latestSearch.current) return;
+      if (rows === null) throw new Error("no_catalogue");
       const exact = rows.filter((r) => r.sku !== null && r.sku.trim().toLowerCase() === code.toLowerCase());
       if (exact.length === 1 && blockReason(exact[0]) === null) {
         addToCart(exact[0]);
@@ -237,7 +284,7 @@ export function SellForm({
   const typed = query.trim();
   const unsellable = results.filter((r) => { const b = blockReason(r); return b === "outOfStock" || b === "expiredStock"; });
   const walkout =
-    searchState !== "done" || typed === "" || scanNote !== null
+    searchState !== "done" || typed === "" || scanNote !== null || offlineAt !== null
       ? null
       : results.length === 0
         ? { key: `q:${typed}`, label: typed, itemId: undefined, displayName: typed }
@@ -284,6 +331,17 @@ export function SellForm({
                 ? t("noResults")
                 : ""}
         </p>
+        {offlineAt !== null && searchState === "done" ? (
+          <p className="text-sm text-warn">
+            {t("offlineSearch", {
+              time: new Date(offlineAt).toLocaleTimeString(locale === "en" ? "en-GB" : locale, {
+                hour: "2-digit",
+                minute: "2-digit",
+                timeZone: "Africa/Addis_Ababa",
+              }),
+            })}
+          </p>
+        ) : null}
         {walkout ? <WalkoutButton key={walkout.key} label={walkout.label} itemId={walkout.itemId} displayName={walkout.displayName} /> : null}
         {results.length > 0 ? (
           <ul className="grid gap-2">
@@ -304,7 +362,7 @@ export function SellForm({
                     <span className={blocked === "expiredStock" ? "text-sm font-semibold text-expiry-red" : "text-sm text-muted-foreground"}>
                       {blocked
                         ? t(blocked)
-                        : `${t("inStock", { qty: formatQty(item.qtyOnHand) })} · ${unitLabel(item.unit)}`}
+                        : `${offlineAt !== null ? "~" : ""}${t("inStock", { qty: formatQty(item.qtyOnHand) })} · ${unitLabel(item.unit)}`}
                     </span>
                   </button>
                 </li>

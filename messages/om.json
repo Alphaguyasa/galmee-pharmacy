@@ -280,7 +280,8 @@
     "queued": "Neetworkiin hin jiru. Gurgurtaan bilbila kana irratti olkaa'ameera; yeroo neetworkiin deebi'u ni ergama.",
     "queuedSale": "Gurgurtaa, meeshaa {count}",
     "queuedCreditSale": "Gurgurtaa liqii, meeshaa {count}",
-    "queueRefused": "Sarvarichi gurgurtaa kana hin fudhanne."
+    "queueRefused": "Sarvarichi gurgurtaa kana hin fudhanne.",
+    "offlineSearch": "Neetworkiin hin jiru: tarree bilbila kana irratti sa'aatii {time} olkaa'ame barbaadaa jira. Kuusaan jijjiiramee ta'uu danda'a."
   },
   "reports": {
     "title": "Cufiinsa guyyaa",
