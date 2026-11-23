@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
-import { parseAmountOver } from "@/lib/sale-errors";
+import { parseAmountOver, saleErrorCode, type SaleErrorCode } from "@/lib/sale-errors";
 import { getSession } from "./session";
 
 export const SELL_SEARCH_LIMIT = 30;
@@ -15,16 +15,7 @@ export type SellableItemDTO = {
   daysLeft: number | null;
 };
 
-export type SaleErrorCode =
-  | "insufficientStock"
-  | "expiredStock"
-  | "noPrice"
-  | "itemNotFound"
-  | "customerNotFound"
-  | "creditLimit"
-  | "overrideNotPermitted"
-  | "badReason"
-  | "generic";
+export type { SaleErrorCode };
 
 export type SaleResult =
   | { ok: true; saleId: string; total: number }
@@ -64,17 +55,10 @@ export async function recordSale(input: {
     p_override_reason: input.overrideReason,
   });
   if (error || !data?.[0]) {
-    const message = error?.message ?? "";
-    if (message.startsWith("insufficient_stock")) return { ok: false, code: "insufficientStock" };
-    if (message.startsWith("expired_stock")) return { ok: false, code: "expiredStock" };
-    if (message.startsWith("no_price")) return { ok: false, code: "noPrice" };
-    if (message.startsWith("item_not_found")) return { ok: false, code: "itemNotFound" };
-    if (message.startsWith("customer_not_found")) return { ok: false, code: "customerNotFound" };
-    if (message.startsWith("credit_limit")) return { ok: false, code: "creditLimit", amountOver: parseAmountOver(error?.details) };
-    if (message.startsWith("override_not_permitted"))
-      return { ok: false, code: "overrideNotPermitted", amountOver: parseAmountOver(error?.details) };
-    if (message.startsWith("bad_reason")) return { ok: false, code: "badReason" };
-    return { ok: false, code: "generic" };
+    const code = saleErrorCode(error?.message);
+    if (code === "creditLimit" || code === "overrideNotPermitted")
+      return { ok: false, code, amountOver: parseAmountOver(error?.details) };
+    return { ok: false, code };
   }
   return { ok: true, saleId: data[0].sale_id, total: data[0].total };
 }

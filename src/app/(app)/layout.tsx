@@ -10,6 +10,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       logoUrl={tenant.logoUrl}
       userName={profile.fullName}
       roleLabel={tRoles(profile.role)}
+      role={profile.role}
     >
       {children}
     </AppShell>

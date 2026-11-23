@@ -276,7 +276,11 @@
     "scanDenied": "Hayyamni kaameraa dhorkameera. Qindaa’ina biraawuzarii keessatti kaameraa hayyami, ykn koodicha barreessi.",
     "scanFailed": "Kaameraa banuun hin danda’amne. Koodicha barreessi.",
     "scanNotFound": "Qorichi koodii {code} qabu hin jiru.",
-    "scanAdded": "Dabalameera: {name}"
+    "scanAdded": "Dabalameera: {name}",
+    "queued": "Neetworkiin hin jiru. Gurgurtaan bilbila kana irratti olkaa'ameera; yeroo neetworkiin deebi'u ni ergama.",
+    "queuedSale": "Gurgurtaa, meeshaa {count}",
+    "queuedCreditSale": "Gurgurtaa liqii, meeshaa {count}",
+    "queueRefused": "Sarvarichi gurgurtaa kana hin fudhanne."
   },
   "reports": {
     "title": "Cufiinsa guyyaa",

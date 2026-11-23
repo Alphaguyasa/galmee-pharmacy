@@ -276,7 +276,11 @@
     "scanDenied": "የካሜራ ፈቃድ ተከልክሏል። በአሳሹ ቅንብር ካሜራውን ይፍቀዱ ወይም ኮዱን ይጻፉ።",
     "scanFailed": "ካሜራውን መክፈት አልተቻለም። ኮዱን ይጻፉ።",
     "scanNotFound": "ኮድ {code} ያለው መድኃኒት የለም።",
-    "scanAdded": "ተጨምሯል፦ {name}"
+    "scanAdded": "ተጨምሯል፦ {name}",
+    "queued": "ኔትወርክ የለም። ሽያጩ በዚህ ስልክ ተቀምጧል፤ ኔትወርክ ሲመለስ ይላካል።",
+    "queuedSale": "ሽያጭ፣ {count} ዕቃ",
+    "queuedCreditSale": "የዱቤ ሽያጭ፣ {count} ዕቃ",
+    "queueRefused": "ሰርቨሩ ይህን ሽያጭ አልተቀበለውም።"
   },
   "reports": {
     "title": "የዕለት መዝጊያ",

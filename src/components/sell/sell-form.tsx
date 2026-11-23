@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Minus, Plus, Printer, Search, Trash2 } from "lucide-react";
 import { findSellable, sell } from "@/actions/sales";
@@ -14,6 +15,8 @@ import { WalkoutButton } from "@/components/walkouts/walkout-button";
 import type { Locale } from "@/i18n/config";
 import { formatBirr, formatQty, itemName } from "@/lib/format";
 import type { SellableItemDTO } from "@/server/dal/sales";
+import { getOffline } from "@/lib/offline";
+import { sendSaleOrQueue, type QueuedSaleResult, type SaleInput } from "@/lib/offline-sale";
 
 const PAYMENTS = ["cash", "telebirr", "cbe_birr", "bank", "credit"] as const;
 type Payment = (typeof PAYMENTS)[number];
@@ -40,6 +43,7 @@ export function SellForm({
   const tStock = useTranslations("stock");
   const tReceipt = useTranslations("receipt");
   const locale = useLocale() as Locale;
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SellableItemDTO[]>([]);
   const [searchState, setSearchState] = useState<SearchState>("idle");
@@ -157,6 +161,13 @@ export function SellForm({
     clearOver();
   }
 
+  /** Sends the sale through the offline queue; refreshes the screen when it landed at once. */
+  async function queueSale(input: SaleInput): Promise<QueuedSaleResult> {
+    const result = await sendSaleOrQueue(getOffline().engine, input);
+    if (result !== "queued" && result.ok) router.refresh();
+    return result;
+  }
+
   function submit(withOverride = false) {
     setMessage(null);
     if (payment === "credit" && !customerId) {
@@ -169,14 +180,33 @@ export function SellForm({
       return;
     }
     startTransition(async () => {
-      const result = await sell({
+      const input = {
         lines: cart.map((l) => ({ itemId: l.item.itemId, qty: l.qty })),
         payment,
         customerId: payment === "credit" ? customerId : undefined,
         clientRef,
         overrideReason,
-      }).catch(() => ({ ok: false, code: "generic" }) as const);
+      };
+      // No network, or older sales still waiting: this one waits behind them, in order.
+      const { engine } = getOffline();
+      let result: QueuedSaleResult;
+      if (!navigator.onLine || engine.getState().pending > 0) result = await queueSale(input);
+      else {
+        try {
+          result = await sell(input);
+        } catch {
+          // The request got no answer. The same client_ref goes in the queue, so if the
+          // server did record it, the replay is answered with that sale, not a second one.
+          result = await queueSale(input);
+        }
+      }
 
+      if (result === "queued") {
+        reset();
+        setLastSaleId(null);
+        setMessage({ tone: "ok", text: t("queued") });
+        return;
+      }
       if (result.ok) {
         reset();
         setLastSaleId(result.saleId);

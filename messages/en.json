@@ -276,7 +276,11 @@
     "scanDenied": "Camera permission was refused. Allow the camera in the browser settings, or type the code.",
     "scanFailed": "Could not open the camera. Type the code instead.",
     "scanNotFound": "No medicine has the code {code}.",
-    "scanAdded": "Added: {name}"
+    "scanAdded": "Added: {name}",
+    "queued": "No connection. The sale is saved on this phone and will be sent as soon as the network is back.",
+    "queuedSale": "Sale, {count, plural, one {# item} other {# items}}",
+    "queuedCreditSale": "Credit sale, {count, plural, one {# item} other {# items}}",
+    "queueRefused": "The server did not accept this sale."
   },
   "reports": {
     "title": "Daily closing",
