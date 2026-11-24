@@ -81,6 +81,9 @@
 ## M-stars: features no notebook can do
 
 - [x] Walk-out log: one tap "asked for it, not in stock" at the till + weekly ranked restock list with missed sales, CSV download
+- [x] Receipts that cannot be forged, part 1: each business gets its own signing key (private half kept in the database vault, owner can rotate or revoke); compact signed receipt code (CBOR, fits a QR) with offline check that catches altered amounts and forged codes
+- [ ] Receipts that cannot be forged, part 2: sign each sale receipt at issue and print the code as a QR
+- [ ] Receipts that cannot be forged, part 3: public verify page that checks a scanned code on the phone, with no server call
 
 ## Q: Quality and security baseline (do these inside M0 and M1, not after)
 
