@@ -78,7 +78,15 @@ export function Receipt({
       </table>
       <hr className="my-2 border-t border-dashed border-black" />
       <div className="grid justify-items-center gap-0.5 text-center">
-        {m.qr ? <ReceiptQr value={m.qr} size={wide ? 120 : 96} /> : null}
+        {m.qr && m.qrNote ? (
+          // A signed code holds a few hundred characters, so it prints larger to stay readable by a phone camera.
+          <>
+            <ReceiptQr value={m.qr} size={wide ? 184 : 152} label={m.qrNote} />
+            <p className="text-xs">{m.qrNote}</p>
+          </>
+        ) : m.qr ? (
+          <ReceiptQr value={m.qr} size={wide ? 120 : 96} />
+        ) : null}
         {m.footer.map((f, i) => (
           <p key={i} className={cn("break-words", i === m.footer.length - 1 && "num text-xs")}>{f}</p>
         ))}

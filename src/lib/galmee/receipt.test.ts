@@ -140,3 +140,40 @@ describe("renderTelegramText", () => {
     expect(text).toContain("Method: Telebirr");
   });
 });
+
+describe("verify QR", () => {
+  const verifyUrl = "https://example.test/verify#" + "A".repeat(380);
+  const data = (lang: "en" | "am" | "om", qrPurpose?: "verify"): ReceiptData => ({
+    tenant: { name: "Abdi Pharmacy" },
+    no: "PS-000042",
+    kind: "sale",
+    lines: [{ name: "Paracetamol", qty: 2, price: 10, total: 20 }],
+    totals: { due: 20, paid: 20, method: "cash" },
+    ethDate: "15 ኅዳር 2019",
+    gregDate: "2026-11-24",
+    lang,
+    qr: verifyUrl,
+    qrPurpose,
+  });
+
+  it("captions a verify QR in the receipt's language", () => {
+    expect(receiptModel(data("en", "verify")).qrNote).toBe("Scan to check this receipt");
+    expect(receiptModel(data("am", "verify")).qrNote).toBe("ደረሰኙን ለማረጋገጥ ይቃኙ");
+    expect(receiptModel(data("om", "verify")).qrNote).toMatch(/^Nagahee/);
+    expect(receiptModel(data("en")).qrNote).toBeUndefined();
+  });
+
+  it("leaves the long verify link out of fixed-width text but keeps a plain QR payload", () => {
+    const verifyText = layoutText(data("en", "verify"), 58).join("\n");
+    expect(verifyText).not.toContain("example.test");
+    expect(verifyText).toContain("PS-000042");
+    const plain = layoutText({ ...data("en"), qr: "https://pay.example/x" }, 58).join("\n");
+    expect(plain).toContain("https://pay.example/x");
+  });
+
+  it("links the caption to the verify page in Telegram", () => {
+    const text = renderTelegramText(data("en", "verify"));
+    expect(text).toContain(`<a href="${verifyUrl}">Scan to check this receipt</a>`);
+    expect(text.length).toBeLessThan(TELEGRAM_RECEIPT_MAX);
+  });
+});

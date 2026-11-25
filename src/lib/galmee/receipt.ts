@@ -30,8 +30,10 @@ export type ReceiptData = {
   ethDate: string;
   gregDate: string;
   lang: ReceiptLang;
-  /** Reserved slot for a pay link or verify URL; printed as text until the QR renderer lands. */
+  /** Printed as a QR: a pay link, or a signed-receipt verify link (`qrPurpose: "verify"`). */
   qr?: string;
+  /** "verify": the QR is a signed-receipt check; it gets a caption, prints larger and is left out of fixed-width text. */
+  qrPurpose?: "verify";
   footer?: string;
 };
 
@@ -39,7 +41,7 @@ type Strings = {
   title: Record<ReceiptKind, string>;
   no: string; customer: string; phone: string; tin: string;
   sub: string; due: string; paid: string; method: string; balanceAfter: string; change: string;
-  thanks: string; brand: string; currency: string; more: string;
+  thanks: string; brand: string; currency: string; more: string; verify: string;
   methods: Record<string, string>;
 };
 
@@ -48,21 +50,21 @@ const STRINGS: Record<ReceiptLang, Strings> = {
     title: { sale: "Sales receipt", repayment: "Credit repayment receipt", fee: "Fee receipt", invoice: "Invoice", folio: "Guest folio", ticket: "Ticket", label: "Label", summary: "Report summary" },
     no: "Receipt no.", customer: "Customer", phone: "Tel", tin: "TIN",
     sub: "Subtotal", due: "Total", paid: "Paid", method: "Method", balanceAfter: "Balance owed", change: "Change",
-    thanks: "Thank you", brand: "Galmee", currency: "ETB", more: "more items",
+    thanks: "Thank you", brand: "Galmee", currency: "ETB", more: "more items", verify: "Scan to check this receipt",
     methods: { cash: "Cash", telebirr: "Telebirr", cbe_birr: "CBE Birr", credit: "Credit", bank: "Bank transfer", other: "Other" },
   },
   am: {
     title: { sale: "የሽያጭ ደረሰኝ", repayment: "የዱቤ ክፍያ ደረሰኝ", fee: "የክፍያ ደረሰኝ", invoice: "የሂሳብ መጠየቂያ", folio: "የእንግዳ ሂሳብ", ticket: "ትኬት", label: "መለያ", summary: "የሪፖርት ማጠቃለያ" },
     no: "ደረሰኝ ቁ.", customer: "ደንበኛ", phone: "ስልክ", tin: "ቲን",
     sub: "ንዑስ ድምር", due: "ጠቅላላ", paid: "የተከፈለ", method: "የክፍያ ዘዴ", balanceAfter: "ቀሪ ዱቤ", change: "መልስ",
-    thanks: "እናመሰግናለን", brand: "ገልሜ", currency: "ብር", more: "ተጨማሪ ዕቃዎች",
+    thanks: "እናመሰግናለን", brand: "ገልሜ", currency: "ብር", more: "ተጨማሪ ዕቃዎች", verify: "ደረሰኙን ለማረጋገጥ ይቃኙ",
     methods: { cash: "ጥሬ ገንዘብ", telebirr: "ቴሌብር", cbe_birr: "ሲቢኢ ብር", credit: "ዱቤ", bank: "የባንክ ዝውውር", other: "ሌላ" },
   },
   om: {
     title: { sale: "Nagahee gurgurtaa", repayment: "Nagahee kaffaltii liqii", fee: "Nagahee kaffaltii", invoice: "Herrega kaffaltii", folio: "Herrega keessummaa", ticket: "Tikeetii", label: "Mallattoo", summary: "Cuunfaa gabaasaa" },
     no: "Lakk. nagahee", customer: "Maamila", phone: "Bilb.", tin: "TIN",
     sub: "Ida'ama xiqqaa", due: "Waliigala", paid: "Kan kaffalame", method: "Mala kaffaltii", balanceAfter: "Liqii hafe", change: "Deebii",
-    thanks: "Galatoomaa", brand: "Galmee", currency: "ETB", more: "meeshaalee dabalataa",
+    thanks: "Galatoomaa", brand: "Galmee", currency: "ETB", more: "meeshaalee dabalataa", verify: "Nagahee kana mirkaneessuuf iskaanii godhaa",
     methods: { cash: "Maallaqa callaa", telebirr: "Telebirr", cbe_birr: "CBE Birr", credit: "Liqii", bank: "Baankii", other: "Kan biraa" },
   },
 };
@@ -89,6 +91,8 @@ export type ReceiptModel = {
   totals: { label: string; value: string; strong?: boolean }[];
   footer: string[];
   qr?: string;
+  /** Caption under a verify QR, in the receipt's language. */
+  qrNote?: string;
 };
 
 /** Everything a renderer prints, in print order, already formatted. */
@@ -116,7 +120,7 @@ export function receiptModel(data: ReceiptData): ReceiptModel {
   const t = data.totals;
   if (data.kind === "summary") {
     const totals = t.due != null ? [{ label: s.due, value: `${receiptAmount(t.due)} ${s.currency}`, strong: true }] : [];
-    return { header, title: s.title.summary, meta, lines, totals, footer: [data.footer ?? s.brand], qr: data.qr };
+    return { header, title: s.title.summary, meta, lines, totals, footer: [data.footer ?? s.brand], ...qrOf(data, s) };
   }
   const due = t.due ?? data.lines.reduce((a, l) => a + (Number(l.total) || 0), 0);
   const totals: ReceiptModel["totals"] = [];
@@ -128,7 +132,12 @@ export function receiptModel(data: ReceiptData): ReceiptModel {
   if (t.balanceAfter != null) totals.push({ label: s.balanceAfter, value: `${receiptAmount(t.balanceAfter)} ${s.currency}` });
 
   const footer = [data.footer ?? s.thanks, data.no ? `${s.brand} · ${data.no}` : s.brand];
-  return { header, title: s.title[data.kind] ?? s.title.sale, meta, lines, totals, footer, qr: data.qr };
+  return { header, title: s.title[data.kind] ?? s.title.sale, meta, lines, totals, footer, ...qrOf(data, s) };
+}
+
+function qrOf(data: ReceiptData, s: Strings): Pick<ReceiptModel, "qr" | "qrNote"> {
+  if (!data.qr) return {};
+  return data.qrPurpose === "verify" ? { qr: data.qr, qrNote: s.verify } : { qr: data.qr };
 }
 
 const chars = (s: string) => Array.from(s);
@@ -194,7 +203,8 @@ export function layoutText(data: ReceiptData, width: ReceiptWidth = 58): string[
   out.push(rule);
   m.totals.forEach((x) => out.push(...leftRight(x.label, x.value, cols)));
   out.push(rule);
-  if (m.qr) out.push(...wrapText(m.qr, cols));
+  // A verify link is several hundred characters: only useful as a QR, so raw text printers leave it out.
+  if (m.qr && !m.qrNote) out.push(...wrapText(m.qr, cols));
   m.footer.forEach((f) => out.push(...center(f, cols)));
   return out;
 }
@@ -216,7 +226,7 @@ export function renderTelegramText(data: ReceiptData): string {
   const tail = [
     "",
     ...m.totals.map((x) => (x.strong ? `<b>${escapeHtml(`${x.label}: ${x.value}`)}</b>` : escapeHtml(`${x.label}: ${x.value}`))),
-    ...(m.qr ? [escapeHtml(m.qr)] : []),
+    ...(m.qr && m.qrNote ? [`<a href="${escapeHtml(m.qr).replace(/"/g, "&quot;")}">${escapeHtml(m.qrNote)}</a>`] : m.qr ? [escapeHtml(m.qr)] : []),
     "",
     escapeHtml(`— ${data.tenant.name} · ${s.brand}`),
   ];
