@@ -10,6 +10,7 @@ import { saleReceiptData } from "@/lib/sale-receipt";
 import { cn } from "@/lib/utils";
 import { getSaleReceipt } from "@/server/dal/receipts";
 import { getSession } from "@/server/dal/session";
+import { signedReceiptQr } from "@/server/signed-receipt-qr";
 
 const RECEIPT_ID = "sale-receipt";
 
@@ -32,7 +33,12 @@ export default async function SaleReceiptPage({
     getLocale() as Promise<Locale>,
   ]);
   if (!sale) notFound();
-  const data = saleReceiptData(sale, { name: session.tenant.name }, locale);
+  // The signed code needs the server-issued number; signing the same sale again gives the same code on a reprint.
+  const qr = sale.receiptNo ? await signedReceiptQr("sale", sale.saleId) : null;
+  const data = {
+    ...saleReceiptData(sale, { name: session.tenant.name }, locale),
+    ...(qr ? { qr, qrPurpose: "verify" as const } : {}),
+  };
 
   return (
     <div className="grid max-w-md gap-5">
