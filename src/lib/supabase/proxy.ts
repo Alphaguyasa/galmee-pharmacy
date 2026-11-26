@@ -4,7 +4,7 @@ import type { Database } from "@/lib/database.types";
 import { buildCsp } from "@/lib/security-headers";
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "./env";
 
-const PUBLIC_PATHS = ["/login", "/signup", "/offline", "/join"];
+const PUBLIC_PATHS = ["/login", "/signup", "/offline", "/join", "/verify"];
 
 /**
  * Runs on every page request: sets a per-request CSP nonce, refreshes the Supabase
