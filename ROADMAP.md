@@ -51,7 +51,7 @@
 
 - [ ] Receipt printing (58/80 mm thermal) and Telegram receipt (see M-next)
 - [ ] Data import from Excel/CSV (see M-after)
-- [ ] Export all tenant data to Excel (see M-after)
+- [x] Export all tenant data to Excel (see M-after)
 
 ## Later (after the first paying pharmacy)
 
@@ -76,7 +76,7 @@
 - [ ] Staff invite (owner-only) + role select
 - [x] Per-staff sales column in daily closing
 - [x] Excel import of items (template + parser): CSV sheet saved from Excel, preview with skipped rows, one save
-- [ ] Export-all to Excel
+- [x] Export-all to Excel: one workbook (medicines, batches, customers with balances, sales with receipt numbers, payments, credit ledger, suppliers, purchase orders, walk-outs), owner only
 
 ## M-stars: features no notebook can do
 

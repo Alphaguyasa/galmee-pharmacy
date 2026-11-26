@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { CashCount } from "@/components/reports/cash-count";
 import { ReportTabs } from "@/components/reports/report-tabs";
 import { EmptyState } from "@/components/galmee/empty-state";
@@ -13,6 +13,7 @@ import type { Locale } from "@/i18n/config";
 import { addisToday, formatEthiopianDate, isIsoDay, shiftIsoDay } from "@/lib/ethiopian-date";
 import { formatBirr } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { getSession } from "@/server/dal/session";
 import { getClosingByStaff, getCreditOverrides, getDailyClosing, getSalesForDay, type ClosingRowDTO } from "@/server/dal/reports";
 
 // Cash and Telebirr are always listed (the owner looks for them); the rest only when used that day.
@@ -24,12 +25,14 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
     .object({ day: z.string().refine((d) => isIsoDay(d) && d <= today).catch(today) })
     .parse({ day: today, ...(await searchParams) });
 
-  const [closing, sellers, overrides, daySales, t, locale] = await Promise.all([
+  const [session, closing, sellers, overrides, daySales, t, tx, locale] = await Promise.all([
+    getSession(),
     getDailyClosing(day),
     getClosingByStaff(day),
     getCreditOverrides(day),
     getSalesForDay(day),
     getTranslations("reports"),
+    getTranslations("export"),
     getLocale() as Promise<Locale>,
   ]);
   const isToday = day === today;
@@ -206,6 +209,19 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
       ) : null}
 
       {isToday || closing.cashIn > 0 ? <CashCount key={day} expected={closing.cashIn} /> : null}
+
+      {session.profile.role === "owner" ? (
+        <section aria-labelledby="export-all" className="grid gap-2 border-t border-border pt-5 md:max-w-md">
+          <h2 id="export-all" className="text-lg font-bold">
+            {tx("title")}
+          </h2>
+          <p className="text-muted-foreground">{tx("hint")}</p>
+          <a href="/reports/export" download className={cn(buttonVariants({ variant: "outline", size: "lg" }), "justify-self-start")}>
+            <Download aria-hidden />
+            {tx("button")}
+          </a>
+        </section>
+      ) : null}
     </div>
   );
 }
