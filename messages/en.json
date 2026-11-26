@@ -49,14 +49,16 @@
     "submit": "Start using Galmee",
     "error": "Could not create the pharmacy. Please try again.",
     "errorPhone": "Enter an Ethiopian phone number, for example 0911 234 567.",
-    "errorRequired": "Fill in all three fields."
+    "errorRequired": "Fill in all three fields.",
+    "haveCode": "Joining a pharmacy as staff? Enter your invite code"
   },
   "home": {
     "welcome": "Welcome, {name}",
     "expiringSoon": "Expiring within 30 days",
     "lowStock": "Below reorder level",
     "salesToday": "Sales today",
-    "salesSub": "{sales} · cash {amount}"
+    "salesSub": "{sales} · cash {amount}",
+    "staffLink": "Staff and invites"
   },
   "roles": {
     "owner": "Owner",

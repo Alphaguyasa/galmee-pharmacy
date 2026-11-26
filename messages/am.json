@@ -49,14 +49,16 @@
     "submit": "ገልሜን መጠቀም ይጀምሩ",
     "error": "ፋርማሲውን መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
     "errorPhone": "የኢትዮጵያ ስልክ ቁጥር ያስገቡ፣ ለምሳሌ 0911 234 567።",
-    "errorRequired": "ሦስቱንም መስኮች ይሙሉ።"
+    "errorRequired": "ሦስቱንም መስኮች ይሙሉ።",
+    "haveCode": "እንደ ሠራተኛ ፋርማሲ ይቀላቀላሉ? የግብዣ ኮድዎን ያስገቡ"
   },
   "home": {
     "welcome": "እንኳን ደህና መጡ፣ {name}",
     "expiringSoon": "በ30 ቀን ውስጥ የሚያልቁ",
     "lowStock": "ከማዘዣ ደረጃ በታች",
     "salesToday": "የዛሬ ሽያጭ",
-    "salesSub": "{sales} · ጥሬ ገንዘብ {amount}"
+    "salesSub": "{sales} · ጥሬ ገንዘብ {amount}",
+    "staffLink": "ሠራተኞችና ግብዣዎች"
   },
   "roles": {
     "owner": "ባለቤት",

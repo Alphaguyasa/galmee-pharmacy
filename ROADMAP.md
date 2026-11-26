@@ -9,7 +9,7 @@
 - [x] next-intl with `am`, `om`, `en`; language switcher; Ethiopic-friendly font (Noto Sans Ethiopic)
 - [x] Ethiopian calendar date display helper + tests
 - [x] App shell: bottom navigation on mobile, sidebar on desktop, tenant name and logo
-- [ ] Staff management (owner only): invite staff, set role
+- [x] Staff management (owner only): invite staff, set role
 - [x] Generated Supabase TypeScript types committed
 
 ## M1: Core screens
@@ -73,7 +73,7 @@
 - [x] Evening Telegram summary generator (SQL + notifications row)
 - [x] Reports screen: today / this week / Ethiopian month from existing views
 - [x] CSV export of reports
-- [ ] Staff invite (owner-only) + role select
+- [x] Staff invite + role select: owner invites managers and staff, manager invites staff, one-time code with QR and share link, /join page, owner changes roles and deactivates
 - [x] Per-staff sales column in daily closing
 - [x] Excel import of items (template + parser): CSV sheet saved from Excel, preview with skipped rows, one save
 - [x] Export-all to Excel: one workbook (medicines, batches, customers with balances, sales with receipt numbers, payments, credit ledger, suppliers, purchase orders, walk-outs), owner only

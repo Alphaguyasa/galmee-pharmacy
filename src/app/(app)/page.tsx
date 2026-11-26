@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { CalendarDays } from "lucide-react";
+import Link from "next/link";
+import { CalendarDays, ChevronRight, Users } from "lucide-react";
 import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
 import type { Locale } from "@/i18n/config";
 import { formatEthiopianDate } from "@/lib/ethiopian-date";
@@ -66,6 +67,17 @@ export default async function HomePage() {
           figure={formatBirr(today.owed, locale)}
         />
       </div>
+
+      {profile.role === "owner" || profile.role === "manager" ? (
+        <Link
+          href="/staff"
+          className="flex min-h-12 items-center gap-3 rounded-lg border border-border px-4 py-3 font-semibold md:max-w-md"
+        >
+          <Users className="size-5 text-muted-foreground" aria-hidden />
+          <span className="flex-1">{t("staffLink")}</span>
+          <ChevronRight className="size-5 text-muted-foreground" aria-hidden />
+        </Link>
+      ) : null}
     </div>
   );
 }

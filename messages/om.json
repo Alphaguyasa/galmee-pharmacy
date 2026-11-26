@@ -49,14 +49,16 @@
     "submit": "Galmee fayyadamuu jalqabi",
     "error": "Faarmaasii uumuun hin danda'amne. Maaloo irra deebi'ii yaali.",
     "errorPhone": "Lakkoofsa bilbilaa Itoophiyaa galchi, fkn. 0911 234 567.",
-    "errorRequired": "Bakka sadanuu guuti."
+    "errorRequired": "Bakka sadanuu guuti.",
+    "haveCode": "Akka hojjetaatti faarmaasii seenuuf? Koodii affeerraa galchaa"
   },
   "home": {
     "welcome": "Baga nagaan dhuftan, {name}",
     "expiringSoon": "Guyyaa 30 keessatti kan darbu",
     "lowStock": "Sadarkaa ajajaa gadi",
     "salesToday": "Gurgurtaa har'aa",
-    "salesSub": "{sales} · maallaqa callaa {amount}"
+    "salesSub": "{sales} · maallaqa callaa {amount}",
+    "staffLink": "Hojjettootaa fi affeerraa"
   },
   "roles": {
     "owner": "Abbaa qabeenyaa",
