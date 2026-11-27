@@ -95,4 +95,4 @@
 - [x] Cross-tenant RLS test extended to this product's tables and passing
 - [x] Playwright screenshot script for 360 px and 1280 px
 - [x] `npm audit` clean, Dependabot active
-- [ ] Self-audit (the security guidelines section 9) recorded in the dev log
+- [x] Self-audit (the security guidelines section 9) recorded in the dev log
