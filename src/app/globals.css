@@ -183,3 +183,31 @@
     background: #fff;
   }
 }
+
+/* Weekly buy list: only the sheet prints, in black on white, on A4 or an 80 mm roll. */
+@media print {
+  body:has(.buy-list-sheet) * {
+    visibility: hidden;
+  }
+  body:has(.buy-list-sheet) .buy-list-sheet,
+  body:has(.buy-list-sheet) .buy-list-sheet * {
+    visibility: visible;
+    color: #000 !important;
+  }
+  .buy-list-sheet {
+    position: absolute;
+    inset: 0 auto auto 0;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+  }
+  .buy-list-a4 {
+    width: 100%;
+    padding: 12mm;
+  }
+  .buy-list-80 {
+    width: 80mm;
+    max-width: 80mm;
+    padding: 2mm;
+  }
+}

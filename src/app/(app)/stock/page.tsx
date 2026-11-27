@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
-import { PackagePlus, PackageX, Search } from "lucide-react";
+import { ClipboardList, PackagePlus, PackageX, Search } from "lucide-react";
 import { MoneySummaryCard } from "@/components/galmee/money-summary-card";
 import { EmptyState } from "@/components/galmee/empty-state";
 import { ExpiryLabel } from "@/components/stock/expiry-label";
@@ -48,6 +48,10 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
           <Link href="/stock/walkouts" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
             <PackageX className="size-5" aria-hidden />
             {t("walkouts")}
+          </Link>
+          <Link href="/stock/buy-list" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+            <ClipboardList className="size-5" aria-hidden />
+            {t("buyList")}
           </Link>
           {canReceive ? (
             <>

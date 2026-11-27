@@ -115,7 +115,8 @@
     "writeOffYes": "Eeyyee, baasi",
     "writeOffNo": "Dhiisi",
     "writeOffError": "Baasuun hin danda'amne. Irra deebi'ii yaali.",
-    "walkouts": "Gaafatame, hin jiru"
+    "walkouts": "Gaafatame, hin jiru",
+    "buyList": "Tarree bittaa"
   },
   "receive": {
     "title": "Meeshaa fudhachuu",
@@ -534,5 +535,31 @@
       "rows": "Tarreewwan",
       "truncated": "Tarree {cap} jalqabaa qofa; garagalcha guutuu gaafadhaa"
     }
+  },
+  "buyList": {
+    "title": "Tarree bittaa gabaaf",
+    "intro": "Fuula tokko gara daldalaa jumlaa geessan: kan maamiltoonni torban kana gaafatan, kan dafanii gurguramanii dhumaa jiran, fi kuusaa yeroon isaa dhiyootti darbu.",
+    "back": "Kuusaa",
+    "link": "Tarree bittaa",
+    "paperLabel": "Hammeenya waraqaa",
+    "paperA4": "Fuula A4",
+    "paper80": "Marsaa 80 mm",
+    "print": "Maxxansi",
+    "printedOn": "Kan maxxanfame {date}",
+    "weekNote": "Guyyoota 7 darban",
+    "walkoutsHeading": "Gaafatame, hin jiru",
+    "walkoutsEmpty": "Torban kana kan galmaa'e hin jiru.",
+    "asks": "{count, plural, one {Al # gaafatame} other {Al # gaafatame}}",
+    "fastHeading": "Dafee gurguramaa, dhumaa jira",
+    "fastEmpty": "Kan dafee gurguramuu fi dhumaa jiru hin jiru.",
+    "soldWeek": "Gurgurame {qty}",
+    "inStock": "Jira {qty}",
+    "expiryHeading": "Yeroon isaa dhiyootti darba: dabalataan hin bitinaa",
+    "expiryEmpty": "Guyyoota 90 itti aanan keessatti kan yeroon isaa darbu hin jiru.",
+    "expired": "Yeroon darbe",
+    "daysLeft": "{days, plural, one {Guyyaa # hafe} other {Guyyoota # hafan}}",
+    "buyQty": "Baay'ina bitamu",
+    "cappedNote": "Gurgurtaan torban kanaa baay'ee dha; tarreen gurgurtaa ariifataa gurgurtaa haaraa {count} qofa lakkaa'a.",
+    "allClear": "Torban kana kan bitamu hin jiru."
   }
 }

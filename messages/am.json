@@ -115,7 +115,8 @@
     "writeOffYes": "አዎ፣ አስወግድ",
     "writeOffNo": "ተው",
     "writeOffError": "ማስወገድ አልተቻለም። እንደገና ይሞክሩ።",
-    "walkouts": "ተጠይቆ የሌለ"
+    "walkouts": "ተጠይቆ የሌለ",
+    "buyList": "የግዢ ዝርዝር"
   },
   "receive": {
     "title": "ዕቃ መቀበያ",
@@ -534,5 +535,31 @@
       "rows": "ረድፎች",
       "truncated": "የመጀመሪያዎቹ {cap} ረድፎች ብቻ፤ ሙሉ ቅጂ ይጠይቁ"
     }
+  },
+  "buyList": {
+    "title": "የገበያ ግዢ ዝርዝር",
+    "intro": "ወደ ጅምላ ሻጭ የሚወሰድ አንድ ገጽ፦ በዚህ ሳምንት ደንበኞች የጠየቁት፣ በፍጥነት የሚሸጡና የሚያልቁ፣ እንዲሁም በቅርቡ ጊዜው የሚያልፍ ክምችት።",
+    "back": "ክምችት",
+    "link": "የግዢ ዝርዝር",
+    "paperLabel": "የወረቀት መጠን",
+    "paperA4": "A4 ገጽ",
+    "paper80": "80 ሚሜ ጥቅል",
+    "print": "አትም",
+    "printedOn": "የታተመው {date}",
+    "weekNote": "ያለፉት 7 ቀናት",
+    "walkoutsHeading": "የተጠየቁ ግን የሌሉ",
+    "walkoutsEmpty": "በዚህ ሳምንት የተመዘገበ ያልተገኘ መድኃኒት የለም።",
+    "asks": "{count, plural, one {# ጊዜ ተጠይቋል} other {# ጊዜ ተጠይቋል}}",
+    "fastHeading": "በፍጥነት የሚሸጡ፣ እያለቁ ያሉ",
+    "fastEmpty": "እያለቀ ያለ በፍጥነት የሚሸጥ መድኃኒት የለም።",
+    "soldWeek": "የተሸጠ {qty}",
+    "inStock": "ያለ {qty}",
+    "expiryHeading": "ጊዜው በቅርቡ የሚያልፍ፦ ተጨማሪ አይግዙ",
+    "expiryEmpty": "በሚቀጥሉት 90 ቀናት ጊዜው የሚያልፍ የለም።",
+    "expired": "ጊዜው ያለፈ",
+    "daysLeft": "{days, plural, one {# ቀን ቀርቷል} other {# ቀናት ቀርተዋል}}",
+    "buyQty": "የሚገዛ ብዛት",
+    "cappedNote": "በዚህ ሳምንት ሽያጮች በጣም ብዙ ናቸው፤ የፈጣን ሽያጭ ዝርዝሩ የቅርብ {count} ሽያጮችን ብቻ ይቆጥራል።",
+    "allClear": "በዚህ ሳምንት የሚገዛ የለም።"
   }
 }

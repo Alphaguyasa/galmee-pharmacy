@@ -115,7 +115,8 @@
     "writeOffYes": "Yes, remove",
     "writeOffNo": "Keep",
     "writeOffError": "Could not remove the stock. Try again.",
-    "walkouts": "Asked, not in stock"
+    "walkouts": "Asked, not in stock",
+    "buyList": "Buy list"
   },
   "receive": {
     "title": "Receive stock",
@@ -534,5 +535,31 @@
       "rows": "Rows",
       "truncated": "Only the first {cap} rows; ask for a full copy"
     }
+  },
+  "buyList": {
+    "title": "Buy list for the market",
+    "intro": "One page to take to the wholesaler: what customers asked for this week, fast sellers that will run out, and stock that expires soon.",
+    "back": "Stock",
+    "link": "Buy list",
+    "paperLabel": "Paper size",
+    "paperA4": "A4 page",
+    "paper80": "80 mm roll",
+    "print": "Print",
+    "printedOn": "Printed {date}",
+    "weekNote": "Last 7 days",
+    "walkoutsHeading": "Asked for, not in stock",
+    "walkoutsEmpty": "No walk-outs logged this week.",
+    "asks": "{count, plural, one {# ask} other {# asks}}",
+    "fastHeading": "Selling fast, running out",
+    "fastEmpty": "No fast seller is running low.",
+    "soldWeek": "Sold {qty}",
+    "inStock": "In stock {qty}",
+    "expiryHeading": "Expiring soon: do not buy more",
+    "expiryEmpty": "Nothing expires in the next 90 days.",
+    "expired": "Expired",
+    "daysLeft": "{days, plural, one {# day left} other {# days left}}",
+    "buyQty": "Qty to buy",
+    "cappedNote": "Too many sales this week to read them all; the fast-seller list counts the newest {count} sales.",
+    "allClear": "Nothing to buy this week."
   }
 }
