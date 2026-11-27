@@ -84,6 +84,7 @@
 - [x] Receipts that cannot be forged, part 1: each business gets its own signing key (private half kept in the database vault, owner can rotate or revoke); compact signed receipt code (CBOR, fits a QR) with offline check that catches altered amounts and forged codes
 - [x] Receipts that cannot be forged, part 2: sign each sale receipt at issue and print the code as a captioned QR (checked before printing; any failure prints the receipt without it). Printing is switched on with `GALMEE_SIGNED_RECEIPTS=on` together with part 3
 - [x] Receipts that cannot be forged, part 3: public `/verify` page that checks a scanned code on the phone (am/om/en): real, changed or fake, key withdrawn, unknown business; only the key id is looked up, and keys saved on the phone allow offline checks
+- [x] Weekly buy list: one printable page (A4 or 80 mm roll) for the wholesaler trip: the week's walk-outs ranked by asks, fast sellers that will not last another week, and stock expiring within 90 days, with a blank to write the quantity
 
 ## Q: Quality and security baseline (do these inside M0 and M1, not after)
 
